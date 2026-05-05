@@ -146,6 +146,51 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
+            {/* Technical Specifications */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8 py-8 border-t border-b border-gray-100 my-8">
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">{t.product.origin}</span>
+                <span className="text-sm font-bold text-stone-900">India</span>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">{t.product.shelf_life}</span>
+                <span className="text-sm font-bold text-stone-900">12 Months from Packaging</span>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">{t.product.storage}</span>
+                <span className="text-sm font-bold text-stone-800 leading-relaxed font-medium">Store in a cool, dry place. Once opened, transfer to an airtight container.</span>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">{t.product.benefit}</span>
+                <span className="text-sm font-bold text-stone-800 leading-relaxed font-medium">High fiber, Gluten-free, Low Glycemic Index, Rich in minerals.</span>
+              </div>
+              <div className="flex flex-col gap-3 col-span-1 sm:col-span-2 pt-4">
+                <span className="text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">{t.product.nutrition}</span>
+                <div className="bg-stone-50 rounded-2xl p-4 border border-stone-100 grid grid-cols-3 sm:grid-cols-5 gap-4">
+                  <div className="text-center">
+                    <p className="text-[9px] font-bold text-stone-400 uppercase mb-1">Energy</p>
+                    <p className="text-xs font-black text-stone-900">342 kcal</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[9px] font-bold text-stone-400 uppercase mb-1">Protein</p>
+                    <p className="text-xs font-black text-stone-900">11.2 g</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[9px] font-bold text-stone-400 uppercase mb-1">Carbs</p>
+                    <p className="text-xs font-black text-stone-900">66 g</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[9px] font-bold text-stone-400 uppercase mb-1">Fat</p>
+                    <p className="text-xs font-black text-stone-900">3.9 g</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[9px] font-bold text-stone-400 uppercase mb-1">Fiber</p>
+                    <p className="text-xs font-black text-stone-900">10 g</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Description Details */}
             <div className="space-y-4">
               <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest">{t.product.details}</h3>

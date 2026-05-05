@@ -249,7 +249,12 @@
     "details": "Product Details",
     "organic": "100% Organic",
     "free_delivery": "Free Delivery",
-    "save": "Save"
+    "save": "Save",
+    "origin": "Country of Origin",
+    "shelf_life": "Shelf Life",
+    "storage": "Storage Instruction",
+    "benefit": "Benefits",
+    "nutrition": "Nutritional Value"
   },
   "cart": {
     "title": "Your Cart",

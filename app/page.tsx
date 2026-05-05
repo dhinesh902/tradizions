@@ -728,7 +728,6 @@ function FeaturedSection({ t }: { t: any }) {
   );
 }
 
-/* ── Product Card (Re-refined) ── */
 function ProductCard({
   product,
   isVisible,
@@ -740,78 +739,75 @@ function ProductCard({
   delay: number;
   t: any;
 }) {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <Link
       href="/product-detail"
-      className={`group relative items-start block transition-all duration-500 opacity-100 translate-y-0 cursor-pointer`}
+      className="group relative bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
       style={{ transitionDelay: isVisible ? `${delay}ms` : "0ms" }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] transition-all duration-500 group-hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)]">
+      <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
         <Image
           src={product.image || "/placeholder.png"}
           alt={product.name}
           fill
-          className={`object-cover transition-transform duration-[1500ms] ${isHovered ? "scale-110" : "scale-100"}`}
+          className="object-cover transition-all duration-[1200ms] group-hover:scale-110"
         />
 
-        {/* Subtle Glass Overlay on Hover */}
-        <div
-          className={`absolute inset-0 bg-[var(--olive)]/10 backdrop-blur-[2px] transition-opacity duration-700 ${isHovered ? "opacity-100" : "opacity-0"}`}
-        />
-
-        {/* Badge */}
-        {product.badge && (
-          <div className="absolute top-6 left-6 px-4 py-2 rounded-full bg-gradient-to-r from-[var(--orange)] to-amber-600 text-white text-[11px] font-semibold tracking-[0.15em] shadow-lg z-20">
-            {product.badge}
-          </div>
-        )}
-
-        {/* Action Buttons Overlay */}
-        <div
-          className={`absolute inset-0 flex flex-col items-center justify-center gap-4 transition-all duration-500 ${isHovered ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-        >
-          <button className="w-12 h-12 rounded-full bg-white text-gray-900 flex items-center justify-center shadow-xl hover:bg-[var(--orange)] hover:text-white transition-all hover:scale-110">
-            <Heart className="w-5 h-5" />
+        {/* Floating Actions */}
+        <div className="absolute top-3 right-3 z-20">
+          <button className="w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-gray-400 hover:text-red-500 transition-all transform hover:scale-110 active:scale-95 cursor-pointer">
+            <Heart className="w-4 h-4" />
           </button>
-          <button className="px-8 py-3 rounded-full bg-white text-gray-900 font-bold text-[10px] tracking-widest shadow-xl hover:bg-[var(--olive)] hover:text-white transition-all hover:scale-105 uppercase">
-            {t.add_to_cart}
-          </button>
+        </div>
+
+        <div className="absolute top-3 left-3 z-20 flex flex-col gap-2">
+          {product.originalPrice && (
+            <span className="px-2.5 py-1 rounded-full bg-[var(--orange)] text-white text-[9px] font-black tracking-wider shadow-lg">
+              {Math.round(
+                ((product.originalPrice - product.price) /
+                  product.originalPrice) *
+                  100,
+              )}
+              % OFF
+            </span>
+          )}
+          {product.isNew && (
+            <span className="px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-[8px] font-black text-[var(--olive)] tracking-widest shadow-sm">
+              NEW
+            </span>
+          )}
         </div>
       </div>
 
-      {/* Product Info */}
-      <div className="mt-8 text-center space-y-3">
-        <div className="flex items-start justify-start gap-1.5">
-          <div className="flex">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className={`w-3 h-3 ${i < Math.floor(product.rating) ? "text-amber-400 fill-amber-400" : "text-gray-200"}`}
-              />
-            ))}
-          </div>
-          <span className="text-[11px] font-bold text-gray-400 tracking-wider">
-            ({product.reviews})
-          </span>
+      {/* Content */}
+      <div className="p-4 flex flex-col flex-1 space-y-3">
+        <div className="space-y-1">
+          <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors line-clamp-1">
+            {product.name}
+          </h3>
+          <p className="text-[11px] text-gray-400 font-medium line-clamp-1">
+            {product.desc || "Tradizions premium selection for health."}
+          </p>
         </div>
 
-        <h4 className="text-sm font-semibold text-start text-gray-900 group-hover:text-[var(--olive)] transition-colors leading-snug line-clamp-2">
-          {product.name}
-        </h4>
-        <div className="flex items-center justify-start gap-3">
-          <p className="text-lg font-extrabold text-gray-900">
-            ₹{product.price}
-          </p>
+        <div className="flex items-baseline gap-2">
+          <span className="text-xl font-black text-gray-900">
+            ₹{product.price.toLocaleString()}
+          </span>
           {product.originalPrice && (
-            <p className="text-sm text-gray-400 line-through font-light">
-              ₹{product.originalPrice}
-            </p>
+            <span className="text-xs text-gray-400 line-through font-medium">
+              ₹{product.originalPrice.toLocaleString()}
+            </span>
           )}
+        </div>
+
+        {/* Add to Cart Button */}
+        <div className="pt-2 mt-auto">
+          <button className="w-full bg-[#FCFBF9] border border-gray-100 text-gray-900 py-3 px-4 rounded-xl font-bold text-[10px] tracking-widest flex items-center justify-between hover:bg-[var(--olive)] hover:text-white hover:border-[var(--olive)] transition-all duration-300 group/btn cursor-pointer">
+            <span>ADD TO CART</span>
+            <ShoppingCart className="w-3.5 h-3.5 opacity-60 group-hover/btn:opacity-100 transition-opacity" />
+          </button>
         </div>
       </div>
     </Link>
@@ -1096,7 +1092,7 @@ function TestimonialsSection({ t }: { t: any }) {
         <div
           className={`max-w-2xl mx-auto text-center mb-20 space-y-4 transition-all duration-500 opacity-100 translate-y-0`}
         >
-         <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+          <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
             {t.loved.split(" ").slice(0, 2).join(" ")}{" "}
             <span className="gradient-text">
               {t.loved.split(" ").slice(2).join(" ")}
@@ -1447,7 +1443,7 @@ function NutritionPlanner({ t }: { t: any }) {
         <div
           className={`text-center mb-12 space-y-3 transition-all duration-500 opacity-100 translate-y-0`}
         >
-           <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+          <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
             {t.planner.split(" ").slice(0, 2).join(" ")}{" "}
             <span className="gradient-text">
               {t.planner.split(" ").slice(2).join(" ")}
@@ -1669,7 +1665,7 @@ function SubscriptionPlans({ t }: { t: any }) {
         <div
           className={`text-center mb-16 space-y-4 transition-all duration-500 opacity-100 translate-y-0`}
         >
-         <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+          <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
             {t.subscription.split(" ").slice(0, 2).join(" ")}{" "}
             <span className="gradient-text">
               {t.subscription.split(" ").slice(2).join(" ")}
@@ -1770,6 +1766,7 @@ function NewArrivalsSection({ t }: { t: any }) {
       image:
         "https://dryfruitshome.com/wp-content/uploads/2019/07/foxtail-millet-thinai.jpg",
       isNew: true,
+      desc: "Ancient superfood, rich in fibre and nutrients.",
     },
     {
       id: 102,
@@ -1781,6 +1778,7 @@ function NewArrivalsSection({ t }: { t: any }) {
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC5XC7IzZhRYA9FOo2b_aStlaTMAMVXk1cNg&s",
       isNew: true,
+      desc: "Grade-A handpicked almonds, rich in healthy fats.",
     },
     {
       id: 103,
@@ -1792,6 +1790,7 @@ function NewArrivalsSection({ t }: { t: any }) {
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE8uNbbxycaDgAxlh3JuEJ85P8rBYAyYMR3w&s",
       isNew: true,
+      desc: "Handcrafted brass diyas for sacred rituals.",
     },
     {
       id: 104,
@@ -1803,6 +1802,7 @@ function NewArrivalsSection({ t }: { t: any }) {
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgLKhWmIcPt_tA10h3MmkjKEbRTzwEw4gQPg&s",
       isNew: true,
+      desc: "Curated festive hamper with premium organic products.",
     },
   ];
 
@@ -1847,50 +1847,69 @@ function NewArrivalsSection({ t }: { t: any }) {
                   : "/product-detail"
               }
               key={product.id}
-              className={`group relative bg-white border border-gray-100/50 rounded-[2rem] p-3 block transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] hover:-translate-y-2 opacity-100 translate-y-0`}
-              style={{ transitionDelay: `${idx * 100}ms` }}
+              className="group relative bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
+              style={{
+                transitionDelay: isVisible ? `${idx * 150}ms` : "0ms",
+              }}
             >
-              <div className="relative aspect-square overflow-hidden rounded-[1.5rem] bg-[#FCFBF9]">
+              {/* Image Container */}
+              <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
                 <Image
-                  src={product.image}
+                  src={product.image || "/placeholder.png"}
                   alt={product.name}
                   fill
                   className="object-cover transition-all duration-[1200ms] group-hover:scale-110"
                 />
-                <div className="absolute top-3 inset-x-3 flex justify-between items-start">
-                  <span className="px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-[8px] font-bold text-[var(--olive)] tracking-widest shadow-sm">
-                    NEW
-                  </span>
-                  <button className="w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-gray-300 hover:text-red-500 transition-all transform hover:scale-110 active:scale-95">
-                    <Heart className="w-3.5 h-3.5" />
+
+                {/* Floating Actions */}
+                <div className="absolute top-3 right-3 z-20">
+                  <button className="w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-gray-400 hover:text-red-500 transition-all transform hover:scale-110 active:scale-95 cursor-pointer">
+                    <Heart className="w-4 h-4" />
                   </button>
                 </div>
-                <div className="absolute inset-x-3 bottom-3 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                  <button className="w-full bg-[var(--cream)] text-black py-3 rounded-xl font-bold text-[9px] tracking-widest shadow-xl flex items-center justify-center gap-2 hover:bg-[var(--olive)] hover:text-white transition-all">
-                    <ShoppingCart className="w-3.5 h-3.5" />
-                    {t.add_to_cart}
-                  </button>
+
+                <div className="absolute top-3 left-3 z-20 flex flex-col gap-2">
+                  {product.originalPrice && (
+                    <span className="px-2.5 py-1 rounded-full bg-[var(--orange)] text-white text-[9px] font-black tracking-wider shadow-lg">
+                      {Math.round(
+                        ((product.originalPrice - product.price) /
+                          product.originalPrice) *
+                          100,
+                      )}
+                      % OFF
+                    </span>
+                  )}
                 </div>
               </div>
-              <div className="p-3 pt-5 space-y-3">
+
+              {/* Content */}
+              <div className="p-4 flex flex-col flex-1 space-y-3">
                 <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-amber-400">
-                    <Star className="w-2.5 h-2.5 fill-current" />
-                    <span className="text-[10px] font-bold text-gray-400">
-                      {product.rating}
-                    </span>
-                  </div>
-                  <h3 className="text-sm font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors line-clamp-1 leading-tight">
+                  <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors line-clamp-1">
                     {product.name}
                   </h3>
+                  <p className="text-[11px] text-gray-400 font-medium line-clamp-1">
+                    {product.desc || "Tradizions premium selection for health."}
+                  </p>
                 </div>
-                <div className="flex items-center justify-between pt-1">
-                  <span className="text-lg font-bold text-gray-900">
-                    ₹{product.price}
+
+                <div className="flex items-baseline gap-2">
+                  <span className="text-xl font-black text-gray-900">
+                    ₹{product.price.toLocaleString()}
                   </span>
-                  <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-[var(--olive)] hover:text-white transition-all">
-                    <ChevronRight className="w-4 h-4" />
-                  </div>
+                  {product.originalPrice && (
+                    <span className="text-xs text-gray-400 line-through font-medium">
+                      ₹{product.originalPrice.toLocaleString()}
+                    </span>
+                  )}
+                </div>
+
+                {/* Add to Cart Button */}
+                <div className="pt-2 mt-auto">
+                  <button className="w-full bg-[#FCFBF9] border border-gray-100 text-gray-900 py-3 px-4 rounded-xl font-bold text-[10px] tracking-widest flex items-center justify-between hover:bg-[var(--olive)] hover:text-white hover:border-[var(--olive)] transition-all duration-300 group/btn cursor-pointer">
+                    <span>ADD TO CART</span>
+                    <ShoppingCart className="w-3.5 h-3.5 opacity-60 group-hover/btn:opacity-100 transition-opacity" />
+                  </button>
                 </div>
               </div>
             </Link>

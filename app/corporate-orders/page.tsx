@@ -16,6 +16,7 @@ import {
   Gift,
   Building2,
   Users,
+  ShoppingCart,
   Mail,
   Phone,
 } from "lucide-react";
@@ -229,30 +230,51 @@ export default function CorporateOrdersPage() {
             {corporateProducts.map((item, i) => (
               <div
                 key={i}
-                className={`premium-card bg-white rounded-[1rem] overflow-hidden border border-gray-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.03)] transition-all duration-700 ${productsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+                className={`group relative bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col transition-all duration-700 ${productsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
                 style={{ transitionDelay: `${i * 150}ms` }}
               >
-                <div className="relative aspect-square overflow-hidden">
+                {/* Image Container */}
+                <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
                   <Image
-                    src={item.image}
-                    fill
+                    src={item.image || "/placeholder.png"}
                     alt={item.name}
-                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                    fill
+                    className="object-cover transition-all duration-[1200ms] group-hover:scale-110"
                   />
-                </div>
-                <div className="p-8 space-y-4">
-                  <h4 className="text-lg font-bold text-gray-900">
-                    {item.name}
-                  </h4>
-                  <p className="text-xs text-gray-400 font-light line-clamp-2">
-                    {item.desc}
-                  </p>
-                  <div className="flex items-center justify-between pt-2">
-                    <span className="text-xl font-black text-gray-900">
-                      ₹{item.price}
+                  
+                  <div className="absolute top-3 left-3 z-20">
+                    <span className="px-2.5 py-1 rounded-full bg-[var(--orange)] text-white text-[9px] font-black tracking-wider shadow-lg">
+                      BULK OFFERS
                     </span>
-                    <button className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-[var(--olive)] hover:text-white transition-all">
-                      <ArrowRight className="w-5 h-5" />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-4 flex flex-col flex-1 space-y-3">
+                  <div className="space-y-1">
+                    <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors line-clamp-1">
+                      {item.name}
+                    </h3>
+                    <p className="text-[11px] text-gray-400 font-medium line-clamp-1">
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xl font-black text-gray-900">
+                      ₹{item.price.toLocaleString()}
+                    </span>
+                    <span className="text-[10px] text-gray-400 font-medium">Starting from</span>
+                  </div>
+
+                  {/* Add to Cart Button */}
+                  <div className="pt-2 mt-auto">
+                    <button 
+                      onClick={() => document.getElementById("corporate-form")?.scrollIntoView({ behavior: "smooth" })}
+                      className="w-full bg-[#FCFBF9] border border-gray-100 text-gray-900 py-3 px-4 rounded-xl font-bold text-[10px] tracking-widest flex items-center justify-between hover:bg-[var(--olive)] hover:text-white hover:border-[var(--olive)] transition-all duration-300 group/btn cursor-pointer"
+                    >
+                      <span>GET QUOTE</span>
+                      <ShoppingCart className="w-3.5 h-3.5 opacity-60 group-hover/btn:opacity-100 transition-opacity" />
                     </button>
                   </div>
                 </div>

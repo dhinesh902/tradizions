@@ -58,6 +58,8 @@ export default function GiftDetailPage() {
 
   const t = translations[selectedLang] || translations["EN"];
 
+  const [showReviewForm, setShowReviewForm] = useState(false);
+
   return (
     <main className="min-h-screen bg-[#faf9f6] pt-20 pb-20">
       <div className="max-w-7xl mx-auto px-6">
