@@ -19,10 +19,20 @@ import {
   Check,
   Lock,
 } from "lucide-react";
+import en from "@/languages/en.json";
+import ta from "@/languages/ta.json";
+import hi from "@/languages/hi.json";
+
+const translations: Record<string, any> = {
+  EN: en,
+  TA: ta,
+  HI: hi,
+};
 
 export default function ProfilePage() {
   const [mobile, setMobile] = useState("");
   const router = useRouter();
+  const [selectedLang, setSelectedLang] = useState("EN");
 
   // Left menu state
   const [activeTab, setActiveTab] = useState("profile"); // profile, addresses, wishlist, orders, gift-orders, subscriptions, referrals, wallet
@@ -37,7 +47,24 @@ export default function ProfilePage() {
     } else {
       setMobile(localStorage.getItem("userMobile") || "9876543210");
     }
+
+    const savedLang = localStorage.getItem("selectedLang");
+    if (savedLang && translations[savedLang]) {
+      setSelectedLang(savedLang);
+    }
+
+    const handleLangChange = () => {
+      const lang = localStorage.getItem("selectedLang");
+      if (lang && translations[lang]) {
+        setSelectedLang(lang);
+      }
+    };
+
+    window.addEventListener("languageChange", handleLangChange);
+    return () => window.removeEventListener("languageChange", handleLangChange);
   }, [router]);
+
+  const t = translations[selectedLang] || translations["EN"];
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
@@ -47,11 +74,11 @@ export default function ProfilePage() {
 
   const renderProfileForm = () => (
     <div className="animate-fade-in-up">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Edit Profile</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">{t.my_account.edit_profile}</h2>
       <div className="space-y-4 max-w-sm">
         <div>
           <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-            Full Name
+            {t.my_account.full_name || t.contact_us.full_name}
           </label>
           <input
             type="text"
@@ -61,7 +88,7 @@ export default function ProfilePage() {
         </div>
         <div>
           <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-            Email Address
+            {t.my_account.email || t.contact_us.email}
           </label>
           <input
             type="email"
@@ -71,7 +98,7 @@ export default function ProfilePage() {
         </div>
         <div>
           <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-            Mobile Number
+            {t.my_account.mobile || t.contact_us.mobile}
           </label>
           <input
             type="text"
@@ -84,7 +111,7 @@ export default function ProfilePage() {
           </p>
         </div>
         <button className="btn-standard w-full rounded-lg font-bold text-[13px] tracking-widest shadow-md shadow-[var(--olive)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all mt-4">
-          SAVE CHANGES
+          {t.my_account.save_changes}
         </button>
       </div>
     </div>
@@ -98,15 +125,15 @@ export default function ProfilePage() {
             onClick={() => setAddressView("list")}
             className="text-xs font-bold tracking-widest text-gray-400 hover:text-[var(--olive)] mb-6 flex items-center gap-1 uppercase transition-colors"
           >
-            ← Back to Addresses
+            ← {t.my_account.back_to_addr}
           </button>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            {addressView === "add" ? "Add New Address" : "Edit Address"}
+            {addressView === "add" ? t.my_account.add_new_addr : t.my_account.edit_addr}
           </h2>
           <div className="space-y-4 max-w-sm">
             <div>
               <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                Address Title
+                {t.my_account.addr_title}
               </label>
               <input
                 type="text"
@@ -117,7 +144,7 @@ export default function ProfilePage() {
             </div>
             <div>
               <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                Complete Address
+                {t.my_account.comp_addr}
               </label>
               <textarea
                 rows={3}
@@ -132,7 +159,7 @@ export default function ProfilePage() {
             </div>
             <div>
               <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                Pincode
+                {t.my_account.pincode}
               </label>
               <input
                 type="text"
@@ -145,7 +172,7 @@ export default function ProfilePage() {
               onClick={() => setAddressView("list")}
               className="btn-standard w-full rounded-lg font-bold text-[13px] tracking-widest shadow-md shadow-[var(--olive)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all mt-4"
             >
-              {addressView === "add" ? "SAVE ADDRESS" : "UPDATE ADDRESS"}
+              {addressView === "add" ? t.my_account.save_addr : t.my_account.update_addr}
             </button>
           </div>
         </div>
@@ -155,12 +182,12 @@ export default function ProfilePage() {
     return (
       <div className="animate-fade-in-up">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold text-gray-900">Saved Addresses</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{t.my_account.saved_addresses}</h2>
           <button
             onClick={() => setAddressView("add")}
             className="px-5 py-2.5 bg-[var(--olive)]/10 text-[var(--olive)] font-bold text-[11px] tracking-widest rounded-xl hover:bg-[var(--olive)] hover:text-white transition-colors shadow-sm"
           >
-            + ADD NEW
+            + {t.my_account.add_new}
           </button>
         </div>
 
@@ -188,7 +215,7 @@ export default function ProfilePage() {
 
   const renderWishlist = () => (
     <div className="animate-fade-in-up">
-      <h2 className="text-2xl font-bold text-gray-900 mb-8">My Wishlist</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-8">{t.my_account.wishlist}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Shop Page Style Product Card */}
         <div className="group relative bg-white rounded-3xl p-4 border border-gray-100 hover:border-[var(--olive)]/30 hover:shadow-[0_20px_40px_rgba(85,107,47,0.08)] transition-all duration-500 flex flex-col">
@@ -230,7 +257,7 @@ export default function ProfilePage() {
 
   const renderOrders = () => (
     <div className="animate-fade-in-up">
-      <h2 className="text-2xl font-bold text-gray-900 mb-8">Order History</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-8">{t.my_account.order_history}</h2>
       <div className="space-y-6">
         <Link href="/order-detail" className="flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-[2rem] bg-[#faf9f6] border border-gray-100 hover:border-[var(--olive)]/30 transition-all shadow-sm group block">
           <div className="w-full sm:w-32 h-48 sm:h-32 rounded-2xl bg-gray-200 shrink-0 overflow-hidden relative shadow-sm">
@@ -271,7 +298,7 @@ export default function ProfilePage() {
   const renderGiftOrders = () => (
     <div className="animate-fade-in-up">
       <h2 className="text-2xl font-bold text-gray-900 mb-8">
-        Gift Order History
+        {t.my_account.gift_history}
       </h2>
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-[2rem] bg-orange-50/30 border border-orange-100 hover:border-orange-200 transition-all shadow-sm group">
@@ -311,7 +338,7 @@ export default function ProfilePage() {
   const renderSubscriptionManagement = () => (
     <div className="animate-fade-in-up">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        Subscription Management
+        {t.my_account.subscriptions}
       </h2>
       <div className="p-5 rounded-[1.5rem] bg-white border border-stone-100 shadow-sm relative overflow-hidden group">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -347,7 +374,7 @@ export default function ProfilePage() {
   const renderReferrals = () => (
     <div className="animate-fade-in-up">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        Referral Rewards
+        {t.my_account.referral_rewards}
       </h2>
       <div className="p-5 rounded-[1.5rem] bg-indigo-50/50 border border-indigo-100 flex items-center gap-5">
         <div className="w-16 h-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-indigo-600 shrink-0">
@@ -355,7 +382,7 @@ export default function ProfilePage() {
         </div>
         <div className="flex-1 space-y-2">
           <h3 className="text-base font-bold text-gray-900">
-            Invite & Earn Credits
+            {t.my_account.invite_earn}
           </h3>
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black text-indigo-600 bg-white px-2 py-1 rounded-lg border border-indigo-100 tracking-wider">
@@ -379,21 +406,21 @@ export default function ProfilePage() {
   const renderWallet = () => (
     <div className="animate-fade-in-up">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        Wallet & Coupons
+        {t.my_account.wallet_coupons}
       </h2>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <div className="p-6 rounded-[1rem] bg-[var(--olive)] text-white shadow-lg flex justify-between items-center relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--olive)]/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="relative z-10 space-y-3">
             <p className="text-[8px] font-black tracking-[0.3em] uppercase text-stone-500">
-              Balance
+              {t.my_account.wallet_balance}
             </p>
             <h3 className="text-3xl font-black tracking-tight">
               ₹2,500.00
             </h3>
           </div>
           <button className="relative z-10 px-5 py-2 rounded-xl bg-white text-gray-900 font-black text-[9px] uppercase tracking-widest shadow-xl hover:bg-amber-400 transition-all active:scale-[0.95]">
-            ADD FUNDS
+            {t.my_account.add_funds}
           </button>
         </div>
 
@@ -422,7 +449,7 @@ export default function ProfilePage() {
   );
 
   return (
-    <main className="min-h-screen bg-[#faf9f6] pt-28 pb-20">
+    <main className="min-h-screen bg-[#faf9f6] pt-20 pb-20">
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row gap-8">
         {/* Left Sidebar Menu */}
         <div className="w-full md:w-72 shrink-0">
@@ -445,7 +472,7 @@ export default function ProfilePage() {
               className={`flex items-center justify-between p-4 rounded-2xl transition-all font-bold text-[13px] tracking-wide ${activeTab === "profile" ? "bg-[var(--olive)] text-white shadow-md" : "text-gray-500 hover:bg-gray-50 hover:text-[var(--olive)]"}`}
             >
               <div className="flex items-center gap-3">
-                <User className="w-5 h-5" /> Edit Profile
+                <User className="w-5 h-5" /> {t.my_account.edit_profile}
               </div>
               {activeTab === "profile" && (
                 <ChevronRight className="w-4 h-4 opacity-70" />
@@ -456,7 +483,7 @@ export default function ProfilePage() {
               className={`flex items-center justify-between p-4 rounded-2xl transition-all font-bold text-[13px] tracking-wide ${activeTab === "orders" ? "bg-[var(--olive)] text-white shadow-md" : "text-gray-500 hover:bg-gray-50 hover:text-[var(--olive)]"}`}
             >
               <div className="flex items-center gap-3">
-                <Package className="w-5 h-5" /> Order History
+                <Package className="w-5 h-5" /> {t.my_account.order_history}
               </div>
               {activeTab === "orders" && (
                 <ChevronRight className="w-4 h-4 opacity-70" />
@@ -467,7 +494,7 @@ export default function ProfilePage() {
               className={`flex items-center justify-between p-4 rounded-2xl transition-all font-bold text-[13px] tracking-wide ${activeTab === "gift-orders" ? "bg-[var(--olive)] text-white shadow-md" : "text-gray-500 hover:bg-gray-50 hover:text-[var(--olive)]"}`}
             >
               <div className="flex items-center gap-3">
-                <Gift className="w-5 h-5" /> Gift History
+                <Gift className="w-5 h-5" /> {t.my_account.gift_history}
               </div>
               {activeTab === "gift-orders" && (
                 <ChevronRight className="w-4 h-4 opacity-70" />
@@ -478,7 +505,7 @@ export default function ProfilePage() {
               className={`flex items-center justify-between p-4 rounded-2xl transition-all font-bold text-[13px] tracking-wide ${activeTab === "subscriptions" ? "bg-[var(--olive)] text-white shadow-md" : "text-gray-500 hover:bg-gray-50 hover:text-[var(--olive)]"}`}
             >
               <div className="flex items-center gap-3">
-                <Zap className="w-5 h-5" /> Subscriptions
+                <Zap className="w-5 h-5" /> {t.my_account.subscriptions}
               </div>
               {activeTab === "subscriptions" && (
                 <ChevronRight className="w-4 h-4 opacity-70" />
@@ -489,7 +516,7 @@ export default function ProfilePage() {
               className={`flex items-center justify-between p-4 rounded-2xl transition-all font-bold text-[13px] tracking-wide ${activeTab === "wishlist" ? "bg-[var(--olive)] text-white shadow-md" : "text-gray-500 hover:bg-gray-50 hover:text-[var(--olive)]"}`}
             >
               <div className="flex items-center gap-3">
-                <Heart className="w-5 h-5" /> My Wishlist
+                <Heart className="w-5 h-5" /> {t.my_account.wishlist}
               </div>
               {activeTab === "wishlist" && (
                 <ChevronRight className="w-4 h-4 opacity-70" />
@@ -500,7 +527,7 @@ export default function ProfilePage() {
               className={`flex items-center justify-between p-4 rounded-2xl transition-all font-bold text-[13px] tracking-wide ${activeTab === "referrals" ? "bg-[var(--olive)] text-white shadow-md" : "text-gray-500 hover:bg-gray-50 hover:text-[var(--olive)]"}`}
             >
               <div className="flex items-center gap-3">
-                <Users className="w-5 h-5" /> Refer & Earn
+                <Users className="w-5 h-5" /> {t.my_account.refer_earn}
               </div>
               {activeTab === "referrals" && (
                 <ChevronRight className="w-4 h-4 opacity-70" />
@@ -511,7 +538,7 @@ export default function ProfilePage() {
               className={`flex items-center justify-between p-4 rounded-2xl transition-all font-bold text-[13px] tracking-wide ${activeTab === "wallet" ? "bg-[var(--olive)] text-white shadow-md" : "text-gray-500 hover:bg-gray-50 hover:text-[var(--olive)]"}`}
             >
               <div className="flex items-center gap-3">
-                <Wallet className="w-5 h-5" /> Wallet & Coupons
+                <Wallet className="w-5 h-5" /> {t.my_account.wallet_coupons}
               </div>
               {activeTab === "wallet" && (
                 <ChevronRight className="w-4 h-4 opacity-70" />
@@ -525,7 +552,7 @@ export default function ProfilePage() {
               className={`flex items-center justify-between p-4 rounded-2xl transition-all font-bold text-[13px] tracking-wide ${activeTab === "addresses" ? "bg-[var(--olive)] text-white shadow-md" : "text-gray-500 hover:bg-gray-50 hover:text-[var(--olive)]"}`}
             >
               <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5" /> Saved Addresses
+                <MapPin className="w-5 h-5" /> {t.my_account.saved_addresses}
               </div>
               {activeTab === "addresses" && (
                 <ChevronRight className="w-4 h-4 opacity-70" />
@@ -536,7 +563,7 @@ export default function ProfilePage() {
               onClick={handleLogout}
               className="flex items-center gap-3 p-4 rounded-2xl transition-all font-bold text-[13px] tracking-wide text-red-500 hover:bg-red-50 hover:text-red-600"
             >
-              <LogOut className="w-5 h-5" /> Logout
+              <LogOut className="w-5 h-5" /> {t.my_account.logout}
             </button>
           </nav>
         </div>

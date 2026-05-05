@@ -19,6 +19,15 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
+import en from "@/languages/en.json";
+import ta from "@/languages/ta.json";
+import hi from "@/languages/hi.json";
+
+const translations: Record<string, any> = {
+  EN: en,
+  TA: ta,
+  HI: hi,
+};
 
 /* ── Intersection Observer Hook ── */
 function useInView(threshold = 0.15) {
@@ -41,9 +50,27 @@ function useInView(threshold = 0.15) {
 
 export default function CorporateOrdersPage() {
   const [loaded, setLoaded] = useState(false);
+  const [selectedLang, setSelectedLang] = useState("EN");
+
   useEffect(() => {
     setLoaded(true);
+    const savedLang = localStorage.getItem("selectedLang");
+    if (savedLang && translations[savedLang]) {
+      setSelectedLang(savedLang);
+    }
+
+    const handleLangChange = () => {
+      const lang = localStorage.getItem("selectedLang");
+      if (lang && translations[lang]) {
+        setSelectedLang(lang);
+      }
+    };
+
+    window.addEventListener("languageChange", handleLangChange);
+    return () => window.removeEventListener("languageChange", handleLangChange);
   }, []);
+
+  const t = translations[selectedLang] || translations["EN"];
 
   const heroRef = useInView();
   const benefitsRef = useInView();
@@ -53,35 +80,35 @@ export default function CorporateOrdersPage() {
   const corporateProducts = [
     {
       id: 1,
-      name: "Executive Wellness Hamper",
+      name: t.corporate_orders.prod1_name,
       price: 3499,
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-lo4Psnq5vDI61PzeMWKo2UlIv2_kyPnzBQ&s",
-      desc: "A curated mix of organic millets, premium nuts, and healthy malts.",
+      desc: t.corporate_orders.prod1_desc,
     },
     {
       id: 2,
-      name: "Signature Dry Fruit Selection",
+      name: t.corporate_orders.prod2_name,
       price: 2899,
       image:
         "https://img.freepik.com/free-photo/set-pecan-pistachios-almond-peanut-cashew-pine-nuts-lined-up-assorted-nuts-dried-fruits-mini-different-bowls_176474-2051.jpg?semt=ais_hybrid&w=740&q=80",
-      desc: "Grade-A handpicked dry fruits in artisanal wooden packaging.",
+      desc: t.corporate_orders.prod2_desc,
     },
     {
       id: 3,
-      name: "Traditional Festive Box",
+      name: t.corporate_orders.prod3_name,
       price: 4999,
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRk7BJ2N2Wp2yYW6ApncUC_Eo_HNDzAcaKSQQ&s",
-      desc: "The ultimate celebration package with sacred pooja items and treats.",
+      desc: t.corporate_orders.prod3_desc,
     },
     {
       id: 4,
-      name: "Morning Vitality Bundle",
+      name: t.corporate_orders.prod4_name,
       price: 1899,
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2FT49efQnnIWeAkVhYB4M2aHITRbY1rv5ww&s",
-      desc: "Nutrient-dense millet malts and seeds for a healthy corporate lifestyle.",
+      desc: t.corporate_orders.prod4_desc,
     },
   ];
 
@@ -90,7 +117,7 @@ export default function CorporateOrdersPage() {
       {/* ── HERO SECTION ── */}
       <section
         ref={heroRef.ref}
-        className="relative pt-40 pb-24 lg:pt-52 lg:pb-40 overflow-hidden flex items-center justify-center bg-[#0a0a0a] text-white"
+        className="relative pt-32 pb-24 lg:pt-40 lg:pb-40 overflow-hidden flex items-center justify-center bg-[#0a0a0a] text-white"
       >
         {/* Background Image/Overlay */}
         <div className="absolute inset-0 z-0">
@@ -112,21 +139,20 @@ export default function CorporateOrdersPage() {
             className={`inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 text-white border border-white/20 text-[11px] font-bold tracking-[0.25em] uppercase mb-8 shadow-sm transition-all duration-1000 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
           >
             <Briefcase className="w-4 h-4 text-[var(--orange)]" />
-            Corporate Gifting Solutions
+            {t.corporate_orders.solutions}
           </div>
 
           <h1
-            className={`text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-[1.05] tracking-tight mb-8 transition-all duration-1000 delay-200 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+            className={`text-xl md:text-2xl lg:text-3xl font-extrabold text-white leading-[1.05] tracking-tight mb-8 transition-all duration-1000 delay-200 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
           >
-            Elevate Your Corporate <br />
-            <span className="text-[var(--orange)]">Relationships.</span>
+            {t.corporate_orders.elevate} <br />
+            <span className="text-[var(--orange)]">{t.corporate_orders.relationships}</span>
           </h1>
 
           <p
-            className={`text-lg md:text-lg text-white/60 leading-relaxed font-light max-w-3xl mx-auto transition-all duration-1000 delay-400 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+            className={`text-md md:text-md text-white/60 leading-relaxed font-light max-w-3xl mx-auto transition-all duration-1000 delay-400 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
           >
-            Thoughtfully curated wellness hampers rooted in tradition, designed
-            to make a lasting impression on your clients and employees.
+            {t.corporate_orders.hero_desc}
           </p>
 
           <div
@@ -138,9 +164,9 @@ export default function CorporateOrdersPage() {
                   .getElementById("corporate-form")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
-              className="px-10 py-4 rounded-full bg-[var(--olive)] text-white font-bold text-xs tracking-[0.2em] uppercase hover:bg-[var(--olive-dark)] transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[var(--olive)]/20 cursor-pointer"
+              className="px-10 py-4 rounded-full bg-[var(--olive)] text-white font-seminbold text-xs tracking-[0.2em] uppercase hover:bg-[var(--olive-dark)] transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[var(--olive)]/20 cursor-pointer"
             >
-              Get a Custom Quote
+              {t.corporate_orders.get_quote}
             </button>
           </div>
         </div>
@@ -153,18 +179,18 @@ export default function CorporateOrdersPage() {
             {[
               {
                 icon: Award,
-                title: "Premium Quality",
-                desc: "Certified organic millets and grade-A dry fruits sourced directly from the heartlands.",
+                title: t.corporate_orders.benefit1_title,
+                desc: t.corporate_orders.benefit1_desc,
               },
               {
                 icon: Globe,
-                title: "Pan-India Delivery",
-                desc: "Seamless logistics to ensure your gifts reach your partners anywhere in India on time.",
+                title: t.corporate_orders.benefit2_title,
+                desc: t.corporate_orders.benefit2_desc,
               },
               {
                 icon: Users,
-                title: "Bulk Customization",
-                desc: "Personalized branding, custom inserts, and tailored selections to suit your brand identity.",
+                title: t.corporate_orders.benefit3_title,
+                desc: t.corporate_orders.benefit3_desc,
               },
             ].map((benefit, i) => (
               <div
@@ -191,11 +217,11 @@ export default function CorporateOrdersPage() {
       <section ref={productsRef.ref} className="py-32 bg-[var(--background)]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20 space-y-4">
-            <p className="text-sm font-bold text-[var(--olive)] tracking-[0.3em] uppercase">
-              The Collection
+            <p className="text-[12px] font-normal text-[var(--olive)] tracking-[0.3em] uppercase">
+              {t.corporate_orders.collection}
             </p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-              Popular Corporate <span className="gradient-text">Choices</span>
+            <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+              {t.corporate_orders.popular_choices} <span className="gradient-text">{t.corporate_orders.choices}</span>
             </h2>
           </div>
 
@@ -250,16 +276,15 @@ export default function CorporateOrdersPage() {
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
                   <div className="space-y-4 text-center md:text-left flex-1">
                     <h3 className="text-[10px] font-bold text-[var(--olive)] tracking-[0.3em] uppercase">
-                      Get in Touch
+                      {t.contact_us.connect}
                     </h3>
-                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-                      Looking for a{" "}
-                      <span className="gradient-text">custom quote?</span>
+                    <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+                      {t.corporate_orders.custom_quote_heading}{" "}
+                      <span className="gradient-text">{t.corporate_orders.custom_quote_sub}</span>
                     </h2>
                     <p className="text-sm text-gray-400 font-light max-w-md">
-                      Or fill out our inquiry form below and our team will get
-                      back to you within{" "}
-                      <span className="font-bold text-gray-900">24 hours.</span>
+                      {t.corporate_orders.custom_quote_desc}{" "}
+                      <span className="font-bold text-gray-900">{t.corporate_orders.hours_24}</span>
                     </p>
                   </div>
 
@@ -302,7 +327,7 @@ export default function CorporateOrdersPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">
-                        Company Name
+                        {t.corporate_orders.company_name}
                       </label>
                       <input
                         type="text"
@@ -312,7 +337,7 @@ export default function CorporateOrdersPage() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">
-                        Contact Person
+                        {t.corporate_orders.contact_person}
                       </label>
                       <input
                         type="text"
@@ -325,7 +350,7 @@ export default function CorporateOrdersPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">
-                        Work Email
+                        {t.corporate_orders.work_email}
                       </label>
                       <input
                         type="email"
@@ -335,7 +360,7 @@ export default function CorporateOrdersPage() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">
-                        Quantity (Approx)
+                        {t.corporate_orders.quantity}
                       </label>
                       <select className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[var(--olive)]/20 focus:border-[var(--olive)] focus:bg-white transition-all text-sm font-medium appearance-none">
                         <option>10 - 50</option>
@@ -348,7 +373,7 @@ export default function CorporateOrdersPage() {
 
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">
-                      Tell us about your requirement
+                      {t.corporate_orders.tell_us}
                     </label>
                     <textarea
                       rows={4}
@@ -358,7 +383,7 @@ export default function CorporateOrdersPage() {
                   </div>
 
                   <button className="w-full py-5 rounded-2xl bg-[var(--olive)] text-white font-bold text-[12px] tracking-[0.25em] shadow-xl shadow-[var(--olive)]/20 hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98] transition-all uppercase cursor-pointer">
-                    Submit Inquiry
+                    {t.corporate_orders.submit_inquiry}
                   </button>
                 </form>
               </div>

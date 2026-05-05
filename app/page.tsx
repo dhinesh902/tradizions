@@ -26,6 +26,15 @@ import {
   Baby,
   ScrollText,
 } from "lucide-react";
+import en from "@/languages/en.json";
+import ta from "@/languages/ta.json";
+import hi from "@/languages/hi.json";
+
+const translations: Record<string, any> = {
+  EN: en,
+  TA: ta,
+  HI: hi,
+};
 
 /* ── Data ── */
 const categories = [
@@ -258,7 +267,7 @@ const dailyKural = {
 /* ── Intersection Observer Hook ── */
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -276,40 +285,53 @@ function useInView(threshold = 0.15) {
 
 /* ── Main Page ── */
 export default function Home() {
+  const [selectedLang, setSelectedLang] = useState("EN");
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("selectedLang");
+    if (savedLang && translations[savedLang]) {
+      setSelectedLang(savedLang);
+    }
+
+    const handleLangChange = () => {
+      const lang = localStorage.getItem("selectedLang");
+      if (lang && translations[lang]) {
+        setSelectedLang(lang);
+      }
+    };
+
+    window.addEventListener("languageChange", handleLangChange);
+    return () => window.removeEventListener("languageChange", handleLangChange);
+  }, []);
+
+  const t = translations[selectedLang] || translations["EN"];
+
   return (
     <div className="min-h-screen bg-[var(--background)] overflow-x-hidden">
-      <HeroSection />
+      <HeroSection t={t} />
 
       {/* Brand Promise Section */}
       <section className="py-16 bg-white relative overflow-hidden border-b border-stone-50">
         <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
-          <div className="inline-flex items-center gap-4 mb-6">
-            <div className="h-px w-8 bg-[var(--olive)]/30" />
-            <span className="text-[10px] font-black text-[var(--olive)] uppercase tracking-[0.4em]">
-              Heritage to Home
-            </span>
-            <div className="h-px w-8 bg-[var(--olive)]/30" />
-          </div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 leading-snug max-w-4xl mx-auto italic">
-            "From daily cooking essentials to festive pooja items and premium
-            gifting, we bring everything to your doorstep"
+            "{t.home_tagline}"
           </h2>
         </div>
         {/* Subtle decorative background */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]" />
       </section>
 
-      <KuralTrustRow />
-      <CategoriesSection />
-      <HealthGoalsSection />
-      <HealthBenefitsSection />
-      <FeaturedSection />
-      <NewArrivalsSection />
-      <WhyChooseUsSection />
-      <GiftingSection />
-      <NutritionPlanner />
-      <SubscriptionPlans />
-      <TestimonialsSection />
+      <KuralTrustRow t={t} />
+      <CategoriesSection t={t} />
+      <HealthGoalsSection t={t} />
+      <HealthBenefitsSection t={t} />
+      <FeaturedSection t={t} />
+      <NewArrivalsSection t={t} />
+      <WhyChooseUsSection t={t} />
+      <GiftingSection t={t} />
+      <NutritionPlanner t={t} />
+      <SubscriptionPlans t={t} />
+      <TestimonialsSection t={t} />
     </div>
   );
 }
@@ -391,7 +413,7 @@ const milletsBenefits = [
   },
 ];
 
-function HealthBenefitsSection() {
+function HealthBenefitsSection({ t }: { t: any }) {
   const { ref, isVisible } = useInView();
   const [activeCategory, setActiveCategory] = useState("nuts");
 
@@ -399,24 +421,27 @@ function HealthBenefitsSection() {
     <section ref={ref} className="py-24 bg-[#fafaf9] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-16">
         <div
-          className={`text-center space-y-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`text-center space-y-4 transition-all duration-500 opacity-100 translate-y-0`}
         >
-          <h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight">
-            The <span className="gradient-text">Health Advantage</span>
+          <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+            {t.health_advantage.split(" ")[0]}{" "}
+            <span className="gradient-text">
+              {t.health_advantage.split(" ").slice(1).join(" ")}
+            </span>
           </h2>
 
           <div className="flex justify-center gap-4 mt-10">
             <button
               onClick={() => setActiveCategory("nuts")}
-              className={`px-8 py-2.5 rounded-[1rem] text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-300 ${activeCategory === "nuts" ? "bg-[var(--olive)] text-white shadow-lg shadow-[var(--olive)]/20 scale-105" : "bg-white text-gray-400 hover:text-gray-600 border border-stone-100"}`}
+              className={`px-8 py-2.5 rounded-[2rem] text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-500 ${activeCategory === "nuts" ? "bg-[var(--olive)] text-white shadow-lg shadow-[var(--olive)]/20 scale-105" : "bg-white text-gray-400 hover:text-gray-600 border border-stone-100"} cursor-pointer`}
             >
-              Nuts & Dry Fruits
+              {t.sections.nuts}
             </button>
             <button
               onClick={() => setActiveCategory("millets")}
-              className={`px-8 py-2.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-300 ${activeCategory === "millets" ? "bg-[var(--olive)] text-white shadow-lg shadow-[var(--olive)]/20 scale-105" : "bg-white text-gray-400 hover:text-gray-600 border border-stone-100"}`}
+              className={`px-8 py-2.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-500 ${activeCategory === "millets" ? "bg-[var(--olive)] text-white shadow-lg shadow-[var(--olive)]/20 scale-105" : "bg-white text-gray-400 hover:text-gray-600 border border-stone-100"} cursor-pointer`}
             >
-              Millets
+              {t.sections.millets}
             </button>
           </div>
         </div>
@@ -453,8 +478,8 @@ function HealthBenefitsSection() {
 
 // -----------------------------------  HERO SECTION
 
-function HeroSection() {
-  const [loaded, setLoaded] = useState(false);
+function HeroSection({ t }: { t: any }) {
+  const [loaded, setLoaded] = useState(true);
   useEffect(() => {
     setLoaded(true);
   }, []);
@@ -478,42 +503,40 @@ function HeroSection() {
       </div>
 
       {/* Floating Decorative Elements */}
-      <div className="absolute top-20 right-20 w-80 h-80 bg-[var(--orange)]/10 rounded-full blur-[100px] animate-float pointer-events-none" />
+      <div className="absolute top-14 right-20 w-80 h-80 bg-[var(--orange)]/10 rounded-full blur-[100px] animate-float pointer-events-none" />
       <div className="absolute bottom-20 left-1/3 w-60 h-60 bg-emerald-500/10 rounded-full blur-[80px] animate-float delay-300 pointer-events-none" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-32 pb-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-24 pb-20">
         <div className="max-w-3xl space-y-8">
           {/* Headline */}
           <h1
-            className={`text-2xl sm:text-3xl md:text-2xl lg:text-3xl font-extrabold text-white leading-[0.95] tracking-wide transition-all duration-1000 delay-200 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+            className={`text-2xl sm:text-3xl md:text-2xl lg:text-3xl font-extrabold text-white leading-[0.95] tracking-wide transition-all duration-500 delay-200 opacity-100 translate-y-0`}
           >
-            Healthy Traditions. <br />
+            {t.hero_title_1} <br />
             <span className="relative inline-block">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-white to-amber-300 tracking-wider">
-                Delivered to Your Doorstep.
+                {t.hero_title_2}
               </span>
             </span>
           </h1>
 
           {/* Subtitle */}
           <p
-            className={`text-md md:text-md text-white/60 max-w-1xl leading-relaxed font-light transition-all duration-1000 delay-400 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+            className={`text-md md:text-md text-white/60 max-w-1xl leading-relaxed font-light transition-all duration-500 delay-400 opacity-100 translate-y-0`}
           >
-            From Tradition to Wellness – Premium Essentials for Every Home
+            {t.hero_subtitle}
           </p>
 
           {/* CTA Buttons */}
           <div
-            className={`flex flex-wrap gap-3 pt-4 transition-all duration-1000 delay-600 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+            className={`flex flex-wrap gap-3 pt-4 transition-all duration-500 delay-600 opacity-100 translate-y-0`}
           >
             <Link
               href="/shop"
               className="btn-standard group relative flex items-center gap-2 rounded-full font-semibold text-xs tracking-[0.12em] transition-all duration-500 hover:-translate-y-1 active:scale-95 overflow-hidden"
             >
-              <span className="relative z-10">Shop Now </span>
+              <span className="relative z-10">{t.shop} </span>
               <ArrowRight className="w-4 h-4 relative z-10 transition-transform group-hover:translate-x-1" />
             </Link>
 
@@ -526,13 +549,13 @@ function HeroSection() {
               }}
             >
               <Gift className="w-4 h-4" />
-              Explore Gift Packs
+              {t.gifting}
             </Link>
           </div>
 
           {/* Social Proof */}
           <div
-            className={`flex items-center gap-6 pt-6 transition-all duration-1000 delay-800 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+            className={`flex items-center gap-6 pt-6 transition-all duration-500 delay-800 opacity-100 translate-y-0`}
           >
             <div className="flex -space-x-3">
               {["PS", "RK", "AP", "MG"].map((initials, i) => (
@@ -575,7 +598,7 @@ function HeroSection() {
 
 // ----------------------------------- CATEGORIES
 
-function CategoriesSection() {
+function CategoriesSection({ t }: { t: any }) {
   const { ref, isVisible } = useInView();
 
   return (
@@ -585,14 +608,16 @@ function CategoriesSection() {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div
-          className={`text-center mb-20 space-y-5 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`text-center mb-20 space-y-5 transition-all duration-500 opacity-100 translate-y-0`}
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-            Explore Our <span className="gradient-text">Collections</span>
+          <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+            {t.categories_title.split(" ").slice(0, 2).join(" ")}{" "}
+            <span className="gradient-text">
+              {t.categories_title.split(" ").slice(2).join(" ")}
+            </span>
           </h2>
           <p className="text-sm font-normal text-gray-400 font-light max-w-lg mx-auto">
-            From nutrient-rich millets to sacred pooja essentials, find
-            everything to nourish your body and soul.
+            {t.categories_desc}
           </p>
         </div>
 
@@ -601,7 +626,7 @@ function CategoriesSection() {
             <Link
               href={`/shop?category=${cat.name.toLowerCase()}`}
               key={idx}
-              className={`group relative h-[250px] rounded-[1rem] overflow-hidden transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+              className={`group relative h-[250px] rounded-[1rem] overflow-hidden transition-all duration-500 opacity-100 translate-y-0`}
               style={{
                 transitionDelay: isVisible ? `${idx * 100}ms` : "0ms",
               }}
@@ -643,7 +668,7 @@ function CategoriesSection() {
 
 // -----------------------------------  FEATURED PRODUCTS
 
-function FeaturedSection() {
+function FeaturedSection({ t }: { t: any }) {
   const { ref, isVisible } = useInView();
 
   return (
@@ -658,23 +683,31 @@ function FeaturedSection() {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Section Header */}
         <div
-          className={`flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6 transition-all duration-500 opacity-100 translate-y-0`}
         >
           <div className="space-y-5">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-              Featured <span className="gradient-text">Products</span>
+            <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+              {t.featured_products.split(" ")[0]}{" "}
+              <span className="gradient-text">
+                {t.featured_products.split(" ")[1]}
+              </span>
             </h2>
             <p className="text-sm font-medium text-gray-400 max-w-md">
-              Hand-picked organic products, rigorously tested for purity and
-              quality.
+              {t.featured_desc}
             </p>
           </div>
           <Link
             href="/shop"
-            className="group flex items-center gap-3 px-4 py-3 rounded-full border border-gray-200 hover:border-[var(--olive)] hover:bg-[var(--olive)] text-xs font-bold text-gray-600 hover:text-white transition-all duration-500 tracking-widest"
+            className="group inline-flex items-center gap-2 text-[11px] font-semibold tracking-widest uppercase text-[var(--olive)] relative"
           >
-            Explore shop
-            <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            <span className="relative">
+              {t.explore_all}
+
+              {/* Animated underline */}
+              <span className="absolute left-0 -bottom-1 w-0 h-[1.5px] bg-[var(--olive)] transition-all duration-300 group-hover:w-full"></span>
+            </span>
+
+            <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 text-[var(--olive)]" />
           </Link>
         </div>
 
@@ -686,6 +719,7 @@ function FeaturedSection() {
               product={product}
               isVisible={isVisible}
               delay={idx * 150}
+              t={t}
             />
           ))}
         </div>
@@ -699,17 +733,19 @@ function ProductCard({
   product,
   isVisible,
   delay,
+  t,
 }: {
   product: any;
   isVisible: boolean;
   delay: number;
+  t: any;
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Link
       href="/product-detail"
-      className={`group relative items-start block transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"} cursor-pointer`}
+      className={`group relative items-start block transition-all duration-500 opacity-100 translate-y-0 cursor-pointer`}
       style={{ transitionDelay: isVisible ? `${delay}ms` : "0ms" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -743,7 +779,7 @@ function ProductCard({
             <Heart className="w-5 h-5" />
           </button>
           <button className="px-8 py-3 rounded-full bg-white text-gray-900 font-bold text-[10px] tracking-widest shadow-xl hover:bg-[var(--olive)] hover:text-white transition-all hover:scale-105 uppercase">
-            Add to Bag
+            {t.add_to_cart}
           </button>
         </div>
       </div>
@@ -784,7 +820,7 @@ function ProductCard({
 
 // -----------------------------------  GIFT & POOJA SECTION
 
-function GiftingSection() {
+function GiftingSection({ t }: { t: any }) {
   const { ref, isVisible } = useInView();
 
   return (
@@ -793,22 +829,29 @@ function GiftingSection() {
         <div className="flex flex-col gap-20">
           {/* ── Artisanal Gift Hampers ── */}
           <div
-            className={`space-y-10 transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}
+            className={`space-y-10 transition-all duration-500 opacity-100 translate-x-0`}
           >
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-stone-100 pb-8">
               <div className="space-y-3">
-                <h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight">
-                  Artisanal <span className="gradient-text">Gift Hampers</span>
+                <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+                  {t.gift.split(" ")[0]}{" "}
+                  <span className="gradient-text">
+                    {t.gift.split(" ").slice(1).join(" ")}
+                  </span>
                 </h2>
               </div>
               <Link
                 href="/gifts"
-                className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[var(--olive)] hover:text-[var(--orange)] transition-colors"
+                className="group inline-flex items-center gap-2 text-[11px] font-semibold tracking-widest uppercase text-[var(--olive)] relative"
               >
-                View Full Collection
-                <div className="w-8 h-8 rounded-full border border-stone-100 flex items-center justify-center group-hover:border-[var(--orange)] transition-colors">
-                  <ArrowRight className="w-4 h-4" />
-                </div>
+                <span className="relative">
+                  {t.view_all}
+
+                  {/* Animated underline */}
+                  <span className="absolute left-0 -bottom-1 w-0 h-[1.5px] bg-[var(--olive)] transition-all duration-300 group-hover:w-full"></span>
+                </span>
+
+                <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 text-[var(--olive)]" />
               </Link>
             </div>
 
@@ -855,22 +898,29 @@ function GiftingSection() {
 
           {/* ── Pooja Gift Essentials ── */}
           <div
-            className={`space-y-10 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}
+            className={`space-y-10 transition-all duration-500 delay-300 opacity-100 translate-x-0`}
           >
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-stone-100 pb-8">
               <div className="space-y-3">
-                <h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight">
-                  Pooja Gift <span className="gradient-text">Essentials</span>
+                <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+                  {t.pooja.split(" ").slice(0, 2).join(" ")}{" "}
+                  <span className="gradient-text">
+                    {t.pooja.split(" ").slice(2).join(" ")}
+                  </span>
                 </h2>
               </div>
               <Link
                 href="/pooja-gifts"
-                className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[var(--olive)] hover:text-amber-500 transition-colors"
+                className="group inline-flex items-center gap-2 text-[11px] font-semibold tracking-widest uppercase text-[var(--olive)] relative"
               >
-                Explore Sacred Collection
-                <div className="w-8 h-8 rounded-full border border-stone-100 flex items-center justify-center group-hover:border-amber-500 transition-colors">
-                  <ArrowRight className="w-4 h-4" />
-                </div>
+                <span className="relative">
+                  {t.view_all}
+
+                  {/* Animated underline */}
+                  <span className="absolute left-0 -bottom-1 w-0 h-[1.5px] bg-[var(--olive)] transition-all duration-300 group-hover:w-full"></span>
+                </span>
+
+                <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 text-[var(--olive)]" />
               </Link>
             </div>
 
@@ -890,7 +940,7 @@ function GiftingSection() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
                     <div className="absolute bottom-4 left-4 right-4 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                      <button className="w-full bg-white py-2 rounded-xl text-[8px] font-black tracking-widest uppercase text-gray-900 shadow-xl">
+                      <button className="w-full bg-[var(--cream)] py-2 rounded-md text-[8px] font-black tracking-widest uppercase text-gray-900 shadow-xl hover:bg-[var(--olive)] hover:text-white transition-all duration-500 cursor-pointer">
                         Quick View
                       </button>
                     </div>
@@ -918,7 +968,7 @@ function GiftingSection() {
   );
 }
 
-function WhyChooseUsSection() {
+function WhyChooseUsSection({ t }: { t: any }) {
   const { ref, isVisible } = useInView();
 
   return (
@@ -927,7 +977,7 @@ function WhyChooseUsSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
           {/* Left Side: Dynamic Image & Stats (5 columns) */}
           <div
-            className={`lg:col-span-5 relative transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}
+            className={`lg:col-span-5 relative transition-all duration-500 opacity-100 translate-x-0`}
           >
             <div className="relative aspect-[4/5] rounded-[3.5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border-[16px] border-white">
               <Image
@@ -976,16 +1026,18 @@ function WhyChooseUsSection() {
 
           {/* Right Side: Content & Features (7 columns) */}
           <div
-            className={`lg:col-span-7 space-y-12 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}
+            className={`lg:col-span-7 space-y-12 transition-all duration-500 delay-300 opacity-100 translate-x-0`}
           >
             <div className="space-y-6">
-              <h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-[1.1]">
-                Why
-                <span className="gradient-text"> Choose Us</span>
+              <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+                {t.why_choose.split(" ").slice(0, 1).join(" ")}
+                <span className="gradient-text">
+                  {" "}
+                  {t.why_choose.split(" ").slice(1).join(" ")}
+                </span>
               </h2>
-              <p className="text-gray-400 text-lg font-medium leading-relaxed max-w-xl">
-                We ensure every product delivers maximum nutrition by merging
-                traditional processing methods with modern quality standards.
+              <p className="text-gray-400 text-md font-normal leading-relaxed max-w-xl">
+                {t.why_desc}
               </p>
             </div>
 
@@ -1001,10 +1053,10 @@ function WhyChooseUsSection() {
                     </div>
                     <div className="space-y-2">
                       <h4 className="text-md font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors">
-                        {item.title}
+                        {t.features[idx * 2]}
                       </h4>
                       <p className="text-[11px] text-gray-400 font-bold leading-snug">
-                        {item.desc}
+                        {t.features[idx * 2 + 1]}
                       </p>
                     </div>
                   </div>
@@ -1020,21 +1072,38 @@ function WhyChooseUsSection() {
 
 // -----------------------------------  TESTIMONIALS
 
-function TestimonialsSection() {
+function TestimonialsSection({ t }: { t: any }) {
   const { ref, isVisible } = useInView();
+
+  const users = [
+    "Ravi Kumar",
+    "Anita Sharma",
+    "Suresh Babu",
+    "Priya Nair",
+    "Karthik Raj",
+  ];
+
+  const getInitials = (name: string) => {
+    const parts = name.split(" ");
+    const first = parts[0]?.charAt(0) || "";
+    const last = parts[1]?.charAt(0) || "";
+    return (first + last).toUpperCase();
+  };
 
   return (
     <section ref={ref} className="py-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div
-          className={`max-w-2xl mx-auto text-center mb-20 space-y-4 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+          className={`max-w-2xl mx-auto text-center mb-20 space-y-4 transition-all duration-500 opacity-100 translate-y-0`}
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-            Loved By <span className="gradient-text">Thousands</span>
+         <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+            {t.loved.split(" ").slice(0, 2).join(" ")}{" "}
+            <span className="gradient-text">
+              {t.loved.split(" ").slice(2).join(" ")}
+            </span>
           </h2>
           <p className="text-gray-400 font-light text-sm max-w-lg mx-auto leading-relaxed">
-            Join our community of wellness enthusiasts who have embraced the
-            Tradizions way of life.
+            {t.community_desc}
           </p>
         </div>
 
@@ -1050,7 +1119,7 @@ function TestimonialsSection() {
               ...testimonials,
               ...testimonials,
               ...testimonials,
-            ].map((t, idx) => (
+            ].map((item, idx) => (
               <div
                 key={idx}
                 className="w-72 aspect-square flex-shrink-0 bg-white border border-stone-100 rounded-xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col justify-between group/card hover:-translate-y-2"
@@ -1058,7 +1127,7 @@ function TestimonialsSection() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1">
-                      {[...Array(t.rating)].map((_, i) => (
+                      {[...Array(item.rating)].map((_, i) => (
                         <Star
                           key={i}
                           className="w-2.5 h-2.5 text-amber-400 fill-amber-400"
@@ -1068,20 +1137,20 @@ function TestimonialsSection() {
                     <Quote className="w-6 h-6 text-stone-100 fill-current group-hover/card:text-[var(--olive)]/10 transition-colors" />
                   </div>
                   <p className="text-stone-600 text-xs font-medium leading-relaxed whitespace-normal italic line-clamp-5">
-                    &ldquo;{t.text}&rdquo;
+                    &ldquo;{item.text}&rdquo;
                   </p>
                 </div>
 
                 <div className="flex items-center gap-4 pt-6 border-t border-stone-50">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--olive)] to-emerald-700 flex items-center justify-center text-sm font-bold text-white shadow-lg shadow-emerald-900/10 transition-transform group-hover/card:scale-110">
-                    {t.avatar}
+                    {item.avatar}
                   </div>
                   <div className="text-left">
-                    <h4 className="text-sm font-bold text-gray-900 group-hover/card:text-[var(--olive)] transition-colors">
-                      {t.name}
+                    <h4 className="text-[9px] font-bold text-gray-900 group-hover/card:text-[var(--olive)] transition-colors">
+                      {item.name}
                     </h4>
                     <p className="text-[9px] font-bold text-gray-400 tracking-[0.2em] uppercase">
-                      {t.role}
+                      {item.role}
                     </p>
                   </div>
                 </div>
@@ -1092,26 +1161,27 @@ function TestimonialsSection() {
 
         {/* Global Rating Tag */}
         <div
-          className={`mt-10 flex flex-col items-center gap-3 transition-all duration-1000 delay-500 ${isVisible ? "opacity-100" : "opacity-0"}`}
+          className={`mt-10 flex flex-col items-center gap-3 transition-all duration-500 delay-500 ${
+            isVisible ? "opacity-100" : "opacity-0"
+          }`}
         >
           <div className="flex -space-x-3">
-            {[1, 2, 3, 4, 5].map((i) => (
+            {users.map((name, i) => (
               <div
                 key={i}
-                className="w-10 h-10 rounded-full border-2 border-white bg-gray-100 overflow-hidden shadow-sm"
+                className="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold shadow-sm bg-gradient-to-br from-[#588157] to-[#3a5a40]"
               >
-                <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300" />
+                {getInitials(name)}
               </div>
             ))}
+
+            {/* Count */}
             <div className="w-10 h-10 rounded-full border-2 border-white bg-[var(--orange)] flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
               +2k
             </div>
           </div>
-          <p className="text-xs font-medium text-gray-800">
-            Trusted by over{" "}
-            <span className="font-bold">10,000+ happy customers</span>{" "}
-            worldwide.
-          </p>
+
+          <p className="text-xs font-medium text-gray-800">{t.trusted}</p>
         </div>
       </div>
 
@@ -1137,7 +1207,7 @@ function TestimonialsSection() {
 
 // -----------------------------------  KURAL & TRUST ROW (Premium Look)
 
-function KuralTrustRow() {
+function KuralTrustRow({ t }: { t: any }) {
   const { ref, isVisible } = useInView();
 
   return (
@@ -1151,7 +1221,7 @@ function KuralTrustRow() {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div
-          className={`flex flex-col xl:flex-row items-stretch justify-between gap-8 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`flex flex-col xl:flex-row items-stretch justify-between gap-8 transition-all duration-500 opacity-100 translate-y-0`}
         >
           {/* Left Side: Premium Kural Card */}
           <div className="flex-1 relative group">
@@ -1171,7 +1241,7 @@ function KuralTrustRow() {
                   <div className="flex items-center gap-3">
                     <span className="w-6 h-px bg-amber-200" />
                     <span className="text-[10px] font-black text-amber-600 uppercase tracking-[0.4em] leading-none">
-                      Thinam Oru Kural
+                      {t.kural_title}
                     </span>
                   </div>
                   <div className="relative">
@@ -1198,10 +1268,10 @@ function KuralTrustRow() {
                 </div>
                 <div className="space-y-1">
                   <p className="text-[10px] font-black text-stone-900 uppercase tracking-[0.2em] leading-none group-hover:text-[var(--olive)] transition-colors">
-                    {badge.label}
+                    {t.badges[idx * 2]}
                   </p>
                   <p className="text-[9px] text-stone-400 font-medium uppercase tracking-wider opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
-                    {badge.desc}
+                    {t.badges[idx * 2 + 1]}
                   </p>
                 </div>
                 {/* Subtle Hover Indicator */}
@@ -1217,20 +1287,23 @@ function KuralTrustRow() {
 
 // -----------------------------------  HEALTH GOALS SECTION
 
-function HealthGoalsSection() {
+function HealthGoalsSection({ t }: { t: any }) {
   const { ref, isVisible } = useInView();
 
   return (
     <section ref={ref} className="py-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div
-          className={`text-center mb-16 space-y-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`text-center mb-16 space-y-4 transition-all duration-500 opacity-100 translate-y-0`}
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-            Shop by <span className="gradient-text">Health Goals</span>
+          <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+            {t.health_goals_title.split(" ").slice(0, 2).join(" ")}{" "}
+            <span className="gradient-text">
+              {t.health_goals_title.split(" ").slice(2).join(" ")}
+            </span>
           </h2>
           <p className="text-sm font-normal text-gray-400 max-w-lg mx-auto">
-            Tailored nutrition to help you achieve your wellness objectives.
+            {t.health_goals_desc}
           </p>
         </div>
 
@@ -1239,7 +1312,7 @@ function HealthGoalsSection() {
             <Link
               href={`/shop?goal=${goal.name.toLowerCase()}`}
               key={idx}
-              className={`group relative h-[400px] rounded-[2.5rem] overflow-hidden transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+              className={`group relative h-[400px] rounded-[2.5rem] overflow-hidden transition-all duration-500 opacity-100 translate-y-0`}
               style={{ transitionDelay: `${idx * 200}ms` }}
             >
               <Image
@@ -1265,7 +1338,7 @@ function HealthGoalsSection() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2 text-white text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  Explore Products <ArrowRight className="w-4 h-4" />
+                  {t.explore_all} <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
             </Link>
@@ -1327,7 +1400,7 @@ const initialSpicesData = [
   { name: "Cinnamon", tam: "பட்டை", hin: "दालचीनी", price: 500 },
 ];
 
-function NutritionPlanner() {
+function NutritionPlanner({ t }: { t: any }) {
   const { ref, isVisible } = useInView();
   const [activeTab, setActiveTab] = useState("millets");
   const [milletsPlanner, setMilletsPlanner] = useState(
@@ -1372,19 +1445,16 @@ function NutritionPlanner() {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div
-          className={`text-center mb-12 space-y-3 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`text-center mb-12 space-y-3 transition-all duration-500 opacity-100 translate-y-0`}
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-            Monthly Nutrition <span className="gradient-text">Planner</span>
+           <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+            {t.planner.split(" ").slice(0, 2).join(" ")}{" "}
+            <span className="gradient-text">
+              {t.planner.split(" ").slice(2).join(" ")}
+            </span>
           </h2>
           <p className="text-xs font-normal text-gray-400 max-w-md mx-auto">
-            Plan your family's monthly{" "}
-            {activeTab === "millets"
-              ? "millet"
-              : activeTab === "nuts"
-                ? "nut"
-                : "spice"}{" "}
-            requirements and health budget with our precision calculation tool.
+            {t.planner_desc}
           </p>
         </div>
 
@@ -1392,35 +1462,38 @@ function NutritionPlanner() {
         <div className="flex justify-center gap-3 mb-10">
           <button
             onClick={() => setActiveTab("millets")}
-            className={`px-6 py-2 rounded-full text-[10px] font-bold tracking-widest transition-all duration-300 ${activeTab === "millets"
+            className={`px-6 py-2 rounded-full text-[10px] font-bold tracking-widest transition-all duration-500 cursor-pointer ${
+              activeTab === "millets"
                 ? "bg-[var(--olive)] text-white shadow-lg scale-105"
                 : "bg-white text-gray-400 hover:text-[var(--olive)] border border-gray-100"
-              }`}
+            }`}
           >
-            MILLETS
+            {t.sections.millets.toUpperCase()}
           </button>
           <button
             onClick={() => setActiveTab("nuts")}
-            className={`px-6 py-2 rounded-full text-[10px] font-bold tracking-widest transition-all duration-300 ${activeTab === "nuts"
+            className={`px-6 py-2 rounded-full text-[10px] font-bold tracking-widest transition-all duration-500 cursor-pointer ${
+              activeTab === "nuts"
                 ? "bg-[var(--olive)] text-white shadow-lg scale-105"
                 : "bg-white text-gray-400 hover:text-[var(--olive)] border border-gray-100"
-              }`}
+            }`}
           >
-            NUTS
+            {t.sections.nuts.toUpperCase()}
           </button>
           <button
             onClick={() => setActiveTab("spices")}
-            className={`px-6 py-2 rounded-full text-[10px] font-bold tracking-widest transition-all duration-300 ${activeTab === "spices"
+            className={`px-6 py-2 rounded-full text-[10px] font-bold tracking-widest transition-all duration-500 cursor-pointer ${
+              activeTab === "spices"
                 ? "bg-[var(--olive)] text-white shadow-lg scale-105"
                 : "bg-white text-gray-400 hover:text-[var(--olive)] border border-gray-100"
-              }`}
+            }`}
           >
-            SPICES
+            {t.sections.spices}
           </button>
         </div>
 
         <div
-          className={`bg-white rounded-[1rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-[0.99]"}`}
+          className={`bg-white rounded-[1rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden transition-all duration-500 delay-200 opacity-100 translate-y-0`}
         >
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
@@ -1513,7 +1586,7 @@ function NutritionPlanner() {
           </div>
 
           <div className="p-6 bg-gray-50/50 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-gray-100">
-            <button className="btn-standard w-full md:w-auto rounded-xl font-bold text-[10px] tracking-[0.2em] active:scale-95 transition-all duration-300 cursor-pointer">
+            <button className="btn-standard w-full md:w-auto rounded-xl font-bold text-[10px] tracking-[0.2em] active:scale-95 transition-all duration-500 cursor-pointer">
               ADD TO CART
             </button>
             <div className="text-center md:text-right space-y-0.5">
@@ -1531,7 +1604,7 @@ function NutritionPlanner() {
   );
 }
 
-function SubscriptionPlans() {
+function SubscriptionPlans({ t }: { t: any }) {
   const { ref, isVisible } = useInView();
   const plans = [
     {
@@ -1591,43 +1664,34 @@ function SubscriptionPlans() {
 
   return (
     <section ref={ref} className="py-24 bg-[#fafaf9] relative overflow-hidden">
-      {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
-
       <div className="max-w-5xl mx-auto px-6 relative z-10">
         <div
-          className={`text-center mb-16 space-y-4 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`text-center mb-16 space-y-4 transition-all duration-500 opacity-100 translate-y-0`}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--olive)]/5 border border-[var(--olive)]/10 mb-4">
-            <Sparkles className="w-3 h-3 text-[var(--olive)]" />
-            <span className="text-[10px] font-black text-[var(--olive)] uppercase tracking-[0.2em]">
-              Subscription Plans
+         <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+            {t.subscription.split(" ").slice(0, 2).join(" ")}{" "}
+            <span className="gradient-text">
+              {t.subscription.split(" ").slice(2).join(" ")}
             </span>
-          </div>
-          <h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight">
-            Traditional Wellness{" "}
-            <span className="gradient-text">Subscription</span>
           </h2>
           <p className="text-gray-400 text-[11px] max-w-md mx-auto font-medium">
-            Curated nutrition plans delivered to your doorstep every month.
+            {t.subscription_desc}
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {plans.map((plan, idx) => (
             <div
               key={idx}
-              className={`group relative bg-white rounded-[2rem] p-1.5 border transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"} ${plan.border} ${plan.featured ? "shadow-[0_30px_60px_-10px_rgba(85,107,47,0.12)] scale-[1.02] z-10" : "hover:shadow-xl hover:-translate-y-1"}`}
+              className={`group relative bg-white rounded-[2rem] p-1.5 border transition-all duration-500 opacity-100 translate-y-0 ${plan.border} ${(plan as any).featured ? "shadow-[0_30px_60px_-10px_rgba(85,107,47,0.12)] scale-[1.02] z-10" : "hover:shadow-xl hover:-translate-y-1"}`}
               style={{ transitionDelay: `${idx * 150}ms` }}
             >
-              {plan.featured && (
+              {(plan as any).featured && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-[var(--olive)] to-emerald-700 text-white text-[9px] font-black tracking-[0.2em] uppercase shadow-lg z-20 whitespace-nowrap">
                   Most Popular
                 </div>
               )}
-
               <div className="relative h-full rounded-[1.75rem] overflow-hidden flex flex-col">
-                {/* Header Section */}
                 <div className="p-7 pb-4 space-y-3">
                   <h3
                     className={`text-[10px] font-black tracking-[0.2em] uppercase ${plan.accent}`}
@@ -1649,8 +1713,6 @@ function SubscriptionPlans() {
                     {plan.desc}
                   </p>
                 </div>
-
-                {/* Features List */}
                 <div className="flex-1 p-7 pt-2 space-y-6">
                   <div className="w-full h-px bg-gray-50" />
                   <ul className="space-y-4">
@@ -1680,11 +1742,9 @@ function SubscriptionPlans() {
                     ))}
                   </ul>
                 </div>
-
-                {/* Action Section */}
                 <div className="p-7 pt-0">
-                  <button className="btn-standard w-full rounded-xl text-[13px] font-black front-normal tracking-[0.2em] transition-all duration-500 shadow-lg cursor-pointer active:scale-95">
-                    Subscribe Now
+                  <button className="btn-standard w-full rounded-xl text-[11px] font-black front-normal tracking-[0.1em] transition-all duration-500 shadow-lg cursor-pointer active:scale-95">
+                    {t.subscribe}
                   </button>
                 </div>
               </div>
@@ -1697,7 +1757,7 @@ function SubscriptionPlans() {
 }
 // -----------------------------------  NEW ARRIVALS SECTION (Shop Style)
 
-function NewArrivalsSection() {
+function NewArrivalsSection({ t }: { t: any }) {
   const { ref, isVisible } = useInView();
   const newProducts = [
     {
@@ -1750,22 +1810,31 @@ function NewArrivalsSection() {
     <section ref={ref} className="py-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div
-          className={`flex flex-col md:flex-row items-end justify-between mb-16 gap-6 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`flex flex-col md:flex-row items-end justify-between mb-16 gap-6 transition-all duration-500 opacity-100 translate-y-0`}
         >
           <div className="space-y-4 text-left">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-              New <span className="gradient-text">Arrivals</span>
+            <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+              {t.new_arrivals.split(" ")[0]}{" "}
+              <span className="gradient-text">
+                {t.new_arrivals.split(" ")[1]}
+              </span>
             </h2>
             <p className="text-gray-400 text-sm max-w-md font-light">
-              Freshly added to our collection. Discover our latest traditional
-              wellness offerings and sacred essentials.
+              {t.new_arrivals_desc}
             </p>
           </div>
           <Link
             href="/shop"
-            className="text-xs font-black tracking-widest uppercase text-[var(--olive)] border-b-2 border-[var(--olive)]/20 pb-1 hover:border-[var(--olive)] transition-all"
+            className="group inline-flex items-center gap-2 text-[11px] font-semibold tracking-widest uppercase text-[var(--olive)] relative"
           >
-            Explore All Products
+            <span className="relative">
+              {t.explore_all}
+
+              {/* Animated underline */}
+              <span className="absolute left-0 -bottom-1 w-0 h-[1.5px] bg-[var(--olive)] transition-all duration-300 group-hover:w-full"></span>
+            </span>
+
+            <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 text-[var(--olive)]" />
           </Link>
         </div>
 
@@ -1778,7 +1847,7 @@ function NewArrivalsSection() {
                   : "/product-detail"
               }
               key={product.id}
-              className={`group relative bg-white border border-gray-100/50 rounded-[2rem] p-3 block transition-all duration-700 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] hover:-translate-y-2 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+              className={`group relative bg-white border border-gray-100/50 rounded-[2rem] p-3 block transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] hover:-translate-y-2 opacity-100 translate-y-0`}
               style={{ transitionDelay: `${idx * 100}ms` }}
             >
               <div className="relative aspect-square overflow-hidden rounded-[1.5rem] bg-[#FCFBF9]">
@@ -1799,7 +1868,7 @@ function NewArrivalsSection() {
                 <div className="absolute inset-x-3 bottom-3 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
                   <button className="w-full bg-[var(--cream)] text-black py-3 rounded-xl font-bold text-[9px] tracking-widest shadow-xl flex items-center justify-center gap-2 hover:bg-[var(--olive)] hover:text-white transition-all">
                     <ShoppingCart className="w-3.5 h-3.5" />
-                    ADD TO CART
+                    {t.add_to_cart}
                   </button>
                 </div>
               </div>

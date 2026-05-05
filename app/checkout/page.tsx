@@ -1,22 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, MapPin, CreditCard, Banknote, ShieldCheck } from "lucide-react";
+import en from "@/languages/en.json";
+import ta from "@/languages/ta.json";
+import hi from "@/languages/hi.json";
+
+const translations: Record<string, any> = {
+  EN: en,
+  TA: ta,
+  HI: hi,
+};
 
 export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState("upi");
+  const [selectedLang, setSelectedLang] = useState("EN");
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("selectedLang");
+    if (savedLang && translations[savedLang]) {
+      setSelectedLang(savedLang);
+    }
+
+    const handleLangChange = () => {
+      const lang = localStorage.getItem("selectedLang");
+      if (lang && translations[lang]) {
+        setSelectedLang(lang);
+      }
+    };
+
+    window.addEventListener("languageChange", handleLangChange);
+    return () => window.removeEventListener("languageChange", handleLangChange);
+  }, []);
+
+  const t = translations[selectedLang] || translations["EN"];
 
   return (
-    <main className="min-h-screen bg-[#faf9f6] pt-28 pb-20">
+    <main className="min-h-screen bg-[#faf9f6] pt-20 pb-20">
       <div className="max-w-6xl mx-auto px-6">
         
         <div className="flex items-center gap-3 mb-8">
           <Link href="/cart" className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-gray-500 hover:text-[var(--olive)] hover:scale-105 transition-all border border-gray-100">
             <ChevronLeft className="w-5 h-5" />
           </Link>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Checkout</h1>
+          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">{t.checkout.title}</h1>
         </div>
         
         <div className="flex flex-col lg:flex-row gap-8">
@@ -27,9 +56,9 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.04)] border border-gray-100">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-[var(--olive)]" /> Delivery Address
+                  <MapPin className="w-5 h-5 text-[var(--olive)]" /> {t.checkout.delivery_address}
                 </h2>
-                <button className="text-[11px] font-bold text-[var(--orange)] tracking-widest hover:underline uppercase">Change</button>
+                <button className="text-[11px] font-bold text-[var(--orange)] tracking-widest hover:underline uppercase">{t.my_account?.edit || "Change"}</button>
               </div>
               
               <div className="p-5 rounded-2xl border-2 border-[var(--olive)]/20 bg-[#faf9f6] relative cursor-pointer hover:shadow-md transition-all">
@@ -48,15 +77,15 @@ export default function CheckoutPage() {
             {/* Payment Method */}
             <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.04)] border border-gray-100">
               <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-6">
-                <CreditCard className="w-5 h-5 text-[var(--olive)]" /> Payment Method
+                <CreditCard className="w-5 h-5 text-[var(--olive)]" /> {t.checkout.payment_method}
               </h2>
               
               <div className="space-y-4">
                 <label className={`flex items-center p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'upi' ? 'border-[var(--olive)] bg-[var(--olive)]/5 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}>
                   <input type="radio" name="payment" className="w-5 h-5 accent-[var(--olive)] mr-4" checked={paymentMethod === 'upi'} onChange={() => setPaymentMethod('upi')} />
                   <div className="flex-1">
-                    <span className="block text-sm font-bold text-gray-900">UPI Payments</span>
-                    <span className="block text-xs text-gray-500 font-medium mt-0.5">Google Pay, PhonePe, Paytm</span>
+                    <span className="block text-sm font-bold text-gray-900">{t.checkout.upi}</span>
+                    <span className="block text-xs text-gray-500 font-medium mt-0.5">{t.checkout.upi_desc}</span>
                   </div>
                   <Image src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" width={40} height={20} alt="UPI" className="opacity-70" />
                 </label>
@@ -64,8 +93,8 @@ export default function CheckoutPage() {
                 <label className={`flex items-center p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-[var(--olive)] bg-[var(--olive)]/5 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}>
                   <input type="radio" name="payment" className="w-5 h-5 accent-[var(--olive)] mr-4" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} />
                   <div className="flex-1">
-                    <span className="block text-sm font-bold text-gray-900">Credit / Debit Card</span>
-                    <span className="block text-xs text-gray-500 font-medium mt-0.5">Visa, Mastercard, RuPay</span>
+                    <span className="block text-sm font-bold text-gray-900">{t.checkout.card}</span>
+                    <span className="block text-xs text-gray-500 font-medium mt-0.5">{t.checkout.card_desc}</span>
                   </div>
                   <CreditCard className="w-6 h-6 text-gray-400" />
                 </label>
@@ -73,8 +102,8 @@ export default function CheckoutPage() {
                 <label className={`flex items-center p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-[var(--olive)] bg-[var(--olive)]/5 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}>
                   <input type="radio" name="payment" className="w-5 h-5 accent-[var(--olive)] mr-4" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} />
                   <div className="flex-1">
-                    <span className="block text-sm font-bold text-gray-900">Cash on Delivery</span>
-                    <span className="block text-xs text-gray-500 font-medium mt-0.5">Pay when you receive the order</span>
+                    <span className="block text-sm font-bold text-gray-900">{t.checkout.cod}</span>
+                    <span className="block text-xs text-gray-500 font-medium mt-0.5">{t.checkout.cod_desc}</span>
                   </div>
                   <Banknote className="w-6 h-6 text-gray-400" />
                 </label>
@@ -86,7 +115,7 @@ export default function CheckoutPage() {
           {/* Right Column - Order Summary */}
           <div className="w-full lg:w-[400px] shrink-0">
             <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.04)] border border-gray-100 sticky top-28">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Order Details</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">{t.checkout.order_details}</h2>
               
               {/* Mini Item List */}
               <div className="space-y-4 mb-6">
@@ -116,15 +145,15 @@ export default function CheckoutPage() {
               
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500 font-medium">Subtotal</span>
+                  <span className="text-gray-500 font-medium">{t.checkout.subtotal}</span>
                   <span className="font-bold text-gray-900">₹4,097</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500 font-medium">Shipping Fee</span>
-                  <span className="font-bold text-emerald-500">Free</span>
+                  <span className="text-gray-500 font-medium">{t.checkout.shipping}</span>
+                  <span className="font-bold text-emerald-500">{t.checkout.free}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500 font-medium">Tax & GST</span>
+                  <span className="text-gray-500 font-medium">{t.checkout.tax}</span>
                   <span className="font-bold text-gray-900">₹150</span>
                 </div>
               </div>
@@ -132,20 +161,20 @@ export default function CheckoutPage() {
               <div className="h-px bg-gray-100 mb-6 w-full" />
               
               <div className="flex justify-between items-end mb-8">
-                <span className="text-base font-bold text-gray-900">Total</span>
+                <span className="text-base font-bold text-gray-900">{t.checkout.total}</span>
                 <div className="text-right">
                   <span className="text-3xl font-extrabold text-[var(--olive)] block leading-none">₹4,247</span>
-                  <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-1 block">Inclusive of all taxes</span>
+                  <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-1 block">{t.checkout.inclusive_taxes}</span>
                 </div>
               </div>
 
               <button className="w-full py-4 rounded-xl bg-[var(--olive)] text-white font-bold text-[13px] tracking-widest shadow-lg shadow-[var(--olive)]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 group">
                 <ShieldCheck className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                PLACE ORDER
+                {t.checkout.place_order}
               </button>
 
               <p className="text-[10px] text-center text-gray-400 mt-5 leading-relaxed">
-                By placing your order, you agree to our <Link href="#" className="underline hover:text-[var(--olive)]">Terms & Conditions</Link> and <Link href="#" className="underline hover:text-[var(--olive)]">Privacy Policy</Link>.
+                {t.checkout.terms_agreement} <Link href="#" className="underline hover:text-[var(--olive)]">{t.termsLink || "Terms & Conditions"}</Link> and <Link href="#" className="underline hover:text-[var(--olive)]">{t.privacyLink || "Privacy Policy"}</Link>.
               </p>
             </div>
           </div>

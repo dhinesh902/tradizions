@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, Phone, MapPin, ArrowRight, Leaf } from "lucide-react";
@@ -8,17 +10,42 @@ import {
   FaTwitter as Twitter,
   FaYoutube as Youtube,
 } from "react-icons/fa";
-import { link } from "fs/promises";
+import { useEffect, useState } from "react";
+
+import en from "@/languages/en.json";
+import ta from "@/languages/ta.json";
+import hi from "@/languages/hi.json";
+
+const translations: Record<string, any> = {
+  EN: en,
+  TA: ta,
+  HI: hi,
+};
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
   const socialLinks = [
     { icon: Facebook, href: "#" },
     { icon: Instagram, href: "#" },
     { icon: Twitter, href: "#" },
     { icon: Youtube, href: "#" },
   ];
+  const currentYear = new Date().getFullYear();
+
+  const [selectedLang, setSelectedLang] = useState("EN");
+  const t = translations[selectedLang] || translations["EN"];
+
+  useEffect(() => {
+    const updateLang = () => {
+      const savedLang = localStorage.getItem("selectedLang");
+      if (savedLang && translations[savedLang]) {
+        setSelectedLang(savedLang);
+      }
+    };
+
+    updateLang();
+    window.addEventListener("languageChange", updateLang);
+    return () => window.removeEventListener("languageChange", updateLang);
+  }, []);
 
   return (
     <footer className="bg-[var(--olive-dark)] text-white relative overflow-hidden">
@@ -43,9 +70,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-sm text-white/70 font-light leading-relaxed max-w-sm">
-              Rooted in tradition, crafted for wellness. Bringing the purity of
-              ancient Indian superfoods and handcrafted sacred gifts to your
-              modern lifestyle.
+             {t.footer_description}
             </p>
 
             <div className="flex items-center gap-4">
@@ -65,7 +90,7 @@ export default function Footer() {
           {/* Quick Links */}
           <div className="lg:col-span-2 space-y-8">
             <h4 className="text-sm font-bold tracking-[0.2em] uppercase text-[var(--orange)]">
-              Quick Links
+              {t.quick_links}
             </h4>
             <ul className="space-y-4 text-sm">
               {[
@@ -91,24 +116,29 @@ export default function Footer() {
           {/* Company */}
           <div className="lg:col-span-2 space-y-8">
             <h4 className="text-sm font-bold tracking-[0.2em] uppercase text-[var(--orange)]">
-              Policies
+              {t.policies}
             </h4>
             <ul className="space-y-4 text-sm">
-              {["Privacy Policy",
-              "Terms Policy",
-              "FAQs",
-              "Shipping Policy",
-              "Cancellation Policy",].map((policy) => (
-                <li key={policy}>
-                  <Link
-                    href={`/policies/${policy.toLowerCase().replace(" ", "-")}`}
-                    className="text-white/60 hover:text-white flex items-center gap-2 group transition"
-                  >
-                    <span className="w-0 h-px bg-[var(--orange)] group-hover:w-4 transition-all duration-300" />
-                    {policy}
-                  </Link>
-                </li>
-              ))}
+              {[
+                { name: t.terms, path: "/policies/terms-policy" },
+                { name: t.privacyPolicy, path: "/policies/privacy-policy" },
+                { name: t.faqs, path: "/policies/faqs" },
+                { name: t.shipping, path: "/policies/shipping-policy" },
+                { name: t.cancellation, path: "/policies/cancellation-policy" },
+              ].map((policy) => {
+                if (!policy.name) return null;
+                return (
+                  <li key={policy.path}>
+                    <Link
+                      href={policy.path}
+                      className="text-white/60 hover:text-white flex items-center gap-2 group transition"
+                    >
+                      <span className="w-0 h-px bg-[var(--orange)] group-hover:w-4 transition-all duration-300" />
+                      {policy.name}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -117,11 +147,11 @@ export default function Footer() {
             {/* Newsletter */}
             <div className="space-y-6">
               <h4 className="text-sm font-bold tracking-[0.2em] uppercase text-[var(--orange)]">
-                Newsletter
+                {t.newsletter}
               </h4>
 
               <p className="text-white/60 text-sm">
-                Join our community for wellness tips and exclusive offers.
+                {t.newsletter_text}
               </p>
 
               <div className="relative">
@@ -145,9 +175,7 @@ export default function Footer() {
               <div className="flex items-start gap-4">
                 <MapPin className="w-4 h-4 text-[var(--orange)] mt-1" />
                 <span className="text-sm leading-relaxed">
-                  16 Indira Gandhi Street,
-                  <br />
-                  Palayapalayam, Erode, Tamil Nadu – 638011
+                 {t.address}
                 </span>
               </div>
 
@@ -176,14 +204,16 @@ export default function Footer() {
 
           <div className="flex items-center gap-8">
             {[
-             "About Us", "Contact Us", "My Account"
+              { name: t.aboutUs, path: "/about-us" },
+              { name: t.contactUs, path: "/contact-us" },
+              { name: t.myAccount, path: "/my-account" },
             ].map((link) => (
               <Link
-                key={link}
-                href={`/${link.toLowerCase().replace(" ", "-")}`}
+                key={link.path}
+                href={link.path}
                 className="text-[10px] font-bold tracking-widest text-white/40 hover:text-white uppercase"
               >
-                {link}
+                {link.name}
               </Link>
             ))}
           </div>

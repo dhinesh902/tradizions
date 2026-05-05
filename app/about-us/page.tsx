@@ -20,6 +20,15 @@ import {
   Package,
   Soup,
 } from "lucide-react";
+import en from "@/languages/en.json";
+import ta from "@/languages/ta.json";
+import hi from "@/languages/hi.json";
+
+const translations: Record<string, any> = {
+  EN: en,
+  TA: ta,
+  HI: hi,
+};
 
 /* ── Intersection Observer Hook ── */
 function useInView(threshold = 0.15) {
@@ -42,9 +51,27 @@ function useInView(threshold = 0.15) {
 
 export default function AboutUsPage() {
   const [loaded, setLoaded] = useState(false);
+  const [selectedLang, setSelectedLang] = useState("EN");
+
   useEffect(() => {
     setLoaded(true);
+    const savedLang = localStorage.getItem("selectedLang");
+    if (savedLang && translations[savedLang]) {
+      setSelectedLang(savedLang);
+    }
+
+    const handleLangChange = () => {
+      const lang = localStorage.getItem("selectedLang");
+      if (lang && translations[lang]) {
+        setSelectedLang(lang);
+      }
+    };
+
+    window.addEventListener("languageChange", handleLangChange);
+    return () => window.removeEventListener("languageChange", handleLangChange);
   }, []);
+
+  const t = translations[selectedLang] || translations["EN"];
 
   const heroRef = useInView();
   const storyRef = useInView();
@@ -106,7 +133,7 @@ export default function AboutUsPage() {
     },
     {
       icon: "https://cdn-icons-png.flaticon.com/128/17017/17017130.png",
-      title: "Traditional Pooja",
+      title: "Traditional Pooja Items",
       desc: "Traditional pooja items for everyday rituals and festivals.",
       bg: "bg-blue-50",
       text: "text-blue-600",
@@ -127,7 +154,7 @@ export default function AboutUsPage() {
       {/* ── HERO SECTION ── */}
       <section
         ref={heroRef.ref}
-        className="relative pt-40 pb-24 lg:pt-52 lg:pb-40 overflow-hidden flex items-center justify-center bg-white"
+        className="relative pt-32 pb-24 lg:pt-40 lg:pb-40 overflow-hidden flex items-center justify-center bg-white"
       >
         {/* Abstract Background Elements */}
         <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-[var(--olive)]/5 rounded-full blur-[120px] -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
@@ -142,32 +169,30 @@ export default function AboutUsPage() {
             className={`inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[var(--olive)]/10 text-[var(--olive)] border border-[var(--olive)]/20 text-[11px] font-bold tracking-[0.25em] uppercase mb-8 shadow-sm transition-all duration-1000 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
           >
             <Leaf className="w-4 h-4" />
-            Our Heritage
+            {t.about_us.heritage}
           </div>
 
           <h1
-            className={`text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-8 transition-all duration-1000 delay-200 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+            className={`text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-8 transition-all duration-1000 delay-200 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
           >
-            Welcome to
-            <span className="gradient-text"> Tradizions.</span>
+            {t.about_us.welcome}
+            <span className="gradient-text"> {t.about_us.brand}</span>
           </h1>
 
           <p
-            className={`text-md md:text-lg text-gray-500 leading-relaxed font-light max-w-3xl mx-auto transition-all duration-1000 delay-400 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+            className={`text-md md:text-md text-gray-500 leading-relaxed font-light max-w-3xl mx-auto transition-all duration-1000 delay-400 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
           >
-            Welcome to{" "}
-            <span className="font-semibold text-gray-900">Tradizions</span>–
-            your trusted destination for traditional, healthy, and premium
-            everyday essentials.
+            {t.about_us.welcome}{" "}
+            <span className="font-semibold text-gray-900">
+              {t.about_us.brand.replace(".", "")}
+            </span>
+            –{t.about_us.tagline1}
           </p>
 
           <p
-            className={`text-md md:text-lg text-gray-500 leading-relaxed font-light max-w-3xl mx-auto mt-4 transition-all duration-1000 delay-400 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+            className={`text-md md:text-md text-gray-500 leading-relaxed font-light max-w-3xl mx-auto mt-4 transition-all duration-1000 delay-400 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
           >
-            In today’s fast-paced world, we aim to reconnect modern homes with
-            the richness of tradition. From wholesome millets and premium nuts
-            to pure spices and pooja essentials, we bring together products that
-            support both your health and your lifestyle.
+            {t.about_us.tagline2}
           </p>
 
           <div
@@ -198,7 +223,7 @@ export default function AboutUsPage() {
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-8 h-[2px] bg-[var(--orange)]" />
                     <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/80">
-                      Our Journey Began
+                      {t.about_us.heritage}
                     </p>
                   </div>
                   <p className="text-5xl font-black italic">1995</p>
@@ -216,7 +241,7 @@ export default function AboutUsPage() {
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <p className="text-[10px] font-bold uppercase tracking-wider text-gray-100">
-                    Authentic
+                    {t.about_us.org_cert.split(" ")[0]}
                   </p>
                 </div>
                 <p className="text-xs font-medium text-white leading-relaxed">
@@ -230,43 +255,33 @@ export default function AboutUsPage() {
             >
               <div className="space-y-6">
                 <h2 className="text-sm font-bold text-[var(--olive)] tracking-[0.3em] uppercase">
-                  Our Story
+                  {t.about_us.story_title}
                 </h2>
-                <h3 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-                  Rooted in Soil, <br />
-                  <span className="gradient-text">Grown with Love.</span>
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+                  {t.about_us.story_heading.split(",")[0]}, <br />
+                  <span className="gradient-text">
+                    {t.about_us.story_heading.split(",")[1]}
+                  </span>
                 </h3>
                 <div className="w-20 h-1.5 bg-gradient-to-r from-[var(--olive)] to-[var(--orange)] rounded-full" />
               </div>
 
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed font-light">
-                <p>
-                  Founded in{" "}
-                  <strong className="text-gray-900 font-semibold">1995</strong>,{" "}
-                  <strong className="text-gray-900 font-semibold">
-                    Tradizions
-                  </strong>{" "}
-                  began with a simple vision: to make traditional, high-quality
-                  products easily accessible to every household.
-                </p>
-                <p>
-                  What started as a focus on millets and nuts has grown into a
-                  complete platform offering a wide range of essentials—from
-                  daily cooking ingredients to festive and gifting needs.
-                </p>
+                <p>{t.about_us.story_desc1}</p>
+                <p>{t.about_us.story_desc2}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-8 pt-6">
                 <div className="space-y-1">
                   <p className="text-3xl font-bold text-gray-900">30+</p>
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    Years Experience
+                    {t.about_us.exp_years}
                   </p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-3xl font-bold text-gray-900">100%</p>
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    Organic Certified
+                    {t.about_us.org_cert}
                   </p>
                 </div>
               </div>
@@ -275,23 +290,43 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      {/* ── QUOTE SECTION ── */}
-      <section className="bg-[var(--olive)] py-32 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-grain" />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none animate-float" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--orange)]/20 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none animate-float delay-1000" />
+      {/* ── THE MISSION CARD ── */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        {/* Subtle Decorative Elements */}
+        <div className="absolute top-1/2 left-0 w-64 h-64 bg-[var(--olive)]/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
+        <div className="absolute top-1/2 right-0 w-64 h-64 bg-[var(--orange)]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
-        <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
-          <HeartHandshake className="w-20 h-20 text-white/20 mx-auto mb-10" />
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.2] mb-12 italic">
-            “To bring together tradition, health, and convenience by delivering
-            high-quality essentials that enrich everyday living.”
-          </h2>
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-16 h-1 bg-white/30 rounded-full" />
-            <p className="text-white/60 font-bold tracking-[0.2em] uppercase text-xs">
-              The Tradizions Mission
-            </p>
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
+          <div className="group relative bg-white rounded-[3rem] p-12 md:p-16 border border-[#e0d4b7] shadow-[0_50px_100px_-30px_rgba(85,107,47,0.08)] overflow-hidden transition-all duration-700 hover:shadow-[0_60px_120px_-30px_rgba(85,107,47,0.12)]">
+            {/* Glossy Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white via-transparent to-[var(--olive)]/5 opacity-30 pointer-events-none" />
+
+            <div className="relative z-10 text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl mb-8 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-700">
+                <HeartHandshake className="w-8 h-8" />
+              </div>
+
+              <div className="space-y-8">
+                <div className="flex justify-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-[var(--olive)] animate-pulse" />
+                  <div className="w-12 h-1 rounded-full bg-gradient-to-r from-[var(--olive)] to-transparent" />
+                </div>
+
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 leading-relaxed italic tracking-wide">
+                  “{t.about_us.mission_quote}”
+                </h2>
+
+                <div className="flex flex-col items-center gap-4 pt-4">
+                  <div className="w-16 h-[1px] bg-gray-200" />
+                  <p className="text-[10px] font-black tracking-[0.4em] uppercase text-[var(--olive)] opacity-60">
+                    {t.about_us.mission_title}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Corner Accent */}
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-[var(--olive)]/5 rounded-full blur-2xl group-hover:bg-[var(--olive)]/10 transition-colors duration-700" />
           </div>
         </div>
       </section>
@@ -301,10 +336,14 @@ export default function AboutUsPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20 space-y-4">
             <p className="text-sm font-bold text-[var(--olive)] tracking-[0.3em] uppercase">
-              Our Promise
+              {t.about_us.promise_title}
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              What We <span className="gradient-text">Stand For</span>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              {t.about_us.promise_heading.split(" ")[0]}{" "}
+              {t.about_us.promise_heading.split(" ")[1]}{" "}
+              <span className="gradient-text">
+                {t.about_us.promise_heading.split(" ").slice(2).join(" ")}
+              </span>
             </h2>
           </div>
 
@@ -320,11 +359,11 @@ export default function AboutUsPage() {
                 >
                   <v.icon className="w-8 h-8" />
                 </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-4">
-                  {v.title}
+                <h4 className="text-lg font-bold text-gray-900 mb-3">
+                  {t.about_us.promises?.[i]?.title || v.title}
                 </h4>
-                <p className="text-gray-500 font-light leading-relaxed">
-                  {v.desc}
+                <p className="text-sm text-gray-500 font-light leading-relaxed">
+                  {t.about_us.promises?.[i]?.desc || v.desc}
                 </p>
               </div>
             ))}
@@ -342,8 +381,11 @@ export default function AboutUsPage() {
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-20 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              Our <span className="gradient-text">Offerings</span>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              {t.about_us.offerings_heading.split(" ")[0]}{" "}
+              <span className="gradient-text">
+                {t.about_us.offerings_heading.split(" ")[1]}
+              </span>
             </h2>
           </div>
 
@@ -351,51 +393,63 @@ export default function AboutUsPage() {
             {offerings.map((item, i) => (
               <div
                 key={i}
-                className={`group relative bg-white rounded-[2.5rem] p-10 flex flex-col items-start text-left border border-gray-100 transition-all duration-500 hover:shadow-[0_50px_100px_-20px_rgba(85,107,47,0.08)] hover:border-[var(--olive)]/20 ${offerRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+                className={`group relative bg-white rounded-[1rem] p-7 flex flex-col items-start text-left border border-[#E0E0E0] transition-all duration-700 hover:shadow-[0_30px_60px_-15px_rgba(85,107,47,0.1)] hover:border-[var(--olive)] hover:-translate-y-1.5 ${offerRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
-                {/* Executive Icon Container */}
-                <div
-                  className={`w-16 h-16 rounded-2xl ${item.bg} ${item.text} flex items-center justify-center mb-10 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
-                >
-                  <img
-                    src={item?.icon}
-                    alt={item?.title || "icon"}
-                    className="w-8 h-8 object-contain"
-                  />
+                {/* Premium Icon Header */}
+                <div className="w-full flex items-start justify-between mb-8">
+                  <div
+                    className={`w-14 h-14 rounded-2xl ${item.bg} flex items-center justify-center shadow-inner group-hover:scale-110 group-hover:rotate-6 transition-all duration-700`}
+                  >
+                    <img
+                      src={item?.icon}
+                      alt={item?.title || "icon"}
+                      className="w-8 h-8 object-contain"
+                    />
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${item.text} opacity-40 group-hover:opacity-100 transition-opacity`}>
+                      0{i + 1}
+                    </span>
+                    <div className={`w-8 h-1 mt-1 rounded-full bg-gray-100 group-hover:${item.bg.replace("bg-", "bg-")} transition-all`} />
+                  </div>
                 </div>
 
-                <div className="space-y-4 flex-1">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <div className={`w-6 h-[1px] ${item.text.replace('text', 'bg')} opacity-40`} />
-                      <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${item.text} opacity-80`}>
+                <div className="space-y-4 flex-1 relative z-10">
+                  <div className="space-y-3">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-50 border border-gray-100 group-hover:border-[var(--olive)]/30 transition-colors">
+                      <div className={`w-1.5 h-1.5 rounded-full ${item.text.replace("text", "bg")}`} />
+                      <p className={`text-[9px] font-black uppercase tracking-[0.15em] ${item.text}`}>
                         {item.tag}
                       </p>
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 tracking-tight group-hover:text-[var(--olive)] transition-colors">
+                    <h3 className="text-xl font-bold text-gray-900 tracking-tight group-hover:text-[var(--olive)] transition-colors duration-500">
                       {item.title}
                     </h3>
                   </div>
 
-                  <p className="text-gray-500 text-[15px] leading-relaxed font-light">
+                  <p className="text-gray-500 text-[13px] leading-relaxed font-light line-clamp-3 group-hover:text-gray-600 transition-colors">
                     {item.desc}
                   </p>
                 </div>
 
-                {/* Footer Interaction */}
-                <div className="mt-10 flex items-center justify-between w-full">
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 rounded-full bg-gray-100 group-hover:bg-[var(--olive)] transition-colors duration-300" />
-                    <div className="w-8 h-2 rounded-full bg-gray-100 group-hover:bg-[var(--olive)] transition-all duration-500 group-hover:w-12" />
+                {/* Refined Footer */}
+                <div className="mt-8 pt-6 border-t border-gray-50 w-full flex items-center justify-between group-hover:border-[var(--olive)]/10 transition-colors">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-1 bg-gray-100 rounded-full overflow-hidden">
+                      <div className={`h-full ${item.text.replace("text", "bg")} w-0 group-hover:w-full transition-all duration-1000 delay-300`} />
+                    </div>
+                    <span className="text-[8px] font-bold text-gray-400 uppercase tracking-widest">
+                      Quality Verified
+                    </span>
                   </div>
-                  <CheckCircle2 className={`w-5 h-5 ${item.text} opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0`} />
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${item.bg} ${item.text} opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 shadow-lg shadow-[var(--olive)]/10`}>
+                    <CheckCircle2 className="w-4 h-4" />
+                  </div>
                 </div>
 
-                {/* Corner Decorative Accent */}
-                <div
-                  className={`absolute top-0 right-0 w-40 h-40 ${item.bg} opacity-[0.02] rounded-bl-[100%] -z-0 transition-all duration-700 group-hover:opacity-[0.06]`}
-                />
+                {/* Background Accent */}
+                <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-br from-transparent to-gray-50/30 rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               </div>
             ))}
           </div>
@@ -406,45 +460,11 @@ export default function AboutUsPage() {
               className="group relative inline-flex items-center px-10 py-4 rounded-full bg-[var(--olive)] text-white font-bold text-xs tracking-[0.2em] uppercase overflow-hidden transition-all hover:shadow-[0_20px_40px_rgba(85,107,47,0.3)] hover:-translate-y-1 active:scale-95"
             >
               <span className="relative z-10 flex items-center gap-2">
-                Explore Shop{" "}
+                {t.about_us.explore_shop}{" "}
                 <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-[var(--olive-dark)] to-[var(--olive)] opacity-0 group-hover:opacity-100 transition-opacity" />
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FINAL CTA ── */}
-      <section className="py-24 max-w-7xl mx-auto px-6 mb-20">
-        <div className="bg-gradient-to-br from-gray-900 to-[#A79b6a] rounded-[1rem] p-12 md:p-20 relative overflow-hidden text-center">
-          {/* Decorative shapes */}
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[var(--olive)]/20 rounded-full blur-[100px] pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-[var(--orange)]/20 rounded-full blur-[80px] pointer-events-none" />
-
-          <div className="relative z-10 space-y-8">
-            <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-              Join the <span className="text-[var(--orange)]">Tradizions</span>{" "}
-              Family
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed">
-              Experience the richness of tradition and the purity of nature's
-              best offerings. Start your wellness journey with us today.
-            </p>
-            <div className="flex flex-wrap justify-center gap-6 pt-4">
-              <Link
-                href="/shop"
-                className="px-10 py-4 rounded-full bg-[var(--orange)] text-white font-bold text-xs tracking-[0.2em] uppercase hover:bg-[var(--orange-dark)] transition-all hover:scale-105 active:scale-95"
-              >
-                Shop Now
-              </Link>
-              <Link
-                href="/contact-us"
-                className="px-10 py-4 rounded-full glass text-white font-bold text-xs tracking-[0.2em] uppercase hover:bg-white/10 transition-all hover:scale-105 active:scale-95"
-              >
-                Contact Us
-              </Link>
-            </div>
           </div>
         </div>
       </section>

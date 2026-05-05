@@ -1,12 +1,44 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import { Trash2, Plus, Minus, ArrowRight, ShieldCheck } from "lucide-react";
+import { useState, useEffect } from "react";
+import en from "@/languages/en.json";
+import ta from "@/languages/ta.json";
+import hi from "@/languages/hi.json";
+
+const translations: Record<string, any> = {
+  EN: en,
+  TA: ta,
+  HI: hi,
+};
 
 export default function CartPage() {
+  const [selectedLang, setSelectedLang] = useState("EN");
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("selectedLang");
+    if (savedLang && translations[savedLang]) {
+      setSelectedLang(savedLang);
+    }
+
+    const handleLangChange = () => {
+      const lang = localStorage.getItem("selectedLang");
+      if (lang && translations[lang]) {
+        setSelectedLang(lang);
+      }
+    };
+
+    window.addEventListener("languageChange", handleLangChange);
+    return () => window.removeEventListener("languageChange", handleLangChange);
+  }, []);
+
+  const t = translations[selectedLang] || translations["EN"];
+
   return (
-    <main className="min-h-screen bg-[#faf9f6] pt-28 pb-20">
+    <main className="min-h-screen bg-[#faf9f6] pt-20 pb-20">
       <div className="max-w-6xl mx-auto px-6">
-        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight mb-8">Your Cart <span className="text-gray-400 text-xl font-medium ml-2">(2 items)</span></h1>
+        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight mb-8">{t.cart.title} <span className="text-gray-400 text-xl font-medium ml-2">(2 {t.cart.items})</span></h1>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Cart Items List */}
@@ -77,19 +109,19 @@ export default function CartPage() {
           {/* Order Summary */}
           <div className="w-full lg:w-96 shrink-0">
             <div className="bg-white rounded-[2rem] p-8 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.04)] border border-gray-100 sticky top-28">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">{t.cart.summary}</h2>
 
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500 font-medium">Subtotal (2 items)</span>
+                  <span className="text-gray-500 font-medium">{t.cart.subtotal} (2 {t.cart.items})</span>
                   <span className="font-bold text-gray-900">₹4,097</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500 font-medium">Shipping Fee</span>
-                  <span className="font-bold text-emerald-500">Free</span>
+                  <span className="text-gray-500 font-medium">{t.cart.shipping}</span>
+                  <span className="font-bold text-emerald-500">{t.cart.free}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500 font-medium">Tax & GST</span>
+                  <span className="text-gray-500 font-medium">{t.cart.tax_gst}</span>
                   <span className="font-bold text-gray-900">₹150</span>
                 </div>
               </div>
@@ -97,20 +129,20 @@ export default function CartPage() {
               <div className="h-px bg-gray-100 mb-6 w-full" />
 
               <div className="flex justify-between items-end mb-8">
-                <span className="text-base font-bold text-gray-900">Total</span>
+                <span className="text-base font-bold text-gray-900">{t.cart.total}</span>
                 <div className="text-right">
                   <span className="text-3xl font-extrabold text-[var(--olive)] block leading-none">₹4,247</span>
-                  <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-1 block">Inclusive of all taxes</span>
+                  <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-1 block">{t.cart.inclusive_tax}</span>
                 </div>
               </div>
 
               <Link href="/checkout" className="w-full py-4 rounded-xl bg-[var(--olive)] text-white font-bold text-[13px] tracking-widest shadow-lg shadow-[var(--olive)]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 group">
-                PROCEED TO CHECKOUT
+                {t.cart.checkout}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
 
               <div className="mt-6 flex items-center justify-center gap-2 text-gray-400 text-xs font-medium">
-                <ShieldCheck className="w-4 h-4" /> Safe and secure payments
+                <ShieldCheck className="w-4 h-4" /> {t.cart.secure_payment}
               </div>
             </div>
           </div>

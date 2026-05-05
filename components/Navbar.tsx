@@ -19,45 +19,23 @@ import {
   User,
   LogOut,
   MapPin,
-  Package,
   Settings,
   Heart,
   Loader2,
+  Check,
 } from "lucide-react";
 import Image from "next/image";
 
-const categories = [
-  {
-    name: "Dry Fruits & Nuts",
-    href: "/category/dry-fruits",
-    desc: "Premium selection of handpicked nuts.",
-    icon: <Zap className="w-4 h-4" />,
-  },
-  {
-    name: "Millets & Grains",
-    href: "/category/millets",
-    desc: "Wholesome traditional superfoods.",
-    icon: <Leaf className="w-4 h-4" />,
-  },
-  {
-    name: "Health Malts",
-    href: "/category/malts",
-    desc: "Nutrient-rich traditional blends.",
-    icon: <Coffee className="w-4 h-4" />,
-  },
-  {
-    name: "Gift Hampers",
-    href: "/category/gifts",
-    desc: "Curated wellness gift collections.",
-    icon: <Gift className="w-4 h-4" />,
-  },
-  {
-    name: "Pooja Essentials",
-    href: "/category/pooja",
-    desc: "Sacred items for spiritual practice.",
-    icon: <Star className="w-4 h-4" />,
-  },
-];
+// Import language JSON files
+import en from "@/languages/en.json";
+import ta from "@/languages/ta.json";
+import hi from "@/languages/hi.json";
+
+const translations: Record<string, any> = {
+  EN: en,
+  TA: ta,
+  HI: hi,
+};
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -66,6 +44,10 @@ export default function Navbar() {
   const [isMobileGiftingOpen, setIsMobileGiftingOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Language State
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const [selectedLang, setSelectedLang] = useState("EN");
 
   // Login States
   const [loginStep, setLoginStep] = useState<"mobile" | "otp">("mobile");
@@ -78,7 +60,18 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
+  // Handle default language on mount
   useEffect(() => {
+    const savedLang = localStorage.getItem("selectedLang");
+    if (savedLang && translations[savedLang]) {
+      setSelectedLang(savedLang);
+    }
+  }, []);
+
+  const t = translations[selectedLang] || translations["EN"];
+
+  useEffect(() => {
+    // Load logged in state
     const loggedIn = localStorage.getItem("isLoggedIn");
     if (loggedIn === "true") {
       setIsLoggedIn(true);
@@ -92,6 +85,13 @@ export default function Navbar() {
     }
     return () => clearInterval(interval);
   }, [loginStep, timer]);
+
+  const handleLangChange = (code: string) => {
+    setSelectedLang(code);
+    localStorage.setItem("selectedLang", code);
+    window.dispatchEvent(new Event("languageChange"));
+    setIsLangOpen(false);
+  };
 
   const handleSendOtp = () => {
     if (mobile.length !== 10) {
@@ -131,22 +131,48 @@ export default function Navbar() {
     }, 1500);
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
+  const categories = [
+    {
+      name: t.sections.nuts,
+      href: "/category/dry-fruits",
+      desc: t.dry_fruits_desc,
+      icon: <Zap className="w-4 h-4" />,
+    },
+    {
+      name: t.sections.millets,
+      href: "/category/millets",
+      desc: t.millets_desc,
+      icon: <Leaf className="w-4 h-4" />,
+    },
+    {
+      name: t.health_malts,
+      href: "/category/malts",
+      desc: t.malts_desc,
+      icon: <Coffee className="w-4 h-4" />,
+    },
+    {
+      name: t.gift,
+      href: "/category/gifts",
+      desc: t.gifts_menu_desc,
+      icon: <Gift className="w-4 h-4" />,
+    },
+    {
+      name: t.pooja,
+      href: "/category/pooja",
+      desc: t.pooja_desc_menu,
+      icon: <Star className="w-4 h-4" />,
+    },
+  ];
 
   const navItems = [
-    { name: "Home", href: "/" },
-    { name: "Shop", href: "/shop" },
+    { name: t.home, href: "/" },
+    { name: t.shop, href: "/shop" },
   ];
 
   const secondaryNavItems = [
-    { name: "Pooja Gifts", href: "/pooja-gifts" },
-    { name: "Contact Us", href: "/contact-us" },
+    { name: t.poojaGifts, href: "/pooja-gifts" },
+    { name: t.contactUs, href: "/contact-us" },
   ];
-
-  const [isLangOpen, setIsLangOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState("EN");
 
   const languages = [
     { code: "EN", name: "English" },
@@ -157,7 +183,7 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-0 left-0 w-full z-40 transition-all duration-500 backdrop-blur-xl bg-white/70 border-b border-white/20 shadow-[0_4px_30px_rgba(0,0,0,0.03)] hover:bg-white/80 ">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-8">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-8">
           {/* Logo Section */}
           <Link href="/" className="flex-shrink-0 group">
             <div className="relative overflow-hidden transition-transform duration-500 group-hover:scale-105">
@@ -177,9 +203,9 @@ export default function Navbar() {
               const isActive = pathname === item.href;
               return (
                 <Link
-                  key={item.name}
+                  key={item.href}
                   href={item.href}
-                  className={`group relative text-[13px] tracking-widest font-semibold transition-all duration-300 ${isActive ? "text-[var(--orange)]" : "text-gray-600 hover:text-[var(--olive)]"}`}
+                  className={`group relative text-[13px] tracking-widest font-semibold transition-all duration-300 whitespace-nowrap ${isActive ? "text-[var(--orange)]" : "text-gray-600 hover:text-[var(--olive)]"}`}
                 >
                   {item.name}
                   <span
@@ -191,28 +217,28 @@ export default function Navbar() {
 
             {/* Categories Megamenu Dropdown */}
             <div className="relative group/mega">
-              <button className="flex items-center gap-1.5 text-[13px] tracking-widest font-semibold text-gray-500 hover:text-[var(--olive)] transition-all duration-300">
-                Categories
+              <button className="flex items-center gap-1.5 text-[13px] tracking-widest font-semibold text-gray-500 hover:text-[var(--olive)] transition-all duration-300 whitespace-nowrap">
+                {t.categories}
                 <ChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover/mega:rotate-180" />
               </button>
 
               {/* Hidden Dropdown */}
-              <div className="absolute top-full -left-20 pt-6 opacity-0 translate-y-4 pointer-events-none group-hover/mega:opacity-100 group-hover/mega:translate-y-0 group-hover/mega:pointer-events-auto transition-all duration-500">
-                <div className="w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 overflow-hidden">
+              <div className="absolute top-full -left-20 pt-4 opacity-0 translate-y-4 pointer-events-none group-hover/mega:opacity-100 group-hover/mega:translate-y-0 group-hover/mega:pointer-events-auto transition-all duration-500">
+                <div className="w-64 bg-white/95 backdrop-blur-xl rounded-[1rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-[#e0d4b7] p-2 overflow-hidden">
                   <div className="flex flex-col gap-y-1">
                     {categories.map((cat) => (
                       <Link
-                        key={cat.name}
+                        key={cat.href}
                         href={cat.href}
-                        className="group/cat flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gray-50"
+                        className="group/cat flex items-center justify-between px-3 py-2.5 rounded-xl transition-all duration-300 hover:bg-gray-50"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-1.5 h-1.5 rounded-full bg-transparent group-hover/cat:bg-[var(--olive)] transition-all duration-500" />
-                          <div className="text-sm font-semibold text-gray-700 group-hover/cat:text-[var(--olive)] group-hover/cat:translate-x-1 transition-all duration-500">
+                          <div className="w-1 h-1 rounded-full bg-transparent group-hover/cat:bg-[var(--olive)] transition-all duration-500" />
+                          <div className="text-[11px] font-bold text-gray-700 group-hover/cat:text-[var(--olive)] group-hover/cat:translate-x-1 transition-all duration-500">
                             {cat.name}
                           </div>
                         </div>
-                        <ChevronRight className="w-3.5 h-3.5 text-gray-300 opacity-0 group-hover/cat:opacity-100 -translate-x-2 group-hover/cat:translate-x-0 transition-all duration-500" />
+                        <ChevronRight className="w-3 h-3 text-gray-300 opacity-0 group-hover/cat:opacity-100 -translate-x-1 group-hover/cat:translate-x-0 transition-all duration-500" />
                       </Link>
                     ))}
                   </div>
@@ -222,24 +248,24 @@ export default function Navbar() {
 
             {/* Gifting Dropdown */}
             <div className="relative group/gifting">
-              <button className="flex items-center gap-1.5 text-[13px] tracking-widest font-semibold text-gray-500 hover:text-[var(--olive)] transition-all duration-300">
-                Gifting
+              <button className="flex items-center gap-1.5 text-[13px] tracking-widest font-semibold text-gray-500 hover:text-[var(--olive)] transition-all duration-300 whitespace-nowrap">
+                {t.gifting}
                 <ChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover/gifting:rotate-180" />
               </button>
 
-              <div className="absolute top-full left-0 pt-6 opacity-0 translate-y-4 pointer-events-none group-hover/gifting:opacity-100 group-hover/gifting:translate-y-0 group-hover/gifting:pointer-events-auto transition-all duration-500">
-                <div className="w-48 bg-white rounded-xl shadow-2xl border border-gray-100 p-4 space-y-2">
+              <div className="absolute top-full left-0 pt-4 opacity-0 translate-y-4 pointer-events-none group-hover/gifting:opacity-100 group-hover/gifting:translate-y-0 group-hover/gifting:pointer-events-auto transition-all duration-500">
+                <div className="w-44 bg-white/95 backdrop-blur-xl rounded-[1rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-[#e0d4b7] p-2 space-y-1">
                   <Link
                     href="/gifts"
-                    className="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-[var(--olive)] rounded-lg transition-all"
+                    className="block px-3 py-2 text-[11px] font-bold text-gray-700 hover:bg-gray-50 hover:text-[var(--olive)] rounded-lg transition-all"
                   >
-                    Occasional
+                    {t.occasional}
                   </Link>
                   <Link
                     href="/corporate-orders"
-                    className="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-[var(--olive)] rounded-lg transition-all"
+                    className="block px-3 py-2 text-[11px] font-bold text-gray-700 hover:bg-gray-50 hover:text-[var(--olive)] rounded-lg transition-all"
                   >
-                    Corporate
+                    {t.corporate}
                   </Link>
                 </div>
               </div>
@@ -249,9 +275,9 @@ export default function Navbar() {
               const isActive = pathname === item.href;
               return (
                 <Link
-                  key={item.name}
+                  key={item.href}
                   href={item.href}
-                  className={`group relative text-[13px] tracking-widest font-semibold transition-all duration-300 ${isActive ? "text-[var(--orange)]" : "text-gray-500 hover:text-[var(--olive)]"}`}
+                  className={`group relative text-[13px] tracking-widest font-semibold transition-all duration-300 whitespace-nowrap ${isActive ? "text-[var(--orange)]" : "text-gray-500 hover:text-[var(--olive)]"}`}
                 >
                   {item.name}
                   <span
@@ -264,38 +290,67 @@ export default function Navbar() {
 
           {/* Right Section */}
           <div className="flex items-center gap-4 lg:gap-6 ml-auto">
-            {/* Language Selection - Desktop */}
-            <div className="hidden md:block relative">
+            {/* Redesigned Language Selection - Modern Segmented Control */}
+            <div className="hidden xl:block">
+              <div className="flex items-center bg-white/50 backdrop-blur-xl p-1 rounded-full border border-[#e0d4b7] shadow-[0_2px_15px_rgba(0,0,0,0.02)]">
+                {languages.map((lang) => {
+                  const isActive = selectedLang === lang.code;
+                  return (
+                    <button
+                      key={lang.code}
+                      onClick={() => handleLangChange(lang.code)}
+                      className={`relative px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest transition-all duration-500 uppercase ${
+                        isActive 
+                          ? "text-white" 
+                          : "text-gray-500 hover:text-[var(--olive)]"
+                      }`}
+                    >
+                      {/* Active Indicator Background */}
+                      {isActive && (
+                        <div className="absolute inset-0 bg-[var(--olive)] rounded-full shadow-[0_4px_12px_rgba(85,107,47,0.25)] animate-scale-in z-0" />
+                      )}
+                      <span className="relative z-10">{lang.code}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Compact Dropdown for Medium Screens */}
+            <div className="hidden md:block xl:hidden relative">
               <button
                 onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center gap-1.5 p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-all duration-300 group"
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 group ${
+                  isLangOpen 
+                    ? "bg-[var(--olive)] border-[var(--olive)] text-white shadow-lg shadow-[var(--olive)]/20" 
+                    : "bg-white border-[#e0d4b7] text-gray-600 hover:border-[var(--olive)] hover:bg-gray-50"
+                }`}
               >
-                <Globe className="w-5 h-5 text-[var(--olive)] group-hover:rotate-12 transition-transform" />
-                <span className="text-[11px] font-bold tracking-widest text-gray-600">
+                <Globe className={`w-3.5 h-3.5 transition-transform duration-500 ${isLangOpen ? "rotate-[360deg]" : "text-[var(--olive)] group-hover:rotate-12"}`} />
+                <span className="text-[10px] font-black tracking-[0.15em] uppercase">
                   {selectedLang}
                 </span>
-                <ChevronDown
-                  className={`w-3 h-3 transition-transform duration-300 ${isLangOpen ? "rotate-180" : ""}`}
-                />
+                <ChevronDown className={`w-3 h-3 transition-transform duration-500 ${isLangOpen ? "rotate-180" : "opacity-40"}`} />
               </button>
 
               {isLangOpen && (
-                <div className="absolute top-full right-0 mt-3 w-40 bg-white border border-gray-100 rounded-xl shadow-2xl z-50 py-2 animate-fade-in-up">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => {
-                        setSelectedLang(lang.code);
-                        setIsLangOpen(false);
-                      }}
-                      className={`w-full text-left px-5 py-2.5 text-[11px] font-bold tracking-widest transition-all hover:bg-gray-50 ${selectedLang === lang.code
-                          ? "text-[var(--olive)] bg-[var(--olive)]/5"
-                          : "text-gray-600"
+                <div className="absolute top-full right-0 mt-4 w-40 bg-white/95 backdrop-blur-xl border border-[#e0d4b7] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-50 overflow-hidden animate-fade-in-up">
+                  <div className="p-1.5">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => handleLangChange(lang.code)}
+                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[10px] font-black tracking-wider transition-all ${
+                          selectedLang === lang.code
+                            ? "bg-[var(--olive)] text-white shadow-sm"
+                            : "text-gray-600 hover:bg-gray-50 hover:text-[var(--olive)]"
                         }`}
-                    >
-                      {lang.name}
-                    </button>
-                  ))}
+                      >
+                        {lang.name}
+                        {selectedLang === lang.code && <Check className="w-3 h-3" />}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -306,7 +361,7 @@ export default function Navbar() {
               >
                 <input
                   type="text"
-                  placeholder="Search premium products..."
+                  placeholder={t.searchPlaceholder}
                   className="w-full bg-gray-100/50 border border-gray-200/50 rounded-full py-2 px-4 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--olive)]/20 transition-all"
                 />
               </div>
@@ -362,14 +417,14 @@ export default function Navbar() {
                 className="text-md font-semibold text-gray-900 border-b border-gray-50 pb-4"
                 onClick={() => setOpen(false)}
               >
-                Home
+                {t.home}
               </Link>
               <Link
                 href="/shop"
                 className="text-md font-semibold text-gray-900 border-b border-gray-50 pb-4"
                 onClick={() => setOpen(false)}
               >
-                Shop
+                {t.shop}
               </Link>
 
               {/* Mobile Categories Collapsible */}
@@ -378,7 +433,7 @@ export default function Navbar() {
                   onClick={() => setIsMobileCatsOpen(!isMobileCatsOpen)}
                   className="w-full flex items-center justify-between text-md font-semibold text-gray-900 border-b border-gray-50 pb-4"
                 >
-                  Categories
+                  {t.categories}
                   <ChevronDown
                     className={`w-6 h-6 transition-transform ${isMobileCatsOpen ? "rotate-180" : ""}`}
                   />
@@ -389,7 +444,7 @@ export default function Navbar() {
                   <div className="grid grid-cols-1 gap-4 pl-4 pt-2">
                     {categories.map((cat) => (
                       <Link
-                        key={cat.name}
+                        key={cat.href}
                         href={cat.href}
                         className="flex items-center gap-3 py-2 text-gray-600 font-medium"
                         onClick={() => setOpen(false)}
@@ -407,7 +462,7 @@ export default function Navbar() {
                   onClick={() => setIsMobileGiftingOpen(!isMobileGiftingOpen)}
                   className="w-full flex items-center justify-between text-md font-semibold text-gray-900 border-b border-gray-50 pb-4"
                 >
-                  Gifting
+                  {t.gifting}
                   <ChevronDown
                     className={`w-6 h-6 transition-transform ${isMobileGiftingOpen ? "rotate-180" : ""}`}
                   />
@@ -421,14 +476,14 @@ export default function Navbar() {
                       className="py-2 text-gray-600 font-medium"
                       onClick={() => setOpen(false)}
                     >
-                      Occasional
+                      {t.occasional}
                     </Link>
                     <Link
                       href="/corporate-orders"
                       className="py-2 text-gray-600 font-medium"
                       onClick={() => setOpen(false)}
                     >
-                      Corporate
+                      {t.corporate}
                     </Link>
                   </div>
                 </div>
@@ -439,33 +494,31 @@ export default function Navbar() {
                 className="text-md font-semibold text-gray-900 border-b border-gray-50 pb-4"
                 onClick={() => setOpen(false)}
               >
-                Pooja Gifts
+                {t.poojaGifts}
               </Link>
               <Link
                 href="/contact-us"
                 className="text-md font-semibold text-gray-900 border-b border-gray-50 pb-4"
                 onClick={() => setOpen(false)}
               >
-                Contact Us
+                {t.contactUs}
               </Link>
 
               {/* Mobile Language Selection */}
               <div className="pt-2">
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">
-                  Preferred Language
+                  {t.preferredLang}
                 </p>
                 <div className="flex gap-2">
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
-                      onClick={() => {
-                        setSelectedLang(lang.code);
-                        setOpen(false);
-                      }}
-                      className={`flex-1 py-3 rounded-xl border text-[11px] font-bold tracking-widest transition-all ${selectedLang === lang.code
+                      onClick={() => handleLangChange(lang.code)}
+                      className={`flex-1 py-3 rounded-xl border text-[11px] font-bold tracking-widest transition-all ${
+                        selectedLang === lang.code
                           ? "bg-[var(--olive)] text-white border-[var(--olive)] shadow-lg shadow-[var(--olive)]/20"
-                          : "bg-gray-50 text-gray-500 border-gray-100 hover:bg-gray-100"
-                        }`}
+                          : "bg-white text-gray-500 border-[#e0d4b7] hover:bg-gray-50"
+                      }`}
                     >
                       {lang.name}
                     </button>
@@ -485,7 +538,7 @@ export default function Navbar() {
                 }
               }}
             >
-              My Account
+              {t.myAccount}
             </button>
           </div>
         </div>
@@ -521,18 +574,16 @@ export default function Navbar() {
             <div className="flex-1 flex flex-col px-10 py-20 animate-fade-in-right">
               <div className="mb-10">
                 <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight mb-2">
-                  Welcome Back
+                  {t.welcomeBack}
                 </h2>
-                <p className="text-gray-500 text-sm">
-                  Sign in to access your premium account
-                </p>
+                <p className="text-gray-500 text-sm">{t.signIn}</p>
               </div>
 
               {loginStep === "mobile" ? (
                 <div className="space-y-6 flex-1">
                   <div>
                     <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-3">
-                      Mobile Number
+                      {t.mobileNumber}
                     </label>
                     <div className="flex group focus-within:ring-2 focus-within:ring-[var(--olive)]/20 rounded-xl transition-all">
                       <div className="flex items-center justify-center px-4 border border-gray-200 border-r-0 rounded-l-xl bg-gray-50 text-gray-500 font-medium text-sm group-focus-within:border-[var(--olive)]">
@@ -564,7 +615,7 @@ export default function Navbar() {
                     {isLoading ? (
                       <Loader2 className="w-5 h-5 animate-spin" />
                     ) : (
-                      "SEND OTP"
+                      t.sendOtp
                     )}
                   </button>
 
@@ -574,7 +625,7 @@ export default function Navbar() {
                     </div>
                     <div className="relative flex justify-center text-[10px] font-bold uppercase tracking-[0.2em]">
                       <span className="bg-white px-4 text-gray-400">
-                        Or continue with
+                        {t.orContinueWith}
                       </span>
                     </div>
                   </div>
@@ -604,22 +655,22 @@ export default function Navbar() {
                         d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 12-4.53z"
                       />
                     </svg>
-                    <span>Login with Google</span>
+                    <span>{t.loginGoogle}</span>
                   </button>
                   <p className="text-center text-[11px] text-gray-400 mt-4 leading-relaxed px-4">
-                    By continuing, you agree to Tradizions' <br />{" "}
+                    {t.termsText} <br />{" "}
                     <Link
                       href="#"
                       className="underline hover:text-[var(--olive)]"
                     >
-                      Terms of Service
+                      {t.termsLink}
                     </Link>{" "}
                     &{" "}
                     <Link
                       href="#"
                       className="underline hover:text-[var(--olive)]"
                     >
-                      Privacy Policy
+                      {t.privacyLink}
                     </Link>
                     .
                   </p>
@@ -628,10 +679,10 @@ export default function Navbar() {
                 <div className="space-y-6 flex-1 animate-fade-in-right">
                   <div>
                     <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">
-                      Enter OTP
+                      {t.enterOtp}
                     </label>
                     <p className="text-xs text-gray-500 mb-6">
-                      We've sent a code to{" "}
+                      {t.sentCodeTo}{" "}
                       <span className="font-bold text-gray-900">
                         +91 {mobile}
                       </span>
@@ -640,7 +691,7 @@ export default function Navbar() {
                     <div className="flex justify-between gap-2">
                       {otp.map((digit, idx) => (
                         <input
-                          key={idx}
+                          key={`otp-${idx}`}
                           id={`otp-${idx}`}
                           type="text"
                           maxLength={1}
@@ -686,7 +737,7 @@ export default function Navbar() {
                       }}
                       className="text-[11px] font-bold tracking-wide text-gray-500 hover:text-[var(--olive)] transition-colors"
                     >
-                      Change Number
+                      {t.changeNumber}
                     </button>
                     <button
                       disabled={timer > 0 || isLoading}
@@ -694,8 +745,8 @@ export default function Navbar() {
                       className="text-[11px] font-bold tracking-wide text-[var(--orange)] disabled:text-gray-400 transition-colors"
                     >
                       {timer > 0
-                        ? `Resend in 00:${timer.toString().padStart(2, "0")}`
-                        : "Resend OTP"}
+                        ? `${t.resendIn} 00:${timer.toString().padStart(2, "0")}`
+                        : t.resendOtp}
                     </button>
                   </div>
 
@@ -707,7 +758,7 @@ export default function Navbar() {
                     {isLoading ? (
                       <Loader2 className="w-5 h-5 animate-spin" />
                     ) : (
-                      "VERIFY & LOGIN"
+                      t.verifyLogin
                     )}
                   </button>
                 </div>

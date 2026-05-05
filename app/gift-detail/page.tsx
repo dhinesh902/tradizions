@@ -15,6 +15,16 @@ import {
   ChevronRight,
   Sparkles,
 } from "lucide-react";
+import { useEffect } from "react";
+import en from "@/languages/en.json";
+import ta from "@/languages/ta.json";
+import hi from "@/languages/hi.json";
+
+const translations: Record<string, any> = {
+  EN: en,
+  TA: ta,
+  HI: hi,
+};
 
 const giftImages = [
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE8uNbbxycaDgAxlh3JuEJ85P8rBYAyYMR3w&s",
@@ -25,34 +35,53 @@ const giftImages = [
 export default function GiftDetailPage() {
   const [mainImage, setMainImage] = useState(giftImages[0]);
   const [quantity, setQuantity] = useState(1);
-  const [showReviewForm, setShowReviewForm] = useState(false);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const [selectedLang, setSelectedLang] = useState("EN");
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("selectedLang");
+    if (savedLang && translations[savedLang]) {
+      setSelectedLang(savedLang);
+    }
+
+    const handleLangChange = () => {
+      const lang = localStorage.getItem("selectedLang");
+      if (lang && translations[lang]) {
+        setSelectedLang(lang);
+      }
+    };
+
+    window.addEventListener("languageChange", handleLangChange);
+    return () => window.removeEventListener("languageChange", handleLangChange);
+  }, []);
+
+  const t = translations[selectedLang] || translations["EN"];
 
   return (
-    <main className="min-h-screen bg-[#faf9f6] pt-28 pb-20">
+    <main className="min-h-screen bg-[#faf9f6] pt-20 pb-20">
       <div className="max-w-7xl mx-auto px-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-[11px] font-bold tracking-widest text-gray-400 uppercase mb-8">
           <Link
             href="/"
-            className="hover:text-[var(--orange)] transition-colors"
+            className="hover:text-[var(--olive)] transition-colors"
           >
-            Home
+            {t.home}
           </Link>
           <ChevronRight className="w-3 h-3" />
           <Link
             href="/pooja-gifts"
-            className="hover:text-[var(--orange)] transition-colors"
+            className="hover:text-[var(--olive)] transition-colors"
           >
-            Pooja Gifts
+            {t.poojaGifts}
           </Link>
           <ChevronRight className="w-3 h-3" />
-          <span className="text-[var(--orange)]">Brass Diya Set</span>
+          <span className="text-[var(--olive)]">Brass Diya Set</span>
         </nav>
 
         <div className="bg-white rounded-[2.5rem] p-6 lg:p-10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col lg:flex-row gap-12 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--orange)]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--olive)]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
           {/* Left: Image Gallery */}
           <div className="w-full lg:w-1/2 flex flex-col-reverse sm:flex-row gap-4 relative z-10">
@@ -62,7 +91,7 @@ export default function GiftDetailPage() {
                 <button
                   key={idx}
                   onClick={() => setMainImage(img)}
-                  className={`relative w-20 h-24 rounded-2xl overflow-hidden shrink-0 border-2 transition-all ${mainImage === img ? "border-[var(--orange)] shadow-md" : "border-transparent hover:border-gray-200"}`}
+                  className={`relative w-20 h-24 rounded-2xl overflow-hidden shrink-0 border-2 transition-all ${mainImage === img ? "border-[var(--olive)] shadow-md" : "border-transparent hover:border-gray-200"}`}
                 >
                   <Image
                     src={img}
@@ -82,8 +111,8 @@ export default function GiftDetailPage() {
                 className="object-cover transition-transform duration-700 hover:scale-105"
                 alt="Gift Main"
               />
-              <div className="absolute top-6 left-6 px-4 py-2 rounded-full bg-white/90 backdrop-blur-md text-[10px] font-bold text-[var(--orange)] tracking-[0.2em] shadow-sm uppercase z-10">
-                Premium Collection
+              <div className="absolute top-6 left-6 px-4 py-2 rounded-full bg-white/90 backdrop-blur-md text-[10px] font-bold text-[var(--olive)] tracking-[0.2em] shadow-sm uppercase z-10">
+                {t.product_detail?.premium || "Premium Collection"}
               </div>
             </div>
           </div>
@@ -95,7 +124,7 @@ export default function GiftDetailPage() {
                 <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
                 <span className="text-sm font-bold text-amber-700">4.9</span>
                 <span className="text-[10px] font-bold text-amber-600/60 uppercase tracking-widest ml-1">
-                  (256 Reviews)
+                  ({t.product.reviews})
                 </span>
               </div>
               <div className="flex gap-2">
@@ -118,14 +147,14 @@ export default function GiftDetailPage() {
             </p>
 
             <div className="flex items-end gap-4 mb-8">
-              <span className="text-4xl font-extrabold text-[var(--orange)] leading-none">
+              <span className="text-4xl font-extrabold text-[var(--olive)] leading-none">
                 ₹1,299
               </span>
               <span className="text-lg text-gray-400 font-medium line-through mb-1">
                 ₹1,800
               </span>
               <span className="text-[10px] font-bold tracking-widest text-emerald-500 uppercase bg-emerald-50 px-2 py-1 rounded-md mb-1 border border-emerald-100">
-                Save 28%
+                {t.product.save} 28%
               </span>
             </div>
 
@@ -136,36 +165,36 @@ export default function GiftDetailPage() {
               <div className="flex items-center justify-between bg-gray-50 p-2 rounded-2xl border border-gray-100 w-full sm:w-36 shrink-0">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-gray-600 hover:text-[var(--orange)] transition-colors"
+                  className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-gray-600 hover:text-[var(--olive)] transition-colors"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
                 <span className="font-bold text-gray-900">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-gray-600 hover:text-[var(--orange)] transition-colors"
+                  className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-gray-600 hover:text-[var(--olive)] transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
-              <button className="flex-1 py-4 rounded-2xl bg-[var(--orange)] text-white font-bold text-[13px] tracking-widest shadow-lg shadow-[var(--orange)]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 group">
+              <button className="flex-1 py-4 rounded-2xl bg-[var(--olive)] text-white font-bold text-[13px] tracking-widest shadow-lg shadow-[var(--olive)]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 group">
                 <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                ADD TO CART
+                {t.product.add_to_cart}
               </button>
             </div>
 
             {/* Key Features */}
             <div className="grid grid-cols-2 gap-4 mb-8">
               <div className="flex items-center gap-3 p-4 rounded-2xl bg-[#faf9f6] border border-gray-100">
-                <Sparkles className="w-6 h-6 text-[var(--orange)]" />
+                <Sparkles className="w-6 h-6 text-[var(--olive)]" />
                 <span className="text-xs font-bold text-gray-700">
-                  Artisan Crafted
+                  {t.gift_detail.perfect_for}
                 </span>
               </div>
               <div className="flex items-center gap-3 p-4 rounded-2xl bg-[#faf9f6] border border-gray-100">
-                <Gift className="w-6 h-6 text-[var(--orange)]" />
+                <Gift className="w-6 h-6 text-[var(--olive)]" />
                 <span className="text-xs font-bold text-gray-700">
-                  Premium Packaging
+                  {t.gift_detail.packaging}
                 </span>
               </div>
             </div>
@@ -173,7 +202,7 @@ export default function GiftDetailPage() {
             {/* Description Details */}
             <div className="space-y-4">
               <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest">
-                About this Gift
+                {t.gift_detail.included_products}
               </h3>
               <p className="text-sm text-gray-500 leading-relaxed font-light">
                 Crafted by master artisans using traditional sand casting
@@ -192,7 +221,7 @@ export default function GiftDetailPage() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                Gift Reviews
+                {t.product.customer_reviews}
               </h2>
               <div className="flex items-center gap-3">
                 <div className="flex">
@@ -213,21 +242,21 @@ export default function GiftDetailPage() {
             </div>
             <button
               onClick={() => setShowReviewForm(!showReviewForm)}
-              className="px-6 py-3 rounded-xl bg-[var(--orange)] text-white font-bold text-[11px] tracking-widest shadow-md shadow-[var(--orange)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all uppercase"
+              className="px-6 py-3 rounded-xl bg-[var(--olive)] text-white font-bold text-[11px] tracking-widest shadow-md shadow-[var(--olive)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all uppercase"
             >
-              {showReviewForm ? "Cancel Review" : "Write a Review"}
+              {showReviewForm ? t.product.cancel_review : t.product.write_review}
             </button>
           </div>
 
           {showReviewForm && (
             <div className="mb-10 bg-[#faf9f6] rounded-[2rem] p-6 lg:p-8 border border-gray-100 animate-fade-in-up">
               <h3 className="text-lg font-bold text-gray-900 mb-6">
-                Write your review
+                {t.product.write_review}
               </h3>
               <form className="space-y-6 max-w-2xl">
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                    Overall Rating
+                    {t.product.rating}
                   </label>
                   <div className="flex gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -250,53 +279,53 @@ export default function GiftDetailPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                      Your Name
+                      {t.contact_us.full_name}
                     </label>
                     <input
                       type="text"
                       placeholder="John Doe"
-                      className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--orange)]/20 focus:border-[var(--orange)] outline-none transition-all font-medium text-gray-800 text-sm"
+                      className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--olive)]/20 focus:border-[var(--olive)] outline-none transition-all font-medium text-gray-800 text-sm"
                     />
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                      Email Address
+                      {t.contact_us.email}
                     </label>
                     <input
                       type="email"
                       placeholder="john@example.com"
-                      className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--orange)]/20 focus:border-[var(--orange)] outline-none transition-all font-medium text-gray-800 text-sm"
+                      className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--olive)]/20 focus:border-[var(--olive)] outline-none transition-all font-medium text-gray-800 text-sm"
                     />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                    Review Title
+                    {t.product.review_title}
                   </label>
                   <input
                     type="text"
                     placeholder="Summarize your experience"
-                    className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--orange)]/20 focus:border-[var(--orange)] outline-none transition-all font-medium text-gray-800 text-sm"
+                    className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--olive)]/20 focus:border-[var(--olive)] outline-none transition-all font-medium text-gray-800 text-sm"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                    Review Content
+                    {t.product.review_content}
                   </label>
                   <textarea
                     rows={4}
                     placeholder="What did you like or dislike? What should other shoppers know before buying?"
-                    className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--orange)]/20 focus:border-[var(--orange)] outline-none transition-all font-medium text-gray-800 text-sm resize-none"
+                    className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--olive)]/20 focus:border-[var(--olive)] focus:bg-white transition-all text-sm font-medium resize-none"
                   />
                 </div>
 
                 <button
                   type="button"
-                  className="py-3.5 px-8 rounded-xl bg-[var(--orange)] text-white font-bold text-[13px] tracking-widest shadow-md shadow-[var(--orange)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                  className="py-3.5 px-8 rounded-xl bg-[var(--olive)] text-white font-bold text-[13px] tracking-widest shadow-md shadow-[var(--olive)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all"
                 >
-                  SUBMIT REVIEW
+                  {t.product.submit_review}
                 </button>
               </form>
             </div>
@@ -306,11 +335,11 @@ export default function GiftDetailPage() {
             {[1, 2, 3].map((_, i) => (
               <div
                 key={i}
-                className="p-6 rounded-3xl bg-[#faf9f6] border border-gray-100 transition-all hover:border-[var(--orange)]/30 hover:shadow-md"
+                className="p-6 rounded-3xl bg-[#faf9f6] border border-gray-100 transition-all hover:border-[var(--olive)]/30 hover:shadow-md"
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[var(--orange)]/10 text-[var(--orange)] flex items-center justify-center font-bold text-sm border border-[var(--orange)]/20 shadow-sm">
+                    <div className="w-10 h-10 rounded-full bg-[var(--olive)]/10 text-[var(--olive)] flex items-center justify-center font-bold text-sm border border-[var(--olive)]/20 shadow-sm">
                       U{i + 1}
                     </div>
                     <div>

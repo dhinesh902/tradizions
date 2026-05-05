@@ -4,6 +4,16 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Star, ShieldCheck, Truck, ShoppingCart, Heart, Share2, Plus, Minus, ChevronRight, Check } from "lucide-react";
+import { useEffect } from "react";
+import en from "@/languages/en.json";
+import ta from "@/languages/ta.json";
+import hi from "@/languages/hi.json";
+
+const translations: Record<string, any> = {
+  EN: en,
+  TA: ta,
+  HI: hi,
+};
 
 const productImages = [
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfBIYakTGLZHnzJqrGY_ax7uQfXVKUca48Rw&s",
@@ -18,16 +28,36 @@ export default function ProductDetailPage() {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const [selectedLang, setSelectedLang] = useState("EN");
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("selectedLang");
+    if (savedLang && translations[savedLang]) {
+      setSelectedLang(savedLang);
+    }
+
+    const handleLangChange = () => {
+      const lang = localStorage.getItem("selectedLang");
+      if (lang && translations[lang]) {
+        setSelectedLang(lang);
+      }
+    };
+
+    window.addEventListener("languageChange", handleLangChange);
+    return () => window.removeEventListener("languageChange", handleLangChange);
+  }, []);
+
+  const t = translations[selectedLang] || translations["EN"];
 
   return (
-    <main className="min-h-screen bg-[#faf9f6] pt-28 pb-20">
+    <main className="min-h-screen bg-[#faf9f6] pt-20 pb-20">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-[11px] font-bold tracking-widest text-gray-400 uppercase mb-8">
-          <Link href="/" className="hover:text-[var(--olive)] transition-colors">Home</Link>
+          <Link href="/" className="hover:text-[var(--olive)] transition-colors">{t.home}</Link>
           <ChevronRight className="w-3 h-3" />
-          <Link href="/shop" className="hover:text-[var(--olive)] transition-colors">Shop</Link>
+          <Link href="/shop" className="hover:text-[var(--olive)] transition-colors">{t.shop}</Link>
           <ChevronRight className="w-3 h-3" />
           <span className="text-[var(--olive)]">Premium Barnyard Millet</span>
         </nav>
@@ -53,7 +83,7 @@ export default function ProductDetailPage() {
             <div className="relative flex-1 aspect-[4/5] sm:aspect-auto sm:h-[600px] rounded-[2rem] overflow-hidden bg-[#faf9f6]">
               <Image src={mainImage} fill className="object-cover transition-transform duration-700 hover:scale-105" alt="Product Main" />
               <div className="absolute top-6 left-6 px-4 py-2 rounded-full bg-white/90 backdrop-blur-md text-[10px] font-bold text-[var(--olive)] tracking-[0.2em] shadow-sm uppercase z-10">
-                100% Organic
+                {t.product.organic}
               </div>
             </div>
           </div>
@@ -64,7 +94,7 @@ export default function ProductDetailPage() {
               <div className="flex items-center gap-1.5 bg-amber-50 px-3 py-1.5 rounded-full border border-amber-100">
                 <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
                 <span className="text-sm font-bold text-amber-700">4.8</span>
-                <span className="text-[10px] font-bold text-amber-600/60 uppercase tracking-widest ml-1">(124 Reviews)</span>
+                <span className="text-[10px] font-bold text-amber-600/60 uppercase tracking-widest ml-1">({t.product.reviews})</span>
               </div>
               <div className="flex gap-2">
                 <button className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-red-50 hover:text-red-500 transition-colors">
@@ -82,7 +112,7 @@ export default function ProductDetailPage() {
             <div className="flex items-end gap-4 mb-8">
               <span className="text-4xl font-extrabold text-[var(--olive)] leading-none">₹299</span>
               <span className="text-lg text-gray-400 font-medium line-through mb-1">₹399</span>
-              <span className="text-[10px] font-bold tracking-widest text-emerald-500 uppercase bg-emerald-50 px-2 py-1 rounded-md mb-1 border border-emerald-100">Save 25%</span>
+              <span className="text-[10px] font-bold tracking-widest text-emerald-500 uppercase bg-emerald-50 px-2 py-1 rounded-md mb-1 border border-emerald-100">{t.product.save} 25%</span>
             </div>
 
             <div className="h-px w-full bg-gray-100 mb-8" />
@@ -100,7 +130,7 @@ export default function ProductDetailPage() {
               </div>
               <button className="btn-standard flex-1 rounded-2xl font-bold text-[13px] tracking-widest shadow-lg shadow-[var(--olive)]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 group">
                 <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                ADD TO CART
+                {t.product.add_to_cart}
               </button>
             </div>
 
@@ -108,17 +138,17 @@ export default function ProductDetailPage() {
             <div className="grid grid-cols-2 gap-4 mb-8">
               <div className="flex items-center gap-3 p-4 rounded-2xl bg-[#faf9f6] border border-gray-100">
                 <ShieldCheck className="w-6 h-6 text-[var(--olive)]" />
-                <span className="text-xs font-bold text-gray-700">100% Organic</span>
+                <span className="text-xs font-bold text-gray-700">{t.product.organic}</span>
               </div>
               <div className="flex items-center gap-3 p-4 rounded-2xl bg-[#faf9f6] border border-gray-100">
                 <Truck className="w-6 h-6 text-[var(--olive)]" />
-                <span className="text-xs font-bold text-gray-700">Free Delivery</span>
+                <span className="text-xs font-bold text-gray-700">{t.product.free_delivery}</span>
               </div>
             </div>
 
             {/* Description Details */}
             <div className="space-y-4">
-              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest">Product Details</h3>
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest">{t.product.details}</h3>
               <p className="text-sm text-gray-500 leading-relaxed font-light">
                 Barnyard millet is a wild seed that is grown mainly in the hilly areas of Uttaranchal, India. It is highly nutritious and is an excellent source of dietary fiber, protein, and essential minerals like iron and zinc. Perfect for creating healthy porridges, upmas, and traditional sweets.
               </p>
@@ -146,7 +176,7 @@ export default function ProductDetailPage() {
         <div className="mt-12 bg-white rounded-[2.5rem] p-6 lg:p-10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-gray-100">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Customer Reviews</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t.product.customer_reviews}</h2>
               <div className="flex items-center gap-3">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
@@ -161,16 +191,16 @@ export default function ProductDetailPage() {
               onClick={() => setShowReviewForm(!showReviewForm)}
               className="btn-standard rounded-xl font-bold text-[11px] tracking-widest shadow-md shadow-[var(--olive)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all uppercase"
             >
-              {showReviewForm ? "Cancel Review" : "Write a Review"}
+              {showReviewForm ? t.product.cancel_review : t.product.write_review}
             </button>
           </div>
 
           {showReviewForm && (
             <div className="mb-10 bg-[#faf9f6] rounded-[2rem] p-6 lg:p-8 border border-gray-100 animate-fade-in-up">
-              <h3 className="text-lg font-bold text-gray-900 mb-6">Write your review</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-6">{t.product.write_review}</h3>
               <form className="space-y-6 max-w-2xl">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Overall Rating</label>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">{t.product.rating}</label>
                   <div className="flex gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
@@ -189,27 +219,27 @@ export default function ProductDetailPage() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Your Name</label>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">{t.contact_us.full_name}</label>
                     <input type="text" placeholder="John Doe" className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--olive)]/20 focus:border-[var(--olive)] outline-none transition-all font-medium text-gray-800 text-sm" />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Email Address</label>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">{t.contact_us.email}</label>
                     <input type="email" placeholder="john@example.com" className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--olive)]/20 focus:border-[var(--olive)] outline-none transition-all font-medium text-gray-800 text-sm" />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Review Title</label>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">{t.product.review_title}</label>
                   <input type="text" placeholder="Summarize your experience" className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--olive)]/20 focus:border-[var(--olive)] outline-none transition-all font-medium text-gray-800 text-sm" />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Review Content</label>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">{t.product.review_content}</label>
                   <textarea rows={4} placeholder="What did you like or dislike? What should other shoppers know before buying?" className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--olive)]/20 focus:border-[var(--olive)] outline-none transition-all font-medium text-gray-800 text-sm resize-none" />
                 </div>
 
                 <button type="button" className="btn-standard rounded-xl font-bold text-[13px] tracking-widest shadow-md shadow-[var(--olive)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                  SUBMIT REVIEW
+                  {t.product.submit_review}
                 </button>
               </form>
             </div>
