@@ -203,7 +203,7 @@ export default function CorporateOrdersPage() {
             {corporateProducts.map((item, i) => (
               <div
                 key={i}
-                className={`premium-card bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.03)] transition-all duration-700 ${productsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+                className={`premium-card bg-white rounded-[1rem] overflow-hidden border border-gray-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.03)] transition-all duration-700 ${productsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
                 style={{ transitionDelay: `${i * 150}ms` }}
               >
                 <div className="relative aspect-square overflow-hidden">
@@ -213,9 +213,6 @@ export default function CorporateOrdersPage() {
                     alt={item.name}
                     className="object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
-                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[10px] font-bold text-[var(--olive)] uppercase tracking-widest shadow-sm">
-                    Best Seller
-                  </div>
                 </div>
                 <div className="p-8 space-y-4">
                   <h4 className="text-lg font-bold text-gray-900">
@@ -360,7 +357,7 @@ export default function CorporateOrdersPage() {
                     ></textarea>
                   </div>
 
-                  <button className="w-full py-5 rounded-2xl bg-[var(--olive)] text-white font-bold text-[12px] tracking-[0.25em] shadow-xl shadow-[var(--olive)]/20 hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98] transition-all uppercase">
+                  <button className="w-full py-5 rounded-2xl bg-[var(--olive)] text-white font-bold text-[12px] tracking-[0.25em] shadow-xl shadow-[var(--olive)]/20 hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98] transition-all uppercase cursor-pointer">
                     Submit Inquiry
                   </button>
                 </form>
@@ -371,10 +368,9 @@ export default function CorporateOrdersPage() {
       </section>
 
       {/* ── TRUST BAR ── */}
-      <section className="py-20 bg-[var(--background)]">
+      {/* <section className="py-20 bg-[var(--background)]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-wrap justify-center gap-12 opacity-40 grayscale">
-            {/* Logos or placeholder text */}
             <span className="text-xl font-bold tracking-widest">
               TRUSTED BY
             </span>
@@ -392,7 +388,7 @@ export default function CorporateOrdersPage() {
             </span>
           </div>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }

@@ -13,6 +13,7 @@ import {
   Filter,
   ChevronDown,
   Search,
+  Plus,
 } from "lucide-react";
 
 const products = [
@@ -68,14 +69,51 @@ export default function PoojaGiftsPage() {
   const [sortBy, setSortBy] = useState("Featured");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Pooja Gifts");
+  const [activeFilters, setActiveFilters] = useState({
+    price: "",
+    subcategory: "",
+  });
 
   useEffect(() => {
     setLoaded(true);
   }, []);
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const categories = [
+    {
+      name: "Pooja Gifts",
+      subcategories: ["Diyas", "Idols", "Thalis", "Incense", "Traditional"],
+    },
+    {
+      name: "Gift Hampers",
+      subcategories: ["Festive", "Healthy", "Wedding"],
+    },
+    {
+      name: "Spices",
+      subcategories: ["Turmeric", "Chili", "Pepper"],
+    }
+  ];
+
+  const toggleFilter = (type: string, value: any) => {
+    setActiveFilters((prev: any) => ({
+      ...prev,
+      [type]: prev[type] === value ? "" : value,
+    }));
+    setCurrentPage(1);
+  };
+
+  const filteredProducts = products.filter((product: any) => {
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
+    const matchesSubcategory = !activeFilters.subcategory || product.subcategory === activeFilters.subcategory;
+    const matchesPrice = !activeFilters.price || (
+      (activeFilters.price === "Under 1000" && product.price < 1000) ||
+      (activeFilters.price === "1000-2500" && product.price >= 1000 && product.price <= 2500) ||
+      (activeFilters.price === "Above 2500" && product.price > 2500)
+    );
+    
+    return matchesSearch && matchesCategory && matchesSubcategory && matchesPrice;
+  });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortBy === "Price: Low to High") return a.price - b.price;
@@ -97,7 +135,7 @@ export default function PoojaGiftsPage() {
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/pooja-banner.jpg"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlzGS-RCay_7ENbCMdq4L8MeXPDhGmM9hOnA&s"
             alt="Divine Pooja Essentials"
             fill
             className={`object-cover transition-transform duration-[4000ms] ease-out ${loaded ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
@@ -117,101 +155,194 @@ export default function PoojaGiftsPage() {
                 Divine Collections
               </p>
             </div>
-            <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-none">
-              Sacred{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-white to-amber-300">
-                Pooja Gifts
+            <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight leading-none">
+              Everything for Your Daily{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-white to-amber-300 tracking-wider">
+                Pooja & Festivals
               </span>
             </h1>
             <p className="text-white/80 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed">
-              Handcrafted divine essentials and sacred gifts curated to
-              illuminate your spiritual journey and traditional celebrations.
+              Complete range of pure and traditional pooja essentials.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── GIFTS GRID ── */}
+      {/* ── POOJA GIFTS CONTENT ── */}
       <div className="max-w-7xl mx-auto px-6 py-20 pb-32">
-        <div className="flex flex-col lg:flex-row items-end justify-between gap-8 pb-12 border-b border-gray-100 mb-20">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-[2px] bg-amber-500 rounded-full" />
-              <p className="text-[10px] font-black text-amber-600 tracking-[0.4em] uppercase">
-                Sacred Offerings
-              </p>
-            </div>
-            <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight">
-              Pooja <span className="text-[var(--olive)]">Collections.</span>
-            </h2>
-          </div>
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* LEFT SIDEBAR: Flipkart-Style Filters */}
+          <aside className="w-full lg:w-72 shrink-0">
+            <div className="lg:sticky lg:top-28 bg-white border border-stone-200 shadow-sm overflow-hidden">
+              {/* Header */}
+              <div className="px-5 py-4 border-b border-stone-100 flex items-center justify-between bg-white">
+                <h3 className="text-base font-bold text-stone-900 tracking-tight">Filters</h3>
+                <button 
+                  onClick={() => {
+                    setSelectedCategory("Pooja Gifts");
+                    setActiveFilters({ price: "", subcategory: "" });
+                  }}
+                  className="text-[11px] font-bold text-stone-400 hover:text-amber-600 transition-colors uppercase tracking-tight cursor-pointer"
+                >
+                  Clear All
+                </button>
+              </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
-            {/* Integrated Search & Stats Bar */}
-            <div className="flex-1 lg:flex-none relative flex items-center bg-white border border-gray-100 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.03)] px-5 py-3 transition-all hover:border-amber-200">
-              <Search className="h-4 w-4 text-gray-300 mr-4" />
-              <input
-                type="text"
-                placeholder="Search divine items..."
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="bg-transparent text-xs font-bold text-gray-700 outline-none w-full lg:w-48 placeholder:text-gray-300"
-              />
-              <div className="hidden sm:block w-[1px] h-6 bg-gray-100 mx-4" />
-              <div className="hidden sm:flex items-center gap-2 text-[10px] font-bold text-gray-400 whitespace-nowrap">
-                <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                {paginatedProducts.length} Items
+              {/* ACTIVE FILTERS (Dynamic Tags) */}
+              {Object.values(activeFilters).some(v => v !== "") && (
+                <div className="px-4 py-3 flex flex-wrap gap-2 border-b border-stone-50 bg-stone-50/30">
+                  {activeFilters.price && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-stone-200 rounded-sm text-[10px] font-bold text-stone-600 shadow-sm animate-in zoom-in duration-300">
+                      {activeFilters.price}
+                      <button onClick={() => toggleFilter('price', activeFilters.price)} className="hover:text-stone-900 cursor-pointer"><Plus className="w-3 h-3 rotate-45" /></button>
+                    </span>
+                  )}
+                  {activeFilters.subcategory && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-stone-200 rounded-sm text-[10px] font-bold text-stone-600 shadow-sm animate-in zoom-in duration-300">
+                      {activeFilters.subcategory}
+                      <button onClick={() => toggleFilter('subcategory', activeFilters.subcategory)} className="hover:text-stone-900 cursor-pointer"><Plus className="w-3 h-3 rotate-45" /></button>
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* Sections */}
+              <div className="divide-y divide-stone-100">
+                {/* 1. Categories */}
+                <div className="px-5 py-5">
+                  <h4 className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-4">Categories</h4>
+                  <div className="space-y-3">
+                    <button 
+                      onClick={() => setSelectedCategory("All")}
+                      className={`block text-[12px] font-bold transition-colors cursor-pointer ${selectedCategory === "All" ? "text-amber-600" : "text-stone-500 hover:text-stone-900"}`}
+                    >
+                      All Collections
+                    </button>
+                    {categories.map((cat) => (
+                      <button
+                        key={cat.name}
+                        onClick={() => {
+                          setSelectedCategory(cat.name);
+                          setActiveFilters(p => ({ ...p, subcategory: "" }));
+                          setCurrentPage(1);
+                        }}
+                        className={`block text-[12px] font-bold transition-colors cursor-pointer text-left w-full ${selectedCategory === cat.name ? "text-stone-900 font-extrabold" : "text-stone-500 hover:text-stone-900"}`}
+                      >
+                        {selectedCategory === cat.name && <ChevronRight className="w-3 h-3 inline mr-1 text-stone-400" />}
+                        {cat.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Subcategories */}
+                {selectedCategory !== "All" && (
+                  <details className="group" open>
+                    <summary className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-stone-50/50 transition-colors list-none select-none">
+                      <span className="text-[11px] font-black text-stone-900 uppercase tracking-wider">Subcategories</span>
+                      <ChevronDown className="w-3.5 h-3.5 text-stone-400 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <div className="px-5 pb-5 space-y-2.5 animate-in fade-in duration-300">
+                      {categories.find(c => c.name === selectedCategory)?.subcategories.map((sub) => (
+                        <label key={sub} className="flex items-center gap-3 cursor-pointer group/label">
+                          <input 
+                            type="checkbox"
+                            checked={activeFilters.subcategory === sub}
+                            onChange={() => toggleFilter("subcategory", sub)}
+                            className="w-3.5 h-3.5 border-stone-300 rounded-sm text-amber-600 focus:ring-0 cursor-pointer"
+                          />
+                          <span className={`text-[12px] font-medium transition-colors ${activeFilters.subcategory === sub ? "text-stone-900 font-bold" : "text-stone-600 group-hover/label:text-stone-900"}`}>
+                            {sub}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </details>
+                )}
+
+                {/* Price */}
+                <details className="group" open>
+                  <summary className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-stone-50/50 transition-colors list-none select-none">
+                    <span className="text-[11px] font-black text-stone-900 uppercase tracking-wider">Price Range</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-stone-400 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="px-5 pb-5 space-y-2.5 animate-in fade-in duration-300">
+                    {["Under 1000", "1000-2500", "Above 2500"].map((range) => (
+                      <label key={range} className="flex items-center gap-3 cursor-pointer group/label">
+                        <input 
+                          type="checkbox"
+                          checked={activeFilters.price === range}
+                          onChange={() => toggleFilter("price", range)}
+                          className="w-3.5 h-3.5 border-stone-300 rounded-sm text-amber-600 focus:ring-0 cursor-pointer"
+                        />
+                        <span className={`text-[12px] font-medium transition-colors ${activeFilters.price === range ? "text-stone-900 font-bold" : "text-stone-600 group-hover/label:text-stone-900"}`}>
+                          {range}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </details>
+              </div>
+            </div>
+          </aside>
+
+          {/* RIGHT CONTENT: Products Grid */}
+          <div className="flex-1 space-y-12">
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full">
+              {/* Integrated Search & Stats Bar */}
+              <div className="flex-1 relative flex items-center bg-white border border-stone-200 rounded-2xl shadow-sm px-5 py-3 transition-all hover:border-amber-200">
+                <Search className="h-4 w-4 text-stone-300 mr-4" />
+                <input
+                  type="text"
+                  placeholder="Search divine items..."
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="bg-transparent text-xs font-bold text-stone-700 outline-none w-full placeholder:text-stone-300"
+                />
+                <div className="hidden sm:block w-[1px] h-6 bg-stone-100 mx-4" />
+                <div className="hidden sm:flex items-center gap-2 text-[10px] font-bold text-stone-400 whitespace-nowrap">
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                  {paginatedProducts.length} Sacred Items
+                </div>
+              </div>
+
+              {/* Premium Sort Button */}
+              <div className="relative w-full sm:w-auto">
+                <button
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  className="px-6 py-3.5 border border-stone-200 bg-white w-full flex items-center justify-center gap-3 rounded-2xl text-[10px] font-black tracking-widest uppercase transition-all cursor-pointer shadow-sm group"
+                >
+                  <Filter className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
+                  <span>{sortBy}</span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isFilterOpen ? "rotate-180" : ""}`} />
+                </button>
+
+                {isFilterOpen && (
+                  <div className="absolute right-0 mt-3 w-56 bg-white border border-stone-100 rounded-2xl shadow-lg z-30 py-3 overflow-hidden animate-scale-in">
+                    {["Featured", "Price: Low to High", "Price: High to Low", "Top Rated"].map((option) => (
+                      <button
+                        key={option}
+                        onClick={() => {
+                          setSortBy(option);
+                          setIsFilterOpen(false);
+                          setCurrentPage(1);
+                        }}
+                        className={`w-full text-left px-6 py-3 text-[10px] font-black tracking-wider uppercase transition-all hover:bg-amber-50 ${sortBy === option ? "text-amber-600 bg-amber-50/50" : "text-stone-500"
+                          }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Premium Sort Button */}
-            <div className="relative w-full sm:w-auto">
-              <button
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-gray-900 text-white rounded-2xl text-xs font-bold tracking-widest uppercase hover:bg-[var(--olive)] transition-all cursor-pointer shadow-xl shadow-gray-900/10 group"
-              >
-                <Filter className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
-                <span>{sortBy}</span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 transition-transform duration-300 ${isFilterOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-
-              {isFilterOpen && (
-                <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-100 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-30 py-3 overflow-hidden animate-scale-in">
-                  {[
-                    "Featured",
-                    "Price: Low to High",
-                    "Price: High to Low",
-                    "Top Rated",
-                  ].map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => {
-                        setSortBy(option);
-                        setIsFilterOpen(false);
-                        setCurrentPage(1);
-                      }}
-                      className={`w-full text-left px-6 py-3 text-[10px] font-black tracking-wider uppercase transition-all hover:bg-amber-50 ${
-                        sortBy === option
-                          ? "text-amber-600 bg-amber-50/50"
-                          : "text-gray-500"
-                      }`}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-6 gap-y-12">
-          {paginatedProducts.map((product) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 gap-y-12">
+              {paginatedProducts.map((product) => (
             <Link
               href="/gift-detail"
               key={product.id}
@@ -275,44 +406,46 @@ export default function PoojaGiftsPage() {
               </div>
             </Link>
           ))}
-        </div>
-
-        {/* PAGINATION */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-3 pt-16">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((prev) => prev - 1)}
-              className="px-6 py-3 rounded-full border border-gray-100 bg-white text-[10px] font-bold tracking-widest text-gray-400 hover:bg-gray-50 disabled:opacity-30 transition-all flex items-center gap-2"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              PREVIOUS
-            </button>
-            <div className="flex items-center gap-2">
-              {[...Array(totalPages)].map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentPage(i + 1)}
-                  className={`w-10 h-10 rounded-full font-bold text-[10px] transition-all border ${
-                    currentPage === i + 1
-                      ? "bg-[var(--olive)] text-white border-[var(--olive)] shadow-lg shadow-emerald-900/10"
-                      : "bg-white text-gray-400 border-gray-100 hover:border-gray-200"
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
             </div>
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-              className="px-6 py-3 rounded-full border border-gray-100 bg-white text-[10px] font-bold tracking-widest text-gray-400 hover:bg-gray-50 disabled:opacity-30 transition-all flex items-center gap-2"
-            >
-              NEXT
-              <ChevronRight className="w-4 h-4" />
-            </button>
+
+            {/* PAGINATION */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-3 pt-16">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((prev) => prev - 1)}
+                  className="px-6 py-3 rounded-full border border-gray-100 bg-white text-[10px] font-bold tracking-widest text-gray-400 hover:bg-gray-50 disabled:opacity-30 transition-all flex items-center gap-2"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  PREVIOUS
+                </button>
+                <div className="flex items-center gap-2">
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`w-10 h-10 rounded-full font-bold text-[10px] transition-all border ${
+                        currentPage === i + 1
+                          ? "bg-[var(--olive)] text-white border-[var(--olive)] shadow-lg shadow-emerald-900/10"
+                          : "bg-white text-gray-400 border-gray-100 hover:border-gray-200"
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                  className="px-6 py-3 rounded-full border border-gray-100 bg-white text-[10px] font-bold tracking-widest text-gray-400 hover:bg-gray-50 disabled:opacity-30 transition-all flex items-center gap-2"
+                >
+                  NEXT
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
       {/* Bottom CTA Section */}

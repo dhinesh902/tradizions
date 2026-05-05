@@ -21,26 +21,31 @@ const categories = [
     name: "Millets",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQF3W9hXiri-fHf-EzAJur1_lfUfGB_aJjucQ&s",
+    subcategories: ["Foxtail", "Barnyard", "Finger", "Little", "Pearl"],
   },
   {
     name: "Nuts & Dry Fruits",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR5qxA8VP0bJRoDpwqfHLyFwwT04-LZhkEuA&s",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC5XC7IzZhRYA9FOo2b_aStlaTMAMVXk1cNg&s",
+    subcategories: ["Almonds", "Cashews", "Pistachios", "Walnuts", "Dates"],
   },
   {
     name: "Pooja Gifts",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSbc5zJqjpuhdeju-n_5WRmpLb0U0gjhfEkg&s",
+    subcategories: ["Diyas", "Idols", "Thalis", "Incense", "Traditional"],
   },
   {
     name: "Gift Hampers",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbJ1k52K0JkNpbpeAlH0WD41CSQiIr6YbgfA&s",
+    subcategories: ["Festive", "Healthy", "Wedding", "Corporate"],
   },
   {
     name: "Spices",
     image:
       "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=800&auto=format&fit=crop",
+    subcategories: ["Turmeric", "Chili", "Pepper", "Cardamom"],
   },
 ];
 
@@ -50,10 +55,12 @@ const products = [
     id: 1,
     name: "Premium Foxtail Millet",
     category: "Millets",
+    subcategory: "Foxtail",
     price: 299,
     originalPrice: 399,
     rating: 4.7,
-    image: "https://dryfruitshome.com/wp-content/uploads/2019/07/foxtail-millet-thinai.jpg",
+    image:
+      "https://dryfruitshome.com/wp-content/uploads/2019/07/foxtail-millet-thinai.jpg",
     isNew: true,
     weight: "500g",
     isOrganic: true,
@@ -66,10 +73,12 @@ const products = [
     id: 2,
     name: "Organic Barnyard Millet",
     category: "Millets",
+    subcategory: "Barnyard",
     price: 249,
     originalPrice: 320,
     rating: 4.6,
-    image: "https://www.pepperhub.in/wp-content/uploads/2024/10/BARNYARD-MILLET.webp",
+    image:
+      "https://www.pepperhub.in/wp-content/uploads/2024/10/BARNYARD-MILLET.webp",
     isNew: false,
     weight: "1kg",
     isOrganic: true,
@@ -84,10 +93,12 @@ const products = [
     id: 3,
     name: "Premium Almonds",
     category: "Nuts & Dry Fruits",
+    subcategory: "Almonds",
     price: 899,
     originalPrice: 1100,
     rating: 4.9,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC5XC7IzZhRYA9FOo2b_aStlaTMAMVXk1cNg&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC5XC7IzZhRYA9FOo2b_aStlaTMAMVXk1cNg&s",
     isNew: true,
     weight: "500g",
     isOrganic: false,
@@ -100,10 +111,12 @@ const products = [
     id: 4,
     name: "Cashew Whole W320",
     category: "Nuts & Dry Fruits",
+    subcategory: "Cashews",
     price: 799,
     originalPrice: 950,
     rating: 4.8,
-    image: "https://cdn.shopaccino.com/edible-smart/products/cashew--kaju---whole-114906_l.jpg?v=704",
+    image:
+      "https://cdn.shopaccino.com/edible-smart/products/cashew--kaju---whole-114906_l.jpg?v=704",
     isNew: false,
     weight: "250g",
     isOrganic: false,
@@ -118,10 +131,12 @@ const products = [
     id: 5,
     name: "Brass Diya Set",
     category: "Pooja Gifts",
+    subcategory: "Diyas",
     price: 1299,
     originalPrice: 1800,
     rating: 4.8,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE8uNbbxycaDgAxlh3JuEJ85P8rBYAyYMR3w&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE8uNbbxycaDgAxlh3JuEJ85P8rBYAyYMR3w&s",
     isNew: true,
     weight: "200g",
     isOrganic: false,
@@ -134,10 +149,12 @@ const products = [
     id: 6,
     name: "Ganesha Idol",
     category: "Pooja Gifts",
+    subcategory: "Idols",
     price: 2499,
     originalPrice: 3200,
     rating: 4.9,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvGmxw4XFiHghlYfvC7Y8LLmUnbtscQEAr7g&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvGmxw4XFiHghlYfvC7Y8LLmUnbtscQEAr7g&s",
     isNew: false,
     weight: "500g",
     isOrganic: false,
@@ -152,10 +169,12 @@ const products = [
     id: 7,
     name: "Dry Fruits Gift Box",
     category: "Gift Hampers",
+    subcategory: "Festive",
     price: 1499,
     originalPrice: 1999,
     rating: 4.7,
-    image: "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?q=80&w=800&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?q=80&w=800&auto=format&fit=crop",
     isNew: true,
     weight: "1kg",
     isOrganic: false,
@@ -168,10 +187,12 @@ const products = [
     id: 8,
     name: "Festival Gift Hamper",
     category: "Gift Hampers",
+    subcategory: "Festive",
     price: 2999,
     originalPrice: 3999,
     rating: 4.9,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgLKhWmIcPt_tA10h3MmkjKEbRTzwEw4gQPg&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgLKhWmIcPt_tA10h3MmkjKEbRTzwEw4gQPg&s",
     isNew: true,
     weight: "2kg",
     isOrganic: true,
@@ -190,6 +211,7 @@ export default function ShopPage() {
   const [activeFilters, setActiveFilters] = useState({
     price: "",
     weight: "",
+    subcategory: "",
     organic: false,
     premium: false,
     festive: false,
@@ -201,7 +223,7 @@ export default function ShopPage() {
     setLoaded(true);
   }, []);
 
-  const filteredProducts = products.filter((product) => {
+  const filteredProducts = products.filter((product: any) => {
     const matchesCategory =
       selectedCategory === "All Collections" ||
       product.category === selectedCategory;
@@ -219,6 +241,9 @@ export default function ShopPage() {
 
     const matchesWeight =
       !activeFilters.weight || product.weight === activeFilters.weight;
+    const matchesSubcategory =
+      !activeFilters.subcategory ||
+      product.subcategory === activeFilters.subcategory;
     const matchesOrganic = !activeFilters.organic || product.isOrganic;
     const matchesPremium = !activeFilters.premium || product.isPremium;
     const matchesFestive = !activeFilters.festive || product.isFestive;
@@ -231,6 +256,7 @@ export default function ShopPage() {
       matchesSearch &&
       matchesPrice &&
       matchesWeight &&
+      matchesSubcategory &&
       matchesOrganic &&
       matchesPremium &&
       matchesFestive &&
@@ -242,7 +268,12 @@ export default function ShopPage() {
   const toggleFilter = (type: string, value: any) => {
     setActiveFilters((prev: any) => ({
       ...prev,
-      [type]: prev[type] === value ? (typeof value === "boolean" ? false : "") : value,
+      [type]:
+        prev[type] === value
+          ? typeof value === "boolean"
+            ? false
+            : ""
+          : value,
     }));
     setCurrentPage(1);
   };
@@ -257,10 +288,10 @@ export default function ShopPage() {
   return (
     <main className="min-h-screen bg-[#fafaf9]">
       {/* ── PROFESSIONAL STYLISH HERO SECTION ── */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/shop-banner.jpg"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlzGS-RCay_7ENbCMdq4L8MeXPDhGmM9hOnA&s"
             alt="Shop Premium Traditions"
             fill
             className={`object-cover transition-transform duration-[4000ms] ease-out ${loaded ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
@@ -275,46 +306,45 @@ export default function ShopPage() {
 
         <div className="relative z-10 text-center space-y-8 px-6 max-w-4xl">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-3 mb-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-              <p className="text-[10px] font-black tracking-[0.4em] uppercase text-amber-200">
-                Premium Collections
-              </p>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-none">
-              Traditional Nutrition <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-white to-amber-200 animate-gradient-x">
-                Modern Lifestyle.
+            <h1
+              className={`text-2xl md:text-3xl font-extrabold text-white leading-[0.95] tracking-wide transition-all duration-1000 delay-200 ${loaded
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
+                }`}
+            >
+              Premium Nuts
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-white to-amber-300">
+                & Dry Fruits
               </span>
             </h1>
             <p className="text-white/70 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed">
-              Explore our curated selection of ancient grains, premium nuts, and
-              sacred essentials crafted to nourish both body and soul.
+              Carefully sourced and hygienically packed nuts for daily nutrition
+              and festive needs.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── SEARCH BAR (Below Banner) ── */}
-      <div className="max-w-7xl mx-auto px-6 -mt-8 relative z-20">
-        <div className="relative max-w-2xl mx-auto transform transition-all duration-500 hover:scale-[1.01]">
-          <div className="absolute inset-0 bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)]"></div>
-          <div className="relative flex items-center bg-white border border-stone-100 rounded-3xl p-2 shadow-sm">
-            <div className="flex-1 flex items-center px-6">
-              <Search className="w-5 h-5 text-stone-400 mr-4" />
+      {/* ── COMPACT SEARCH BAR ── */}
+      <div className="max-w-7xl mx-auto px-6 -mt-7 relative z-20">
+        <div className="relative max-w-lg mx-auto transform transition-all duration-500 hover:scale-[1.01]">
+          <div className="absolute inset-0 bg-white rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.08)]"></div>
+          <div className="relative flex items-center bg-white border border-stone-100 rounded-2xl p-1.5 shadow-sm">
+            <div className="flex-1 flex items-center px-4">
+              <Search className="w-4 h-4 text-stone-400 mr-3" />
               <input
                 type="text"
-                placeholder="Search for millets, nuts, spices..."
+                placeholder="Search treasures..."
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full bg-transparent border-none outline-none text-stone-900 placeholder:text-stone-300 text-sm font-semibold py-4"
+                className="w-full bg-transparent border-none outline-none text-stone-900 placeholder:text-stone-300 text-[11px] font-bold py-2.5"
               />
             </div>
-            <button className="bg-stone-900 text-white px-10 py-4 rounded-2xl text-[10px] font-black tracking-widest uppercase hover:bg-[var(--olive)] transition-all shadow-xl">
-              Search
+            <button className="btn-standard rounded-xl text-[9px] font-black tracking-widest uppercase shadow-lg active:scale-95 cursor-pointer">
+              Find
             </button>
           </div>
         </div>
@@ -322,179 +352,214 @@ export default function ShopPage() {
 
       {/* ── SHOP CONTENT ── */}
       <div className="max-w-7xl mx-auto px-6 py-20 pb-32">
-        <div className="flex flex-col lg:flex-row gap-16">
-          {/* LEFT SIDEBAR: Categories with Images */}
-          <aside className="w-full lg:w-72 space-y-12 shrink-0">
-            <div>
-              <h3 className="text-xs font-bold text-gray-900 tracking-[0.2em] uppercase mb-10 pb-4 border-b border-gray-100">
-                Shop By Category
-              </h3>
-              <div className="flex flex-col gap-4">
-                {categories.map((cat) => (
-                  <button
-                    key={cat.name}
-                    onClick={() => {
-                      setSelectedCategory(cat.name);
-                      setCurrentPage(1);
-                    }}
-                    className={`group relative flex items-center gap-4 p-3 rounded-2xl transition-all duration-500 ${
-                      selectedCategory === cat.name
-                        ? "bg-white shadow-[0_15px_40px_-10px_rgba(0,0,0,0.06)] border border-gray-100"
-                        : "hover:bg-gray-50 border border-transparent"
-                    }`}
-                  >
-                    <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 shadow-sm transition-transform duration-500 group-hover:scale-105">
-                      <Image
-                        src={cat.image}
-                        alt={cat.name}
-                        fill
-                        className="object-cover"
-                      />
-                      {selectedCategory === cat.name && (
-                        <div className="absolute inset-0 bg-[var(--olive)]/40 backdrop-blur-[1px] flex items-center justify-center">
-                          <Plus className="w-4 h-4 text-white" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="text-left">
-                      <p
-                        className={`text-[13px] font-bold tracking-wide transition-colors ${
-                          selectedCategory === cat.name
-                            ? "text-[var(--olive)]"
-                            : "text-gray-500 group-hover:text-gray-900"
-                        }`}
-                      >
-                        {cat.name}
-                      </p>
-                      <p className="text-[10px] text-gray-400 font-medium">
-                        Browse Items
-                      </p>
-                    </div>
-                    {selectedCategory === cat.name && (
-                      <div className="absolute right-4 w-1.5 h-1.5 rounded-full bg-[var(--olive)] animate-pulse" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* ── ADVANCED FILTERS ── */}
-            <div className="pt-8 border-t border-gray-100 space-y-10">
-              {/* Price Filter */}
-              <div className="space-y-4">
-                <h4 className="text-[10px] font-black text-gray-900 uppercase tracking-widest">
-                  Price Range
-                </h4>
-                <div className="flex flex-col gap-2">
-                  {["Under 500", "500-1500", "Above 1500"].map((range) => (
-                    <label
-                      key={range}
-                      className="flex items-center gap-3 cursor-pointer group"
-                    >
-                      <input
-                        type="radio"
-                        name="price"
-                        checked={activeFilters.price === range}
-                        onChange={() => toggleFilter("price", range)}
-                        className="w-4 h-4 rounded-full border-gray-300 text-[var(--olive)] focus:ring-[var(--olive)]"
-                      />
-                      <span className="text-xs font-bold text-gray-500 group-hover:text-gray-900 transition-colors">
-                        {range}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Weight Filter */}
-              <div className="space-y-4">
-                <h4 className="text-[10px] font-black text-gray-900 uppercase tracking-widest">
-                  Weight
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {["250g", "500g", "1kg", "2kg"].map((w) => (
-                    <button
-                      key={w}
-                      onClick={() => toggleFilter("weight", w)}
-                      className={`px-4 py-2 rounded-xl text-[10px] font-black border transition-all ${
-                        activeFilters.weight === w
-                          ? "bg-[var(--olive)] text-white border-[var(--olive)]"
-                          : "bg-white text-gray-400 border-gray-100 hover:border-gray-200"
-                      }`}
-                    >
-                      {w}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Boolean Filters */}
-              <div className="space-y-4">
-                <h4 className="text-[10px] font-black text-gray-900 uppercase tracking-widest">
-                  Specialty
-                </h4>
-                <div className="space-y-3">
-                  {[
-                    { label: "Organic", key: "organic" },
-                    { label: "Premium", key: "premium" },
-                    { label: "Festive", key: "festive" },
-                    { label: "Gift Pack", key: "giftPack" },
-                  ].map((f) => (
-                    <label
-                      key={f.key}
-                      className="flex items-center justify-between cursor-pointer group"
-                    >
-                      <span className="text-xs font-bold text-gray-500 group-hover:text-gray-900">
-                        {f.label}
-                      </span>
-                      <input
-                        type="checkbox"
-                        checked={(activeFilters as any)[f.key]}
-                        onChange={() =>
-                          toggleFilter(f.key, !(activeFilters as any)[f.key])
-                        }
-                        className="w-4 h-4 rounded border-gray-300 text-[var(--olive)] focus:ring-[var(--olive)]"
-                      />
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Occasion Filter */}
-              <div className="space-y-4">
-                <h4 className="text-[10px] font-black text-gray-900 uppercase tracking-widest">
-                  Occasion
-                </h4>
-                <select
-                  value={activeFilters.occasion}
-                  onChange={(e) => toggleFilter("occasion", e.target.value)}
-                  className="w-full bg-white border border-gray-100 rounded-xl px-4 py-3 text-xs font-bold text-gray-600 focus:outline-none focus:ring-2 focus:ring-[var(--olive)]/10"
-                >
-                  <option value="">All Occasions</option>
-                  <option value="Daily">Daily Use</option>
-                  <option value="Diwali">Diwali</option>
-                  <option value="Wedding">Wedding</option>
-                  <option value="Ganesh Chaturthi">Ganesh Chaturthi</option>
-                  <option value="Health">Health Focus</option>
-                </select>
-              </div>
-
-              <button
-                onClick={() =>
-                  setActiveFilters({
+        <div className="flex flex-col lg:flex-row gap-12">
+          {/* LEFT SIDEBAR: Flipkart-Style Professional Filters */}
+          <aside className="w-full lg:w-72 shrink-0">
+            <div className="lg:sticky lg:top-28 bg-white border border-stone-200 shadow-sm overflow-hidden">
+              {/* Header */}
+              <div className="px-5 py-4 border-b border-stone-100 flex items-center justify-between bg-white">
+                <h3 className="text-base font-bold text-stone-900 tracking-tight">Filters</h3>
+                <button 
+                  onClick={() => setActiveFilters({
                     price: "",
                     weight: "",
+                    subcategory: "",
                     organic: false,
                     premium: false,
                     festive: false,
                     giftPack: false,
                     occasion: "",
-                  })
-                }
-                className="w-full py-3 rounded-xl bg-gray-50 text-[10px] font-black text-gray-400 uppercase tracking-widest hover:bg-gray-100 transition-all"
-              >
-                Clear All Filters
-              </button>
+                  })}
+                  className="text-[11px] font-bold text-stone-400 hover:text-[var(--olive)] transition-colors uppercase tracking-tight cursor-pointer"
+                >
+                  Clear All
+                </button>
+              </div>
+
+              {/* ACTIVE FILTERS (Dynamic Tags) */}
+              {Object.values(activeFilters).some(v => v === true || (typeof v === 'string' && v !== "")) && (
+                <div className="px-4 py-3 flex flex-wrap gap-2 border-b border-stone-50 bg-stone-50/30">
+                  {activeFilters.price && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-stone-200 rounded-sm text-[10px] font-bold text-stone-600 shadow-sm animate-in zoom-in duration-300">
+                      {activeFilters.price}
+                      <button onClick={() => toggleFilter('price', activeFilters.price)} className="hover:text-stone-900 cursor-pointer"><Plus className="w-3 h-3 rotate-45" /></button>
+                    </span>
+                  )}
+                  {activeFilters.weight && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-stone-200 rounded-sm text-[10px] font-bold text-stone-600 shadow-sm animate-in zoom-in duration-300">
+                      {activeFilters.weight}
+                      <button onClick={() => toggleFilter('weight', activeFilters.weight)} className="hover:text-stone-900 cursor-pointer"><Plus className="w-3 h-3 rotate-45" /></button>
+                    </span>
+                  )}
+                  {activeFilters.subcategory && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-stone-200 rounded-sm text-[10px] font-bold text-stone-600 shadow-sm animate-in zoom-in duration-300">
+                      {activeFilters.subcategory}
+                      <button onClick={() => toggleFilter('subcategory', activeFilters.subcategory)} className="hover:text-stone-900 cursor-pointer"><Plus className="w-3 h-3 rotate-45" /></button>
+                    </span>
+                  )}
+                  {Object.entries(activeFilters).map(([key, val]) => (
+                    typeof val === 'boolean' && val && (
+                      <span key={key} className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-stone-200 rounded-sm text-[10px] font-bold text-stone-600 shadow-sm animate-in zoom-in duration-300">
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                        <button onClick={() => toggleFilter(key, true)} className="hover:text-stone-900 cursor-pointer"><Plus className="w-3 h-3 rotate-45" /></button>
+                      </span>
+                    )
+                  ))}
+                </div>
+              )}
+
+              {/* Sections Container */}
+              <div className="divide-y divide-stone-100">
+                {/* 1. Categories */}
+                <div className="px-5 py-5">
+                  <h4 className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-4">Categories</h4>
+                  <div className="space-y-3">
+                    <button 
+                      onClick={() => setSelectedCategory("All Collections")}
+                      className={`block text-[12px] font-bold transition-colors cursor-pointer ${selectedCategory === "All Collections" ? "text-[var(--olive)]" : "text-stone-500 hover:text-stone-900"}`}
+                    >
+                      All Collections
+                    </button>
+                    <div className="pl-4 space-y-3">
+                      {categories.map((cat) => (
+                        <button
+                          key={cat.name}
+                          onClick={() => {
+                            setSelectedCategory(cat.name);
+                            setActiveFilters((prev: any) => ({ ...prev, subcategory: "" }));
+                            setCurrentPage(1);
+                          }}
+                          className={`block text-[12px] font-bold transition-colors cursor-pointer text-left w-full ${selectedCategory === cat.name ? "text-stone-900 font-extrabold" : "text-stone-500 hover:text-stone-900"}`}
+                        >
+                          {selectedCategory === cat.name && <ChevronRight className="w-3 h-3 inline mr-1 text-stone-400" />}
+                          {cat.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Subcategories (Dynamic) */}
+                {selectedCategory !== "All Collections" && (
+                  <details className="group" open>
+                    <summary className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-stone-50/50 transition-colors list-none select-none">
+                      <span className="text-[11px] font-black text-stone-900 uppercase tracking-wider">Subcategories</span>
+                      <ChevronDown className="w-3.5 h-3.5 text-stone-400 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <div className="px-5 pb-5 space-y-2.5 animate-in fade-in duration-300">
+                      {categories.find(c => c.name === selectedCategory)?.subcategories?.map((sub) => (
+                        <label key={sub} className="flex items-center gap-3 cursor-pointer group/label">
+                          <input 
+                            type="checkbox"
+                            checked={activeFilters.subcategory === sub}
+                            onChange={() => toggleFilter("subcategory", sub)}
+                            className="w-3.5 h-3.5 border-stone-300 rounded-sm text-[var(--olive)] focus:ring-0 cursor-pointer"
+                          />
+                          <span className={`text-[12px] font-medium transition-colors ${activeFilters.subcategory === sub ? "text-stone-900 font-bold" : "text-stone-600 group-hover/label:text-stone-900"}`}>
+                            {sub}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </details>
+                )}
+
+                {/* 2. Price Range */}
+                <details className="group" open>
+                  <summary className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-stone-50/50 transition-colors list-none select-none">
+                    <span className="text-[11px] font-black text-stone-900 uppercase tracking-wider">Price</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-stone-400 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="px-5 pb-5 space-y-2.5 animate-in fade-in duration-300">
+                    {["Under 500", "500-1500", "Above 1500"].map((range) => (
+                      <label key={range} className="flex items-center gap-3 cursor-pointer group/label">
+                        <input 
+                          type="checkbox"
+                          checked={activeFilters.price === range}
+                          onChange={() => toggleFilter("price", range)}
+                          className="w-3.5 h-3.5 border-stone-300 rounded-sm text-[var(--olive)] focus:ring-0 cursor-pointer"
+                        />
+                        <span className={`text-[12px] font-medium transition-colors ${activeFilters.price === range ? "text-stone-900 font-bold" : "text-stone-600 group-hover/label:text-stone-900"}`}>
+                          {range}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </details>
+
+                {/* 3. Weight / Packaging */}
+                <details className="group" open>
+                  <summary className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-stone-50/50 transition-colors list-none select-none">
+                    <span className="text-[11px] font-black text-stone-900 uppercase tracking-wider">Weight</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-stone-400 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="px-5 pb-5 grid grid-cols-2 gap-2 animate-in fade-in duration-300">
+                    {["250g", "500g", "1kg", "2kg"].map((w) => (
+                      <button
+                        key={w}
+                        onClick={() => toggleFilter("weight", w)}
+                        className={`py-2 rounded-sm text-[11px] font-bold border transition-all cursor-pointer ${activeFilters.weight === w
+                          ? "bg-stone-900 text-white border-stone-900"
+                          : "bg-white text-stone-500 border-stone-200 hover:border-stone-400 shadow-sm"
+                        }`}
+                      >
+                        {w}
+                      </button>
+                    ))}
+                  </div>
+                </details>
+
+                {/* 4. Specialty Toggles */}
+                <details className="group">
+                  <summary className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-stone-50/50 transition-colors list-none select-none">
+                    <span className="text-[11px] font-black text-stone-900 uppercase tracking-wider">Specialty</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-stone-400 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="px-5 pb-5 space-y-3 animate-in fade-in duration-300">
+                    {[
+                      { label: "Organic", key: "organic" },
+                      { label: "Premium", key: "premium" },
+                      { label: "Festive", key: "festive" },
+                      { label: "Gift Pack", key: "giftPack" },
+                    ].map((f) => (
+                      <label key={f.key} className="flex items-center gap-3 cursor-pointer group/label">
+                        <div className="relative flex items-center">
+                          <input 
+                            type="checkbox"
+                            checked={(activeFilters as any)[f.key]}
+                            onChange={() => toggleFilter(f.key, !(activeFilters as any)[f.key])}
+                            className="w-3.5 h-3.5 border-stone-300 rounded-sm text-[var(--olive)] focus:ring-0 cursor-pointer"
+                          />
+                        </div>
+                        <span className={`text-[12px] font-medium transition-colors ${(activeFilters as any)[f.key] ? "text-stone-900 font-bold" : "text-stone-600 group-hover/label:text-stone-900"}`}>
+                          {f.label}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </details>
+
+                {/* 5. Occasion */}
+                <details className="group">
+                  <summary className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-stone-50/50 transition-colors list-none select-none">
+                    <span className="text-[11px] font-black text-stone-900 uppercase tracking-wider">Occasion</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-stone-400 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="px-5 pb-5 animate-in fade-in duration-300">
+                    <select
+                      value={activeFilters.occasion}
+                      onChange={(e) => toggleFilter("occasion", e.target.value)}
+                      className="w-full bg-stone-50 border border-stone-200 rounded-sm px-3 py-2 text-[11px] font-bold text-stone-600 uppercase focus:outline-none cursor-pointer appearance-none"
+                    >
+                      <option value="">Select Occasion</option>
+                      <option value="Daily">Daily Rituals</option>
+                      <option value="Diwali">Diwali Lights</option>
+                      <option value="Wedding">Wedding Celebrations</option>
+                      <option value="Health">Healthy Choice</option>
+                    </select>
+                  </div>
+                </details>
+              </div>
             </div>
           </aside>
 
@@ -512,7 +577,7 @@ export default function ShopPage() {
               </div>
               <div className="hidden md:flex items-center gap-4">
                 <div className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-100 rounded-full text-[11px] font-bold text-gray-500">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--orange)]" />
                   Showing {paginatedProducts.length} Treasures
                 </div>
               </div>
@@ -581,16 +646,9 @@ export default function ShopPage() {
                           ₹{product.price.toLocaleString()}
                         </span>
                       </div>
-                      <Link
-                        href={
-                          product.category.includes("Gift")
-                            ? "/gift-detail"
-                            : "/product-detail"
-                        }
-                        className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-[var(--olive)] hover:text-white transition-all shadow-sm"
-                      >
+                      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-[var(--olive)] hover:text-white transition-all shadow-sm">
                         <ChevronRight className="w-4 h-4" />
-                      </Link>
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -613,11 +671,10 @@ export default function ShopPage() {
                     <button
                       key={i}
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`w-10 h-10 rounded-full font-bold text-[10px] transition-all border ${
-                        currentPage === i + 1
+                      className={`w-10 h-10 rounded-full font-bold text-[10px] transition-all border ${currentPage === i + 1
                           ? "bg-[var(--olive)] text-white border-[var(--olive)] shadow-lg shadow-emerald-900/10"
                           : "bg-white text-gray-400 border-gray-100 hover:border-gray-200"
-                      }`}
+                        }`}
                     >
                       {i + 1}
                     </button>

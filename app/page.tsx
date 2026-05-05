@@ -253,8 +253,6 @@ const healthGoals = [
 const dailyKural = {
   number: 942,
   tamil: "மருந்தென வேண்டாவாம் யாக்கைக்கு அருந்தியது அற்றது போற்றி உணின்.",
-  english:
-    "No medicine is needed for the body if you eat only after the previous meal is digested.",
 };
 
 /* ── Intersection Observer Hook ── */
@@ -281,9 +279,28 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[var(--background)] overflow-x-hidden">
       <HeroSection />
+
+      {/* Brand Promise Section */}
+      <section className="py-16 bg-white relative overflow-hidden border-b border-stone-50">
+        <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
+          <div className="inline-flex items-center gap-4 mb-6">
+            <div className="h-px w-8 bg-[var(--olive)]/30" />
+            <span className="text-[10px] font-black text-[var(--olive)] uppercase tracking-[0.4em]">
+              Heritage to Home
+            </span>
+            <div className="h-px w-8 bg-[var(--olive)]/30" />
+          </div>
+          <h2 className="text-xl md:text-2xl font-bold text-gray-800 leading-snug max-w-4xl mx-auto italic">
+            "From daily cooking essentials to festive pooja items and premium
+            gifting, we bring everything to your doorstep"
+          </h2>
+        </div>
+        {/* Subtle decorative background */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]" />
+      </section>
+
       <KuralTrustRow />
       <CategoriesSection />
-      <SeasonalBanners />
       <HealthGoalsSection />
       <HealthBenefitsSection />
       <FeaturedSection />
@@ -293,7 +310,6 @@ export default function Home() {
       <NutritionPlanner />
       <SubscriptionPlans />
       <TestimonialsSection />
-      <CTABanner />
     </div>
   );
 }
@@ -305,42 +321,34 @@ const nutsBenefits = [
   {
     name: "Almond",
     desc: "Rich in healthy fats and vitamin E, supports brain function and heart health.",
-    icon: Sparkles,
   },
   {
     name: "Cashew",
     desc: "Provides essential minerals like magnesium and zinc, supports bone health.",
-    icon: Shield,
   },
   {
     name: "Pistachio",
     desc: "Helps in weight management and improves gut health.",
-    icon: Activity,
   },
   {
     name: "Walnut",
     desc: "High in omega-3 fatty acids, supports heart and brain health.",
-    icon: Heart,
   },
   {
     name: "Raisins",
     desc: "Aids digestion and provides natural energy.",
-    icon: Zap,
   },
   {
     name: "Dates",
     desc: "Rich in iron, boosts energy and supports digestion.",
-    icon: Droplets,
   },
   {
     name: "Fig",
     desc: "High in fiber, helps regulate digestion and blood sugar levels.",
-    icon: Scale,
   },
   {
     name: "Apricot",
     desc: "Rich in antioxidants, supports eye and skin health.",
-    icon: Sparkles,
   },
 ];
 
@@ -348,47 +356,38 @@ const milletsBenefits = [
   {
     name: "Foxtail Millet",
     desc: "Low glycemic index, helps control blood sugar levels.",
-    icon: Activity,
   },
   {
     name: "Pearl Millet (Bajra)",
     desc: "Rich in fiber, supports digestion and heart health.",
-    icon: Heart,
   },
   {
     name: "Finger Millet (Ragi)",
     desc: "High in calcium, strengthens bones and teeth.",
-    icon: Shield,
   },
   {
     name: "Kodo Millet",
     desc: "Aids weight loss and improves digestion.",
-    icon: Scale,
   },
   {
     name: "Little Millet",
     desc: "Rich in iron, helps improve hemoglobin levels.",
-    icon: Droplets,
   },
   {
     name: "Barnyard Millet",
     desc: "Low in calories, ideal for weight management and detox.",
-    icon: Zap,
   },
   {
     name: "Proso Millet",
     desc: "Supports metabolism and provides sustained energy.",
-    icon: Activity,
   },
   {
     name: "Sorghum (Jowar)",
     desc: "Rich in antioxidants, helps reduce inflammation and supports heart health.",
-    icon: Heart,
   },
   {
     name: "Millet Flour",
     desc: "Gluten-free, easy to digest and supports overall nutrition.",
-    icon: Leaf,
   },
 ];
 
@@ -397,57 +396,56 @@ function HealthBenefitsSection() {
   const [activeCategory, setActiveCategory] = useState("nuts");
 
   return (
-    <section ref={ref} className="py-24 bg-[#fafaf9]">
-      <div className="max-w-7xl mx-auto px-6">
+    <section ref={ref} className="py-24 bg-[#fafaf9] overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 mb-16">
         <div
-          className={`text-center mb-16 space-y-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`text-center space-y-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-            Nourish Your Body: <br />
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight">
             The <span className="gradient-text">Health Advantage</span>
           </h2>
-          <p className="text-gray-400 text-sm max-w-lg mx-auto font-light">
-            Discover the science-backed nutritional benefits of our traditional
-            superfoods and premium selection.
-          </p>
 
           <div className="flex justify-center gap-4 mt-10">
             <button
               onClick={() => setActiveCategory("nuts")}
-              className={`px-8 py-2.5 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 ${activeCategory === "nuts" ? "bg-[var(--olive)] text-white shadow-lg shadow-[var(--olive)]/20" : "bg-white text-gray-400 hover:text-gray-600 border border-gray-100"}`}
+              className={`px-8 py-2.5 rounded-[1rem] text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-300 ${activeCategory === "nuts" ? "bg-[var(--olive)] text-white shadow-lg shadow-[var(--olive)]/20 scale-105" : "bg-white text-gray-400 hover:text-gray-600 border border-stone-100"}`}
             >
               Nuts & Dry Fruits
             </button>
             <button
               onClick={() => setActiveCategory("millets")}
-              className={`px-8 py-2.5 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 ${activeCategory === "millets" ? "bg-[var(--olive)] text-white shadow-lg shadow-[var(--olive)]/20" : "bg-white text-gray-400 hover:text-gray-600 border border-gray-100"}`}
+              className={`px-8 py-2.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-300 ${activeCategory === "millets" ? "bg-[var(--olive)] text-white shadow-lg shadow-[var(--olive)]/20 scale-105" : "bg-white text-gray-400 hover:text-gray-600 border border-stone-100"}`}
             >
               Millets
             </button>
           </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {(activeCategory === "nuts" ? nutsBenefits : milletsBenefits).map(
-            (benefit, idx) => (
-              <div
-                key={benefit.name + idx}
-                className={`group p-8 rounded-[2rem] bg-white border border-stone-100 transition-all duration-700 hover:shadow-2xl hover:-translate-y-2 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
-                style={{ transitionDelay: `${idx * 50}ms` }}
-              >
-                <div className="w-12 h-12 rounded-2xl bg-stone-50 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[var(--olive)]/5 transition-all duration-500">
-                  <benefit.icon className="w-6 h-6 text-[var(--olive)]" />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[var(--olive)] transition-colors">
-                  {benefit.name}
-                </h3>
-                <p className="text-sm text-gray-500 leading-relaxed font-light">
-                  {benefit.desc}
-                </p>
-              </div>
-            ),
-          )}
+      {/* HORIZONTAL AUTO-SCROLLING CARDS */}
+      <div className="relative group">
+        <div className="flex animate-marquee group-hover:[animation-play-state:paused]">
+          {[
+            ...(activeCategory === "nuts" ? nutsBenefits : milletsBenefits),
+            ...(activeCategory === "nuts" ? nutsBenefits : milletsBenefits),
+          ].map((benefit, idx) => (
+            <div
+              key={benefit.name + idx}
+              className="flex-shrink-0 w-[280px] md:w-[320px] mx-4 p-6 rounded-[2rem] bg-white border border-stone-300 hover:border-[var(--olive)]/20 transition-all duration-500 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.05)]"
+            >
+              <h3 className="text-lg font-bold text-gray-900 mb-4 group-hover:text-[var(--olive)] transition-colors">
+                {benefit.name}
+              </h3>
+              <p className="text-sm text-gray-500 leading-relaxed font-normal">
+                {benefit.desc}
+              </p>
+            </div>
+          ))}
         </div>
+
+        {/* Gradient Overlays for smooth entry/exit */}
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#fafaf9] to-transparent pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#fafaf9] to-transparent pointer-events-none" />
       </div>
     </section>
   );
@@ -488,12 +486,12 @@ function HeroSection() {
         <div className="max-w-3xl space-y-8">
           {/* Headline */}
           <h1
-            className={`text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-extrabold text-white leading-[0.95] tracking-wide transition-all duration-1000 delay-200 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            className={`text-2xl sm:text-3xl md:text-2xl lg:text-3xl font-extrabold text-white leading-[0.95] tracking-wide transition-all duration-1000 delay-200 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
           >
             Healthy Traditions. <br />
             <span className="relative inline-block">
-              <span className="gradient-text tracking-wider">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-white to-amber-300 tracking-wider">
                 Delivered to Your Doorstep.
               </span>
             </span>
@@ -513,16 +511,19 @@ function HeroSection() {
           >
             <Link
               href="/shop"
-              className="group relative flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[var(--olive)] to-[var(--olive)] text-white font-semibold text-xs tracking-[0.12em] transition-all duration-500 hover:shadow-[0_15px_35px_rgba(255,140,0,0.25)] hover:-translate-y-1 active:scale-95 overflow-hidden"
+              className="btn-standard group relative flex items-center gap-2 rounded-full font-semibold text-xs tracking-[0.12em] transition-all duration-500 hover:-translate-y-1 active:scale-95 overflow-hidden"
             >
               <span className="relative z-10">Shop Now </span>
               <ArrowRight className="w-4 h-4 relative z-10 transition-transform group-hover:translate-x-1" />
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-[var(--orange)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </Link>
 
             <Link
               href="/gifts"
-              className="group flex items-center gap-2 px-6 py-3 rounded-full glass text-white font-semibold text-xs tracking-[0.12em] transition-all duration-500 hover:bg-white/15 hover:-translate-y-1 active:scale-95"
+              className="btn-standard group flex items-center gap-2 rounded-full font-semibold text-xs tracking-[0.12em] transition-all duration-500 hover:-translate-y-1 active:scale-95"
+              style={{
+                backgroundColor: "transparent",
+                border: "1px solid rgba(255,255,255,0.3)",
+              }}
             >
               <Gift className="w-4 h-4" />
               Explore Gift Packs
@@ -640,93 +641,6 @@ function CategoriesSection() {
   );
 }
 
-// -----------------------------------  SEASONAL BANNERS
-function SeasonalBanners() {
-  const { ref, isVisible } = useInView();
-  const seasons = [
-    {
-      name: "Diwali",
-      image:
-        "https://images.unsplash.com/photo-1573148164257-8a30363f7395?q=80&w=800",
-      tag: "Festival of Lights",
-    },
-    {
-      name: "Navratri",
-      image:
-        "https://images.unsplash.com/photo-1662991039860-264f3312ec68?q=80&w=800",
-      tag: "Sacred Celebration",
-    },
-    {
-      name: "Pongal",
-      image:
-        "https://images.unsplash.com/photo-1610444391696-6089a81878be?q=80&w=800",
-      tag: "Harvest Festival",
-    },
-    {
-      name: "Tamil New Year",
-      image:
-        "https://images.unsplash.com/photo-1616448332195-22aa9a255546?q=80&w=800",
-      tag: "New Beginnings",
-    },
-    {
-      name: "Wedding Gifts",
-      image:
-        "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=800",
-      tag: "Eternal Bonds",
-    },
-    {
-      name: "Corporate Gifts",
-      image:
-        "https://images.unsplash.com/photo-1549463597-8d9d67ec9559?q=80&w=800",
-      tag: "Professional Gratitude",
-    },
-  ];
-
-  return (
-    <section ref={ref} className="py-20 bg-stone-50/50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div
-          className={`mb-16 text-center space-y-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-            Seasonal <span className="gradient-text">Celebrations</span>
-          </h2>
-          <p className="text-gray-500 text-sm max-w-lg mx-auto">
-            Explore our curated collections for every special occasion and
-            traditional festival.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {seasons.map((season, idx) => (
-            <div
-              key={idx}
-              className={`group relative h-72 rounded-[2rem] overflow-hidden transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
-              style={{ transitionDelay: `${idx * 100}ms` }}
-            >
-              <Image
-                src={season.image}
-                alt={season.name}
-                fill
-                className="object-cover transition-transform duration-1000 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute inset-x-8 bottom-8">
-                <p className="text-amber-400 text-[10px] font-bold tracking-[0.3em] uppercase mb-2">
-                  {season.tag}
-                </p>
-                <h3 className="text-2xl font-bold text-white">{season.name}</h3>
-                <button className="mt-4 flex items-center gap-2 text-white text-[10px] font-bold tracking-widest uppercase border-b border-white/30 pb-1 hover:border-white transition-all opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 duration-500">
-                  Shop Collection <ArrowRight className="w-3 h-3" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // -----------------------------------  FEATURED PRODUCTS
 
 function FeaturedSection() {
@@ -748,7 +662,7 @@ function FeaturedSection() {
         >
           <div className="space-y-5">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-              Featured <span className="gradient-text">Offerings</span>
+              Featured <span className="gradient-text">Products</span>
             </h2>
             <p className="text-sm font-medium text-gray-400 max-w-md">
               Hand-picked organic products, rigorously tested for purity and
@@ -816,7 +730,7 @@ function ProductCard({
 
         {/* Badge */}
         {product.badge && (
-          <div className="absolute top-6 left-6 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-700 text-white text-[11px] font-semibold tracking-[0.15em] shadow-lg z-20">
+          <div className="absolute top-6 left-6 px-4 py-2 rounded-full bg-gradient-to-r from-[var(--orange)] to-amber-600 text-white text-[11px] font-semibold tracking-[0.15em] shadow-lg z-20">
             {product.badge}
           </div>
         )}
@@ -883,10 +797,6 @@ function GiftingSection() {
           >
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-stone-100 pb-8">
               <div className="space-y-3">
-                <div className="flex items-center gap-2 text-[var(--orange)] font-bold text-[9px] tracking-[0.3em] uppercase">
-                  <Gift className="w-3.5 h-3.5" />
-                  Hand-Curated Excellence
-                </div>
                 <h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight">
                   Artisanal <span className="gradient-text">Gift Hampers</span>
                 </h2>
@@ -930,8 +840,12 @@ function GiftingSection() {
                       {item.desc}
                     </p>
                     <div className="flex items-center gap-2 pt-2">
-                      <span className="text-lg font-black text-gray-900">₹{item.price.toLocaleString()}</span>
-                      <span className="text-[10px] font-bold text-stone-300 line-through">₹{(item.price * 1.2).toFixed(0)}</span>
+                      <span className="text-lg font-black text-gray-900">
+                        ₹{item.price.toLocaleString()}
+                      </span>
+                      <span className="text-[10px] font-bold text-stone-300 line-through">
+                        ₹{(item.price * 1.2).toFixed(0)}
+                      </span>
                     </div>
                   </div>
                 </Link>
@@ -945,10 +859,6 @@ function GiftingSection() {
           >
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-stone-100 pb-8">
               <div className="space-y-3">
-                <div className="flex items-center gap-2 text-amber-500 font-bold text-[9px] tracking-[0.3em] uppercase">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Sacred Divine Essentials
-                </div>
                 <h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight">
                   Pooja Gift <span className="gradient-text">Essentials</span>
                 </h2>
@@ -994,7 +904,9 @@ function GiftingSection() {
                     <h4 className="text-sm font-bold text-gray-900 line-clamp-1 group-hover:text-amber-600 transition-colors">
                       {item.name}
                     </h4>
-                    <p className="text-sm font-black text-gray-900">₹{item.price.toLocaleString()}</p>
+                    <p className="text-sm font-black text-gray-900">
+                      ₹{item.price.toLocaleString()}
+                    </p>
                   </div>
                 </Link>
               ))}
@@ -1012,56 +924,12 @@ function WhyChooseUsSection() {
   return (
     <section ref={ref} className="py-32 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-          {/* Left Side: Content & Cards (7 columns) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
+          {/* Left Side: Dynamic Image & Stats (5 columns) */}
           <div
-            className={`lg:col-span-7 space-y-12 transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}
+            className={`lg:col-span-5 relative transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}
           >
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-[var(--olive)] font-bold text-[10px] tracking-[0.2em] uppercase mb-2">
-                <span className="w-8 h-px bg-[var(--olive)]/30" />
-                Pure Tradition
-              </div>
-              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 leading-tight">
-                Why <span className="gradient-text">Choose Us</span>
-              </h2>
-              <p className="text-gray-500 font-light leading-relaxed max-w-xl">
-                We bridge the gap between ancient wisdom and modern convenience,
-                ensuring every product delivers maximum nutrition and authentic
-                flavor.
-              </p>
-            </div>
-
-            {/* Compact Premium Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {whyChooseUs.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="group p-6 rounded-[1.5rem] bg-white border border-gray-100 hover:border-[var(--olive)]/30 transition-all duration-300 hover:shadow-[0_15px_30px_rgba(0,0,0,0.05)]"
-                >
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 rounded-2xl bg-[var(--olive)]/5 flex items-center justify-center text-[var(--olive)] flex-shrink-0 group-hover:bg-[var(--olive)] group-hover:text-white transition-all duration-300">
-                      <item.icon className="w-5 h-5" />
-                    </div>
-                    <div className="space-y-1">
-                      <h4 className="text-sm font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors">
-                        {item.title}
-                      </h4>
-                      <p className="text-[11px] text-gray-400 font-light leading-snug">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Side: Reduced Image (5 columns) */}
-          <div
-            className={`lg:col-span-5 relative transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}
-          >
-            <div className="relative aspect-[4/5] max-w-[340px] lg:ml-auto rounded-[3rem] overflow-hidden shadow-2xl border-[12px] border-white">
+            <div className="relative aspect-[4/5] rounded-[3.5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border-[16px] border-white">
               <Image
                 src="/why-choose-us.jpg"
                 alt="Quality organic products"
@@ -1070,25 +938,79 @@ function WhyChooseUsSection() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-              {/* Floating Trust Badge */}
-              <div className="absolute bottom-6 left-6 right-6 p-5 glass rounded-2xl border border-white/20 shadow-2xl">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center text-white shadow-lg">
-                    <BadgeCheck className="w-6 h-6" />
+              {/* Floating Certification Badge */}
+              <div className="absolute top-8 right-8 w-24 h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex flex-col items-center justify-center text-white p-2">
+                <Shield className="w-6 h-6 mb-1 text-amber-400" />
+                <span className="text-[7px] font-black uppercase tracking-widest text-center">
+                  Certified Quality
+                </span>
+              </div>
+
+              {/* Bottom Stat Card */}
+              <div className="absolute bottom-8 inset-x-8 p-6 glass rounded-3xl border border-white/20 shadow-2xl">
+                <div className="flex items-center gap-5">
+                  <div className="w-14 h-14 rounded-full bg-emerald-500 flex items-center justify-center text-white shadow-xl">
+                    <BadgeCheck className="w-8 h-8" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-white">100%</p>
-                    <p className="text-[9px] text-white/70 font-bold uppercase tracking-widest leading-none">
-                      Pure & Organic
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-3xl font-black text-white">
+                        100%
+                      </span>
+                      <span className="text-xs font-bold text-white/70">
+                        Pure
+                      </span>
+                    </div>
+                    <p className="text-[9px] text-white/50 font-black uppercase tracking-widest">
+                      Organic Certified Sourcing
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Decorative background elements */}
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-[var(--orange)]/5 rounded-full blur-3xl -z-10 animate-pulse" />
-            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[var(--olive)]/10 rounded-full blur-2xl -z-10" />
+            {/* Background elements */}
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-[var(--olive)]/10 rounded-full blur-3xl -z-10" />
+            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-amber-100/30 rounded-full blur-[80px] -z-10" />
+          </div>
+
+          {/* Right Side: Content & Features (7 columns) */}
+          <div
+            className={`lg:col-span-7 space-y-12 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}
+          >
+            <div className="space-y-6">
+              <h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-[1.1]">
+                Why
+                <span className="gradient-text"> Choose Us</span>
+              </h2>
+              <p className="text-gray-400 text-lg font-medium leading-relaxed max-w-xl">
+                We ensure every product delivers maximum nutrition by merging
+                traditional processing methods with modern quality standards.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {whyChooseUs.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="group relative p-8 rounded-[2.5rem] bg-stone-50 border border-stone-100 hover:bg-white hover:border-[var(--olive)]/20 transition-all duration-500 hover:shadow-xl"
+                >
+                  <div className="flex items-start gap-6">
+                    <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-[var(--olive)] flex-shrink-0 group-hover:bg-[var(--olive)] group-hover:text-white transition-all duration-500">
+                      <item.icon className="w-6 h-6" />
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="text-md font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors">
+                        {item.title}
+                      </h4>
+                      <p className="text-[11px] text-gray-400 font-bold leading-snug">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -1213,62 +1135,6 @@ function TestimonialsSection() {
   );
 }
 
-// -----------------------------------  CTA BANNER
-
-function CTABanner() {
-  const { ref, isVisible } = useInView();
-
-  return (
-    <section ref={ref} className="py-20">
-      <div className="max-w-7xl mx-auto px-6">
-        <div
-          className={`relative rounded-[1rem] overflow-hidden transition-all duration-700 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
-        >
-          {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--olive)] via-[#4a6028] to-[#3d4d22]" />
-          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]" />
-
-          {/* Decorative Elements */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-[var(--orange)]/15 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-60 h-60 bg-white/5 rounded-full blur-[80px] translate-y-1/3 -translate-x-1/4 pointer-events-none" />
-          <div className="absolute top-10 left-10 w-20 h-20 border border-white/10 rounded-full animate-spin-slow pointer-events-none" />
-
-          {/* Content */}
-          <div className="relative z-10 py-20 md:py-28 px-8 md:px-16 text-center max-w-3xl mx-auto space-y-8">
-            <h3 className="text-2xl sm:text-3xl md:text-4xl text-white leading-tight">
-              Rooted in Tradition, <br className="hidden md:block" />
-              Crafted for the{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-[var(--orange)]">
-                Future.
-              </span>
-            </h3>
-            <p className="text-white/60 font-light text-md max-w-xl mx-auto leading-relaxed">
-              Experience the purest forms of nutrition sourced directly from
-              nature&apos;s bounty. Every product tells a story of heritage and
-              wellness.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 pt-4">
-              <Link
-                href="/shop"
-                className="group px-12 py-0 rounded-full bg-white text-[var(--olive)] font-bold text-sm tracking-widest transition-all hover:bg-[var(--cream)] hover:shadow-[0_20px_50px_rgba(255,255,255,0.15)] hover:-translate-y-1 active:scale-95 flex items-center gap-2"
-              >
-                SHOP NOW
-                <ArrowRight className="w-5 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                href="/about-us"
-                className="px-12 py-5 rounded-full glass text-white font-bold text-sm tracking-widest transition-all hover:bg-white/15 hover:-translate-y-1 active:scale-95"
-              >
-                About Us
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // -----------------------------------  KURAL & TRUST ROW (Premium Look)
 
 function KuralTrustRow() {
@@ -1314,9 +1180,6 @@ function KuralTrustRow() {
                       {dailyKural.tamil}
                     </p>
                   </div>
-                  <p className="text-sm text-stone-500 font-light leading-relaxed italic border-l-2 border-stone-100 pl-4">
-                    "{dailyKural.english}"
-                  </p>
                 </div>
               </div>
             </div>
@@ -1650,7 +1513,7 @@ function NutritionPlanner() {
           </div>
 
           <div className="p-6 bg-gray-50/50 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-gray-100">
-            <button className="w-full md:w-auto px-8 py-2.5 rounded-xl bg-[var(--olive)] text-white font-bold text-[10px] tracking-[0.2em] hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all duration-300 cursor-pointer">
+            <button className="btn-standard w-full md:w-auto rounded-xl font-bold text-[10px] tracking-[0.2em] active:scale-95 transition-all duration-300 cursor-pointer">
               ADD TO CART
             </button>
             <div className="text-center md:text-right space-y-0.5">
@@ -1672,127 +1535,155 @@ function SubscriptionPlans() {
   const { ref, isVisible } = useInView();
   const plans = [
     {
-      name: "Basic",
+      name: "Heritage Basic",
       price: "1,499",
+      desc: "Perfect for small families starting their wellness journey.",
       features: [
         "Monthly Millet Box (2kg)",
         "Essential Nut Pack (500g)",
-        "Standard Packaging",
-        "Email Support",
+        "Standard Eco-Packaging",
+        "Community Access",
       ],
       excluded: [
         "Nutritionist Advice",
         "Priority Shipping",
         "Sacred Pooja Kit",
       ],
-      color: "bg-[#16a34a]", // Emerald
-      accent: "text-[#16a34a]",
+      color: "bg-stone-800",
+      accent: "text-stone-800",
+      border: "border-stone-100",
     },
     {
-      name: "Standard",
+      name: "Wellness Standard",
       price: "2,999",
+      desc: "Our most loved plan for balanced daily nutrition.",
       features: [
         "Monthly Millet Box (5kg)",
         "Premium Nut Pack (1kg)",
-        "Eco-friendly Packaging",
+        "Handcrafted Jute Packaging",
         "Nutritionist Advice",
         "Priority Shipping",
       ],
       excluded: ["Sacred Pooja Kit", "Recipe eBooks"],
-      color: "bg-[#2563eb]", // Blue
-      accent: "text-[#2563eb]",
+      color: "bg-[var(--olive)]",
+      accent: "text-[var(--olive)]",
       featured: true,
+      border: "border-[var(--olive)]/20",
     },
     {
-      name: "Premium",
+      name: "Royal Premium",
       price: "4,999",
+      desc: "The ultimate tradition-to-wellness experience.",
       features: [
         "Bulk Millet Supply (10kg)",
-        "Luxury Nut Box",
-        "Sacred Pooja Kit",
-        "Recipe eBooks",
-        "Dedicated Concierge",
+        "Luxury Nut & Berry Box",
+        "Sacred Pooja Kit (Monthly)",
+        "Premium Recipe eBooks",
+        "Dedicated Wellness Concierge",
         "VIP Event Access",
       ],
       excluded: [],
-      color: "bg-[#ea580c]", // Orange
-      accent: "text-[#ea580c]",
+      color: "bg-[var(--orange)]",
+      accent: "text-[var(--orange)]",
+      border: "border-[var(--orange)]/20",
     },
   ];
 
   return (
-    <section ref={ref} className="py-28 bg-stone-50">
-      <div className="max-w-7xl mx-auto px-6">
+    <section ref={ref} className="py-24 bg-[#fafaf9] relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+
+      <div className="max-w-5xl mx-auto px-6 relative z-10">
         <div
-          className={`text-center mb-24 space-y-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`text-center mb-16 space-y-4 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
-          <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900">
-            Wellness <span className="gradient-text">Subscripton</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--olive)]/5 border border-[var(--olive)]/10 mb-4">
+            <Sparkles className="w-3 h-3 text-[var(--olive)]" />
+            <span className="text-[10px] font-black text-[var(--olive)] uppercase tracking-[0.2em]">
+              Subscription Plans
+            </span>
+          </div>
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight">
+            Traditional Wellness{" "}
+            <span className="gradient-text">Subscription</span>
           </h2>
-          <p className="text-gray-500 text-sm max-w-xl mx-auto font-light">
-            Choose a plan that fits your family's nutritional needs and enjoy
-            traditional wellness delivered monthly.
+          <p className="text-gray-400 text-[11px] max-w-md mx-auto font-medium">
+            Curated nutrition plans delivered to your doorstep every month.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {plans.map((plan, idx) => (
             <div
               key={idx}
-              className={`relative bg-white rounded-[2.5rem] shadow-xl overflow-hidden transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"} ${plan.featured ? "scale-105 z-10" : ""}`}
-              style={{ transitionDelay: `${idx * 200}ms` }}
+              className={`group relative bg-white rounded-[2rem] p-1.5 border transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"} ${plan.border} ${plan.featured ? "shadow-[0_30px_60px_-10px_rgba(85,107,47,0.12)] scale-[1.02] z-10" : "hover:shadow-xl hover:-translate-y-1"}`}
+              style={{ transitionDelay: `${idx * 150}ms` }}
             >
-              {/* Colored Header Block */}
-              <div
-                className={`${plan.color} py-6 text-center relative overflow-hidden`}
-              >
-                <h3 className="text-2xl font-black text-white tracking-widest uppercase italic">
-                  {plan.name}
-                </h3>
-                {/* Arrow Pointer */}
-                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45" />
-              </div>
+              {plan.featured && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-[var(--olive)] to-emerald-700 text-white text-[9px] font-black tracking-[0.2em] uppercase shadow-lg z-20 whitespace-nowrap">
+                  Most Popular
+                </div>
+              )}
 
-              <div className="p-10 pt-12 space-y-10">
-                <ul className="space-y-6">
-                  {plan.features.map((feature, fIdx) => (
-                    <li
-                      key={fIdx}
-                      className="flex items-center gap-4 text-sm font-bold text-gray-700"
-                    >
-                      <div
-                        className={`flex-shrink-0 w-6 h-6 rounded-full ${plan.accent} bg-stone-50 flex items-center justify-center`}
-                      >
-                        <Check className="w-4 h-4" />
-                      </div>
-                      {feature}
-                    </li>
-                  ))}
-                  {plan.excluded?.map((feature, fIdx) => (
-                    <li
-                      key={"ex" + fIdx}
-                      className="flex items-center gap-4 text-sm font-bold text-gray-300 line-through"
-                    >
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-stone-50 flex items-center justify-center text-red-400">
-                        <span className="text-xs font-black">✕</span>
-                      </div>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="pt-8 border-t border-stone-50 text-center space-y-6">
-                  <div className="flex items-center justify-center gap-1">
-                    <span className={`text-4xl font-black ${plan.accent}`}>
-                      ₹{plan.price}
+              <div className="relative h-full rounded-[1.75rem] overflow-hidden flex flex-col">
+                {/* Header Section */}
+                <div className="p-7 pb-4 space-y-3">
+                  <h3
+                    className={`text-[10px] font-black tracking-[0.2em] uppercase ${plan.accent}`}
+                  >
+                    {plan.name}
+                  </h3>
+                  <div className="flex items-baseline gap-0.5">
+                    <span className="text-[10px] font-bold text-gray-400">
+                      ₹
                     </span>
-                    <span className="text-xs text-gray-400 font-bold uppercase tracking-widest">
-                      / month
+                    <span className="text-3xl font-black text-gray-900 tracking-tighter">
+                      {plan.price}
+                    </span>
+                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">
+                      / mo
                     </span>
                   </div>
-                  <button
-                    className={`w-full py-4 rounded-2xl text-[11px] font-black tracking-[0.25em] uppercase transition-all duration-500 shadow-lg hover:shadow-2xl hover:-translate-y-1 ${plan.featured ? "bg-stone-900 text-white" : "border-2 border-stone-100 text-gray-900 hover:bg-stone-50"}`}
-                  >
+                  <p className="text-[10px] text-gray-400 font-medium leading-relaxed line-clamp-2">
+                    {plan.desc}
+                  </p>
+                </div>
+
+                {/* Features List */}
+                <div className="flex-1 p-7 pt-2 space-y-6">
+                  <div className="w-full h-px bg-gray-50" />
+                  <ul className="space-y-4">
+                    {plan.features.map((feature, fIdx) => (
+                      <li
+                        key={fIdx}
+                        className="flex items-center gap-3 text-[11px] font-bold text-gray-600"
+                      >
+                        <div
+                          className={`flex-shrink-0 w-5 h-5 rounded-md ${plan.accent} bg-stone-50 flex items-center justify-center border border-current/5`}
+                        >
+                          <Check className="w-3 h-3" />
+                        </div>
+                        {feature}
+                      </li>
+                    ))}
+                    {plan.excluded?.map((feature, fIdx) => (
+                      <li
+                        key={"ex" + fIdx}
+                        className="flex items-center gap-3 text-[11px] font-bold text-gray-300 line-through opacity-50"
+                      >
+                        <div className="flex-shrink-0 w-5 h-5 rounded-md bg-stone-50 flex items-center justify-center text-red-200 border border-gray-50">
+                          <span className="text-[8px] font-black">✕</span>
+                        </div>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Action Section */}
+                <div className="p-7 pt-0">
+                  <button className="btn-standard w-full rounded-xl text-[13px] font-black front-normal tracking-[0.2em] transition-all duration-500 shadow-lg cursor-pointer active:scale-95">
                     Subscribe Now
                   </button>
                 </div>
@@ -1816,7 +1707,8 @@ function NewArrivalsSection() {
       price: 299,
       originalPrice: 399,
       rating: 4.7,
-      image: "https://dryfruitshome.com/wp-content/uploads/2019/07/foxtail-millet-thinai.jpg",
+      image:
+        "https://dryfruitshome.com/wp-content/uploads/2019/07/foxtail-millet-thinai.jpg",
       isNew: true,
     },
     {
@@ -1826,7 +1718,8 @@ function NewArrivalsSection() {
       price: 899,
       originalPrice: 1100,
       rating: 4.9,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC5XC7IzZhRYA9FOo2b_aStlaTMAMVXk1cNg&s",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC5XC7IzZhRYA9FOo2b_aStlaTMAMVXk1cNg&s",
       isNew: true,
     },
     {
@@ -1836,7 +1729,8 @@ function NewArrivalsSection() {
       price: 1299,
       originalPrice: 1800,
       rating: 4.8,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE8uNbbxycaDgAxlh3JuEJ85P8rBYAyYMR3w&s",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE8uNbbxycaDgAxlh3JuEJ85P8rBYAyYMR3w&s",
       isNew: true,
     },
     {
@@ -1846,7 +1740,8 @@ function NewArrivalsSection() {
       price: 2999,
       originalPrice: 3999,
       rating: 4.9,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgLKhWmIcPt_tA10h3MmkjKEbRTzwEw4gQPg&s",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgLKhWmIcPt_tA10h3MmkjKEbRTzwEw4gQPg&s",
       isNew: true,
     },
   ];
@@ -1854,16 +1749,22 @@ function NewArrivalsSection() {
   return (
     <section ref={ref} className="py-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div className={`flex flex-col md:flex-row items-end justify-between mb-16 gap-6 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+        <div
+          className={`flex flex-col md:flex-row items-end justify-between mb-16 gap-6 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+        >
           <div className="space-y-4 text-left">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
               New <span className="gradient-text">Arrivals</span>
             </h2>
             <p className="text-gray-400 text-sm max-w-md font-light">
-              Freshly added to our collection. Discover our latest traditional wellness offerings and sacred essentials.
+              Freshly added to our collection. Discover our latest traditional
+              wellness offerings and sacred essentials.
             </p>
           </div>
-          <Link href="/shop" className="text-xs font-black tracking-widest uppercase text-[var(--olive)] border-b-2 border-[var(--olive)]/20 pb-1 hover:border-[var(--olive)] transition-all">
+          <Link
+            href="/shop"
+            className="text-xs font-black tracking-widest uppercase text-[var(--olive)] border-b-2 border-[var(--olive)]/20 pb-1 hover:border-[var(--olive)] transition-all"
+          >
             Explore All Products
           </Link>
         </div>
@@ -1871,7 +1772,11 @@ function NewArrivalsSection() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {newProducts.map((product, idx) => (
             <Link
-              href={product.category.includes("Gift") ? "/gift-detail" : "/product-detail"}
+              href={
+                product.category.includes("Gift")
+                  ? "/gift-detail"
+                  : "/product-detail"
+              }
               key={product.id}
               className={`group relative bg-white border border-gray-100/50 rounded-[2rem] p-3 block transition-all duration-700 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] hover:-translate-y-2 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
               style={{ transitionDelay: `${idx * 100}ms` }}
@@ -1902,14 +1807,18 @@ function NewArrivalsSection() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5 text-amber-400">
                     <Star className="w-2.5 h-2.5 fill-current" />
-                    <span className="text-[10px] font-bold text-gray-400">{product.rating}</span>
+                    <span className="text-[10px] font-bold text-gray-400">
+                      {product.rating}
+                    </span>
                   </div>
                   <h3 className="text-sm font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors line-clamp-1 leading-tight">
                     {product.name}
                   </h3>
                 </div>
                 <div className="flex items-center justify-between pt-1">
-                  <span className="text-lg font-bold text-gray-900">₹{product.price}</span>
+                  <span className="text-lg font-bold text-gray-900">
+                    ₹{product.price}
+                  </span>
                   <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-[var(--olive)] hover:text-white transition-all">
                     <ChevronRight className="w-4 h-4" />
                   </div>

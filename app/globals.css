@@ -15,9 +15,9 @@
   --gold: #c9a84c;
   --gold-light: #e8d48b;
   --sky-blue: #4285F4;
-}s
+}
 
-body {
+s body {
   background: var(--background);
   color: var(--foreground);
   font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -224,6 +224,25 @@ body {
   background: rgba(85, 107, 47, 0.08);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(85, 107, 47, 0.1);
+}
+
+/* ── Premium Buttons ── */
+.btn-standard {
+  height: 45px !important;
+  background-color: var(--olive) !important;
+  color: white !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}
+
+.btn-standard:hover {
+  background-color: var(--olive-dark) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(85, 107, 47, 0.3);
 }
 
 /* ── Premium Card Hover ── */

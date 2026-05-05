@@ -1,0 +1,276 @@
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import {
+  ArrowLeft,
+  Package,
+  Truck,
+  MapPin,
+  Calendar,
+  CreditCard,
+  Download,
+  MessageCircle,
+  ChevronRight,
+  Clock,
+  CheckCircle2,
+  Receipt,
+  ShieldCheck,
+  HelpCircle,
+} from "lucide-react";
+
+export default function OrderDetailPage() {
+  const orderInfo = {
+    id: "TRD-82910-2026",
+    date: "12 Oct 2026",
+    status: "Delivered",
+    items: [
+      {
+        id: 1,
+        name: "Premium Dry Fruits Box",
+        desc: "Curated selection of almonds & cashews",
+        price: 1499,
+        qty: 1,
+        image:
+          "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?q=80&w=200&auto=format&fit=crop",
+      },
+    ],
+    billing: {
+      subtotal: 1499,
+      shipping: 0,
+      tax: 75,
+      total: 1574,
+    },
+    shipping: {
+      name: "Tradizions User",
+      address:
+        "123 Heritage Villa, Tradizions Lane, Chennai, Tamil Nadu - 600001",
+      method: "Priority Shipping (Air)",
+    },
+  };
+
+  return (
+    <main className="min-h-screen bg-[#faf9f6] pt-28 pb-20">
+      <div className="max-w-6xl mx-auto px-6">
+        {/* Modern Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+          <div className="space-y-1">
+            {/* <Link href="/my-account" className="inline-flex items-center gap-2 text-[10px] font-black text-[var(--olive)] uppercase tracking-[0.2em] mb-2 hover:translate-x-[-4px] transition-transform">
+              <ArrowLeft className="w-3.5 h-3.5" /> Back to Account
+            </Link> */}
+            <h1 className="text-3xl font-black text-gray-900 tracking-tighter">
+              Order{" "}
+              <span className=" text-[var(--olive)]">#{orderInfo.id}</span>
+            </h1>
+            <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">
+              Placed on {orderInfo.date} • {orderInfo.items.length} Items
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button className="btn-standard rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md transition-all">
+              <Download className="w-4 h-4" /> Invoice
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Main Content: Left Column (8 cols) */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* Professional Progress Section */}
+            <div className="bg-white rounded-[1rem] p-10 border border-stone-100 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
+              <div className="flex items-center justify-between mb-12">
+                <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-[var(--olive)]" /> Order
+                  Progress
+                </h3>
+                <span className="px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-[9px] font-black uppercase tracking-widest border border-emerald-100">
+                  Successfully Delivered
+                </span>
+              </div>
+
+              <div className="relative flex justify-between">
+                {/* Connector Line */}
+                <div className="absolute top-5 left-0 right-0 h-0.5 bg-stone-50" />
+                <div className="absolute top-5 left-0 w-full h-0.5 bg-[var(--olive)] origin-left" />
+
+                {[
+                  { label: "Placed", icon: Calendar, active: true },
+                  { label: "Shipped", icon: Package, active: true },
+                  { label: "Transit", icon: Truck, active: true },
+                  { label: "Delivery", icon: CheckCircle2, active: true },
+                ].map((step, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col items-center gap-4 relative z-10"
+                  >
+                    <div
+                      className={`w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-500 ${step.active ? "bg-[var(--olive)] text-white scale-110" : "bg-white text-gray-300 border border-stone-100"}`}
+                    >
+                      <step.icon className="w-5 h-5" />
+                    </div>
+                    <span
+                      className={`text-[10px] font-black uppercase tracking-widest ${step.active ? "text-gray-900" : "text-gray-300"}`}
+                    >
+                      {step.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Items Summary - Receipt Style */}
+            <div className="bg-white rounded-[1rem] border border-stone-100 shadow-[0_20px_50px_rgba(0,0,0,0.02)] overflow-hidden">
+              <div className="p-8 border-b border-stone-50 bg-[#faf9f6]/50">
+                <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest flex items-center gap-3">
+                  <Receipt className="w-5 h-5 text-[var(--olive)]" /> Order
+                  Summary
+                </h3>
+              </div>
+              <div className="p-8 space-y-8">
+                {orderInfo.items.map((item) => (
+                  <div key={item.id} className="flex items-center gap-6">
+                    <div className="w-20 h-20 rounded-[1.5rem] bg-gray-50 overflow-hidden relative border border-stone-50">
+                      <Image
+                        src={item.image}
+                        fill
+                        className="object-cover"
+                        alt={item.name}
+                      />
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <h4 className="text-base font-bold text-gray-900">
+                        {item.name}
+                      </h4>
+                      <p className="text-xs text-gray-400 font-medium ">
+                        {item.desc}
+                      </p>
+                      <div className="flex items-center gap-4 pt-2">
+                        <span className="text-sm font-black text-gray-900 ">
+                          ₹{item.price}
+                        </span>
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                          Qty: {item.qty}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-black text-[var(--olive)] ">
+                        ₹{item.price * item.qty}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="p-8 bg-stone-50/50 space-y-4">
+                <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-widest">
+                  <span>Subtotal</span>
+                  <span className="text-gray-900 font-black">
+                    ₹{orderInfo.billing.subtotal}
+                  </span>
+                </div>
+                <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-widest">
+                  <span>Tax (GST)</span>
+                  <span className="text-gray-900 font-black">
+                    ₹{orderInfo.billing.tax}
+                  </span>
+                </div>
+                <div className="flex justify-between text-xs font-bold text-emerald-500 uppercase tracking-widest">
+                  <span>Shipping</span>
+                  <span>FREE</span>
+                </div>
+                <div className="pt-6 border-t border-stone-200 flex justify-between items-baseline">
+                  <span className="text-xs font-black text-gray-900 uppercase tracking-widest">
+                    Total Amount
+                  </span>
+                  <span className="text-4xl font-black text-[var(--olive)] ">
+                    ₹{orderInfo.billing.total}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar: Right Column (4 cols) */}
+          <div className="lg:col-span-4 space-y-8">
+            {/* Delivery Info */}
+            <div className="bg-white rounded-[2.5rem] p-8 border border-stone-100 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
+              <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest mb-6 flex items-center gap-3">
+                <MapPin className="w-5 h-5 text-[var(--olive)]" /> Delivery
+                Details
+              </h3>
+              <div className="space-y-4">
+                <div className="p-4 rounded-2xl bg-[#faf9f6] border border-stone-100">
+                  <p className="text-xs font-black text-gray-900 mb-1">
+                    {orderInfo.shipping.name}
+                  </p>
+                  <p className="text-xs text-gray-500 font-medium leading-relaxed ">
+                    {orderInfo.shipping.address}
+                  </p>
+                </div>
+                <div className="flex items-center gap-4 px-4 py-3 rounded-2xl bg-white border border-stone-100">
+                  <Truck className="w-5 h-5 text-gray-400" />
+                  <div>
+                    <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest">
+                      Method
+                    </p>
+                    <p className="text-[11px] font-bold text-gray-700">
+                      {orderInfo.shipping.method}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Payment Info */}
+            <div className="bg-white rounded-[2.5rem] p-8 border border-stone-100 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
+              <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest mb-6 flex items-center gap-3">
+                <CreditCard className="w-5 h-5 text-[var(--olive)]" /> Payment
+              </h3>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center border border-stone-100">
+                  <Image
+                    src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"
+                    width={24}
+                    height={24}
+                    alt="paypal"
+                  />
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs font-black text-gray-900 ">
+                    PayPal Express
+                  </p>
+                  <p className="text-[9px] text-gray-400 font-bold tracking-widest uppercase">
+                    Verified Transaction
+                  </p>
+                </div>
+                <ShieldCheck className="w-5 h-5 text-emerald-500" />
+              </div>
+            </div>
+
+            {/* Support Box */}
+            <div className="bg-gradient-to-br from-gray-300 to-stone-500 rounded-[2.5rem] p-8 text-white relative overflow-hidden group cursor-pointer shadow-xl">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
+              <div className="relative z-10 space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+                  <HelpCircle className="w-6 h-6 text-amber-400" />
+                </div>
+                <div className="space-y-2">
+                  <h4 className="text-lg font-bold tracking-tight">
+                    Need Assistance?
+                  </h4>
+                  <p className="text-[10px] text-white font-medium leading-relaxed">
+                    Our support team is available 24/7 for any queries regarding
+                    your order.
+                  </p>
+                </div>
+                <button className="btn-standard w-full rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md group-hover:shadow-lg">
+                  <MessageCircle className="w-4 h-4" /> Chat with Us
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}

@@ -98,7 +98,7 @@ export default function ProductDetailPage() {
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
-              <button className="flex-1 py-4 rounded-2xl bg-[var(--olive)] text-white font-bold text-[13px] tracking-widest shadow-lg shadow-[var(--olive)]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 group">
+              <button className="btn-standard flex-1 rounded-2xl font-bold text-[13px] tracking-widest shadow-lg shadow-[var(--olive)]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 group">
                 <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 ADD TO CART
               </button>
@@ -159,7 +159,7 @@ export default function ProductDetailPage() {
             </div>
             <button 
               onClick={() => setShowReviewForm(!showReviewForm)}
-              className="px-6 py-3 rounded-xl bg-[var(--olive)] text-white font-bold text-[11px] tracking-widest shadow-md shadow-[var(--olive)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all uppercase"
+              className="btn-standard rounded-xl font-bold text-[11px] tracking-widest shadow-md shadow-[var(--olive)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all uppercase"
             >
               {showReviewForm ? "Cancel Review" : "Write a Review"}
             </button>
@@ -208,7 +208,7 @@ export default function ProductDetailPage() {
                   <textarea rows={4} placeholder="What did you like or dislike? What should other shoppers know before buying?" className="w-full border border-gray-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[var(--olive)]/20 focus:border-[var(--olive)] outline-none transition-all font-medium text-gray-800 text-sm resize-none" />
                 </div>
 
-                <button type="button" className="py-3.5 px-8 rounded-xl bg-[var(--olive)] text-white font-bold text-[13px] tracking-widest shadow-md shadow-[var(--olive)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                <button type="button" className="btn-standard rounded-xl font-bold text-[13px] tracking-widest shadow-md shadow-[var(--olive)]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all">
                   SUBMIT REVIEW
                 </button>
               </form>
