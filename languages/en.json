@@ -184,7 +184,28 @@
         "title": "Customer First",
         "desc": "Your satisfaction is our priority."
       }
-    ]
+    ],
+    "feedback_badge": "We Value Your Feedback",
+    "rate_your": "Rate Your",
+    "experience": "Experience",
+    "feedback_desc": "Your feedback helps us improve and deliver the best possible traditional wellness experience.",
+    "your_name": "Your Name",
+    "enter_name": "Enter your full name",
+    "email_address": "Email Address",
+    "enter_email": "Enter your email",
+    "overall_rating": "Overall Rating",
+    "select_rating": "Select your rating",
+    "rating_5": "Excellent experience!",
+    "rating_4": "Very good service",
+    "rating_3": "It was okay",
+    "rating_2": "Could be better",
+    "rating_1": "Disappointing",
+    "rated_text": "You rated us",
+    "out_of_5": "out of 5 stars",
+    "tap_star": "Tap a star to rate",
+    "your_review": "Your Review",
+    "review_placeholder": "Tell us what you loved or what we can improve...",
+    "submit_review": "Submit Review"
   },
   "contact_us": {
     "connect": "Connect With Us",

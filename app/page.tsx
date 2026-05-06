@@ -711,17 +711,37 @@ function FeaturedSection({ t }: { t: any }) {
           </Link>
         </div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        {/* Product Horizontal Scroll */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 -mx-6 px-6 sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {featuredProducts.map((product, idx) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              isVisible={isVisible}
-              delay={idx * 150}
-              t={t}
-            />
+            <div key={product.id} className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)] snap-start flex-shrink-0">
+              <ProductCard
+                product={product}
+                isVisible={isVisible}
+                delay={idx * 150}
+                t={t}
+              />
+            </div>
           ))}
+          {/* View All Card */}
+          {featuredProducts.length > 10 && (
+            <div className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)] snap-start flex-shrink-0 flex">
+              <Link
+                href="/shop"
+                className="flex-1 group relative bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col items-center justify-center transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:border-[var(--olive)]/30 min-h-[350px]"
+              >
+                <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mb-4 group-hover:bg-[var(--olive)] transition-colors duration-300 shadow-sm group-hover:shadow-md">
+                  <ArrowRight className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors duration-300" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors">
+                  {t.explore_all || "View All"}
+                </h3>
+                <p className="text-xs text-gray-400 mt-2 font-medium">
+                  Explore more products
+                </p>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -851,44 +871,64 @@ function GiftingSection({ t }: { t: any }) {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 -mx-6 px-6 sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {giftHampers.map((item) => (
-                <Link
-                  href="/gift-detail"
-                  key={item.id}
-                  className="group relative bg-[#faf9f6] rounded-[2rem] p-4 border border-transparent hover:border-stone-100 hover:bg-white transition-all duration-500 hover:shadow-xl"
-                >
-                  <div className="relative aspect-video rounded-[1.5rem] overflow-hidden mb-6">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      className="object-cover transition-transform duration-[1500ms] group-hover:scale-110"
-                    />
-                    <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-stone-400 group-hover:text-[var(--orange)] transition-colors shadow-sm">
-                      <ArrowRight className="w-4 h-4" />
+                <div key={item.id} className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] snap-start flex-shrink-0">
+                  <Link
+                    href="/gift-detail"
+                    className="group relative block bg-[#faf9f6] rounded-[2rem] p-4 border border-transparent hover:border-stone-100 hover:bg-white transition-all duration-500 hover:shadow-xl h-full"
+                  >
+                    <div className="relative aspect-video rounded-[1.5rem] overflow-hidden mb-6">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-cover transition-transform duration-[1500ms] group-hover:scale-110"
+                      />
+                      <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-stone-400 group-hover:text-[var(--orange)] transition-colors shadow-sm">
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
                     </div>
-                  </div>
-                  <div className="space-y-3 px-2 pb-2">
-                    <div className="flex justify-between items-start gap-4">
-                      <h4 className="text-lg font-bold text-gray-900 leading-tight group-hover:text-[var(--olive)] transition-colors">
-                        {item.name}
-                      </h4>
+                    <div className="space-y-3 px-2 pb-2">
+                      <div className="flex justify-between items-start gap-4">
+                        <h4 className="text-lg font-bold text-gray-900 leading-tight group-hover:text-[var(--olive)] transition-colors">
+                          {item.name}
+                        </h4>
+                      </div>
+                      <p className="text-xs text-gray-400 leading-relaxed font-medium line-clamp-2">
+                        {item.desc}
+                      </p>
+                      <div className="flex items-center gap-2 pt-2">
+                        <span className="text-lg font-black text-gray-900">
+                          ₹{item.price.toLocaleString()}
+                        </span>
+                        <span className="text-[10px] font-bold text-stone-300 line-through">
+                          ₹{(item.price * 1.2).toFixed(0)}
+                        </span>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-400 leading-relaxed font-medium line-clamp-2">
-                      {item.desc}
-                    </p>
-                    <div className="flex items-center gap-2 pt-2">
-                      <span className="text-lg font-black text-gray-900">
-                        ₹{item.price.toLocaleString()}
-                      </span>
-                      <span className="text-[10px] font-bold text-stone-300 line-through">
-                        ₹{(item.price * 1.2).toFixed(0)}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               ))}
+              {/* View All Card */}
+              {giftHampers.length > 10 && (
+                <div className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] snap-start flex-shrink-0 flex">
+                  <Link
+                    href="/gifts"
+                    className="flex-1 group relative bg-[#faf9f6] rounded-[2rem] p-4 border border-transparent hover:border-stone-100 hover:bg-white transition-all duration-500 hover:shadow-xl flex flex-col items-center justify-center min-h-[300px]"
+                  >
+                    <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm group-hover:bg-[var(--olive)] transition-colors duration-300">
+                      <ArrowRight className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors">
+                      {t.view_all || "View All"}
+                    </h3>
+                    <p className="text-xs text-gray-400 mt-2 font-medium">
+                      Explore more hampers
+                    </p>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 
@@ -920,42 +960,59 @@ function GiftingSection({ t }: { t: any }) {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 -mx-6 px-6 sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {poojaGifts.map((item) => (
-                <Link
-                  href="/gift-detail"
-                  key={item.id}
-                  className="group relative block"
-                >
-                  <div className="relative aspect-[3/4] rounded-[1.5rem] overflow-hidden mb-4 shadow-sm">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-                    <div className="absolute bottom-4 left-4 right-4 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                      <button className="w-full bg-[var(--cream)] py-2 rounded-md text-[8px] font-black tracking-widest uppercase text-gray-900 shadow-xl hover:bg-[var(--olive)] hover:text-white transition-all duration-500 cursor-pointer">
-                        Quick View
-                      </button>
+                <div key={item.id} className="w-[calc(50%-0.75rem)] sm:w-[calc(33.333%-1rem)] lg:w-[calc(20%-1.2rem)] snap-start flex-shrink-0">
+                  <Link
+                    href="/gift-detail"
+                    className="group relative block h-full"
+                  >
+                    <div className="relative aspect-[3/4] rounded-[1.5rem] overflow-hidden mb-4 shadow-sm">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                      <div className="absolute bottom-4 left-4 right-4 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                        <button className="w-full bg-[var(--cream)] py-2 rounded-md text-[8px] font-black tracking-widest uppercase text-gray-900 shadow-xl hover:bg-[var(--olive)] hover:text-white transition-all duration-500 cursor-pointer">
+                          Quick View
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="space-y-1.5 px-1">
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded-md bg-amber-50 text-[7px] font-black text-amber-600 uppercase tracking-widest border border-amber-100/50">
-                        {item.tag}
-                      </span>
+                    <div className="space-y-1.5 px-1">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 rounded-md bg-amber-50 text-[7px] font-black text-amber-600 uppercase tracking-widest border border-amber-100/50">
+                          {item.tag}
+                        </span>
+                      </div>
+                      <h4 className="text-sm font-bold text-gray-900 line-clamp-1 group-hover:text-amber-600 transition-colors">
+                        {item.name}
+                      </h4>
+                      <p className="text-sm font-black text-gray-900">
+                        ₹{item.price.toLocaleString()}
+                      </p>
                     </div>
-                    <h4 className="text-sm font-bold text-gray-900 line-clamp-1 group-hover:text-amber-600 transition-colors">
-                      {item.name}
-                    </h4>
-                    <p className="text-sm font-black text-gray-900">
-                      ₹{item.price.toLocaleString()}
-                    </p>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               ))}
+              {/* View All Card */}
+              {poojaGifts.length > 10 && (
+                <div className="w-[calc(50%-0.75rem)] sm:w-[calc(33.333%-1rem)] lg:w-[calc(20%-1.2rem)] snap-start flex-shrink-0 flex">
+                  <Link
+                    href="/pooja-gifts"
+                    className="flex-1 group relative flex flex-col items-center justify-center rounded-[1.5rem] bg-stone-50 border border-stone-100 transition-all duration-500 hover:shadow-md hover:border-[var(--olive)]/30 min-h-[250px]"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-3 shadow-sm group-hover:bg-[var(--olive)] transition-colors duration-300">
+                      <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <h4 className="text-sm font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors">
+                      {t.view_all || "View All"}
+                    </h4>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1838,82 +1895,102 @@ function NewArrivalsSection({ t }: { t: any }) {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 -mx-6 px-6 sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {newProducts.map((product, idx) => (
-            <Link
-              href={
-                product.category.includes("Gift")
-                  ? "/gift-detail"
-                  : "/product-detail"
-              }
-              key={product.id}
-              className="group relative bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
-              style={{
-                transitionDelay: isVisible ? `${idx * 150}ms` : "0ms",
-              }}
-            >
-              {/* Image Container */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
-                <Image
-                  src={product.image || "/placeholder.png"}
-                  alt={product.name}
-                  fill
-                  className="object-cover transition-all duration-[1200ms] group-hover:scale-110"
-                />
+            <div key={product.id} className="w-[calc(50%-0.75rem)] md:w-[calc(25%-1.125rem)] snap-start flex-shrink-0">
+              <Link
+                href={
+                  product.category.includes("Gift")
+                    ? "/gift-detail"
+                    : "/product-detail"
+                }
+                className="group relative bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] h-full"
+                style={{
+                  transitionDelay: isVisible ? `${idx * 150}ms` : "0ms",
+                }}
+              >
+                {/* Image Container */}
+                <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
+                  <Image
+                    src={product.image || "/placeholder.png"}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-all duration-[1200ms] group-hover:scale-110"
+                  />
 
-                {/* Floating Actions */}
-                <div className="absolute top-3 right-3 z-20">
-                  <button className="w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-gray-400 hover:text-red-500 transition-all transform hover:scale-110 active:scale-95 cursor-pointer">
-                    <Heart className="w-4 h-4" />
-                  </button>
+                  {/* Floating Actions */}
+                  <div className="absolute top-3 right-3 z-20">
+                    <button className="w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-gray-400 hover:text-red-500 transition-all transform hover:scale-110 active:scale-95 cursor-pointer">
+                      <Heart className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="absolute top-3 left-3 z-20 flex flex-col gap-2">
+                    {product.originalPrice && (
+                      <span className="px-2.5 py-1 rounded-full bg-[var(--orange)] text-white text-[9px] font-black tracking-wider shadow-lg">
+                        {Math.round(
+                          ((product.originalPrice - product.price) /
+                            product.originalPrice) *
+                            100,
+                        )}
+                        % OFF
+                      </span>
+                    )}
+                  </div>
                 </div>
 
-                <div className="absolute top-3 left-3 z-20 flex flex-col gap-2">
-                  {product.originalPrice && (
-                    <span className="px-2.5 py-1 rounded-full bg-[var(--orange)] text-white text-[9px] font-black tracking-wider shadow-lg">
-                      {Math.round(
-                        ((product.originalPrice - product.price) /
-                          product.originalPrice) *
-                          100,
-                      )}
-                      % OFF
+                {/* Content */}
+                <div className="p-4 flex flex-col flex-1 space-y-3">
+                  <div className="space-y-1">
+                    <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors line-clamp-1">
+                      {product.name}
+                    </h3>
+                    <p className="text-[11px] text-gray-400 font-medium line-clamp-1">
+                      {product.desc || "Tradizions premium selection for health."}
+                    </p>
+                  </div>
+
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xl font-black text-gray-900">
+                      ₹{product.price.toLocaleString()}
                     </span>
-                  )}
-                </div>
-              </div>
+                    {product.originalPrice && (
+                      <span className="text-xs text-gray-400 line-through font-medium">
+                        ₹{product.originalPrice.toLocaleString()}
+                      </span>
+                    )}
+                  </div>
 
-              {/* Content */}
-              <div className="p-4 flex flex-col flex-1 space-y-3">
-                <div className="space-y-1">
-                  <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors line-clamp-1">
-                    {product.name}
-                  </h3>
-                  <p className="text-[11px] text-gray-400 font-medium line-clamp-1">
-                    {product.desc || "Tradizions premium selection for health."}
-                  </p>
+                  {/* Add to Cart Button */}
+                  <div className="pt-2 mt-auto">
+                    <button className="w-full bg-[#FCFBF9] border border-gray-100 text-gray-900 py-3 px-4 rounded-xl font-bold text-[10px] tracking-widest flex items-center justify-between hover:bg-[var(--olive)] hover:text-white hover:border-[var(--olive)] transition-all duration-300 group/btn cursor-pointer">
+                      <span>ADD TO CART</span>
+                      <ShoppingCart className="w-3.5 h-3.5 opacity-60 group-hover/btn:opacity-100 transition-opacity" />
+                    </button>
+                  </div>
                 </div>
-
-                <div className="flex items-baseline gap-2">
-                  <span className="text-xl font-black text-gray-900">
-                    ₹{product.price.toLocaleString()}
-                  </span>
-                  {product.originalPrice && (
-                    <span className="text-xs text-gray-400 line-through font-medium">
-                      ₹{product.originalPrice.toLocaleString()}
-                    </span>
-                  )}
-                </div>
-
-                {/* Add to Cart Button */}
-                <div className="pt-2 mt-auto">
-                  <button className="w-full bg-[#FCFBF9] border border-gray-100 text-gray-900 py-3 px-4 rounded-xl font-bold text-[10px] tracking-widest flex items-center justify-between hover:bg-[var(--olive)] hover:text-white hover:border-[var(--olive)] transition-all duration-300 group/btn cursor-pointer">
-                    <span>ADD TO CART</span>
-                    <ShoppingCart className="w-3.5 h-3.5 opacity-60 group-hover/btn:opacity-100 transition-opacity" />
-                  </button>
-                </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           ))}
+          {/* View All Card */}
+          {newProducts.length > 10 && (
+            <div className="w-[calc(50%-0.75rem)] md:w-[calc(25%-1.125rem)] snap-start flex-shrink-0 flex">
+              <Link
+                href="/shop"
+                className="flex-1 group relative bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col items-center justify-center transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:border-[var(--olive)]/30 min-h-[350px]"
+              >
+                <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mb-4 group-hover:bg-[var(--olive)] transition-colors duration-300 shadow-sm group-hover:shadow-md">
+                  <ArrowRight className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors duration-300" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[var(--olive)] transition-colors">
+                  {t.explore_all || "View All"}
+                </h3>
+                <p className="text-xs text-gray-400 mt-2 font-medium">
+                  Explore new arrivals
+                </p>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </section>

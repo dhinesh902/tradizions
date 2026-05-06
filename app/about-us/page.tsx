@@ -19,6 +19,7 @@ import {
   Sparkles,
   Package,
   Soup,
+  Star,
 } from "lucide-react";
 import en from "@/languages/en.json";
 import ta from "@/languages/ta.json";
@@ -52,6 +53,8 @@ function useInView(threshold = 0.15) {
 export default function AboutUsPage() {
   const [loaded, setLoaded] = useState(false);
   const [selectedLang, setSelectedLang] = useState("EN");
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
 
   useEffect(() => {
     setLoaded(true);
@@ -106,49 +109,7 @@ export default function AboutUsPage() {
     },
   ];
 
-  const offerings = [
-    {
-      icon: "https://cdn-icons-png.flaticon.com/128/8512/8512339.png",
-      title: "Nutritious Millets",
-      desc: "Wholesome millets for a healthier lifestyle.",
-      bg: "bg-emerald-50",
-      text: "text-emerald-600",
-      tag: "Healthy",
-    },
-    {
-      icon: "https://cdn-icons-png.flaticon.com/128/1728/1728755.png",
-      title: "Premium Nuts",
-      desc: "Premium nuts & dry fruits for daily consumption and gifting.",
-      bg: "bg-amber-50",
-      text: "text-amber-600",
-      tag: "Premium",
-    },
-    {
-      icon: "https://cdn-icons-png.flaticon.com/128/6522/6522008.png",
-      title: "Malts",
-      desc: "Rich, wholesome blends crafted to nourish and energize every day.",
-      bg: "bg-orange-50",
-      text: "text-orange-600",
-      tag: "Pure",
-    },
-    {
-      icon: "https://cdn-icons-png.flaticon.com/128/17017/17017130.png",
-      title: "Traditional Pooja Items",
-      desc: "Traditional pooja items for everyday rituals and festivals.",
-      bg: "bg-blue-50",
-      text: "text-blue-600",
-      tag: "Authentic",
-    },
-    {
-      icon: "https://cdn-icons-png.flaticon.com/128/9592/9592247.png",
-      title: "Gift Boxes",
-      desc: "Thoughtfully curated gift boxes for every occasion.",
-      bg: "bg-purple-50",
-      text: "text-purple-600",
-      tag: "Curated",
-    },
-  ];
-
+  // Replaced offerings with Reviews Form
   return (
     <main className="min-h-screen bg-[var(--background)] overflow-x-hidden">
       {/* ── HERO SECTION ── */}
@@ -338,7 +299,7 @@ export default function AboutUsPage() {
             <p className="text-sm font-bold text-[var(--olive)] tracking-[0.3em] uppercase">
               {t.about_us.promise_title}
             </p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900">
               {t.about_us.promise_heading.split(" ")[0]}{" "}
               {t.about_us.promise_heading.split(" ")[1]}{" "}
               <span className="gradient-text">
@@ -371,100 +332,121 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      {/* ── WHAT WE OFFER ── */}
+      {/* ── WEBSITE RATING & REVIEWS FORM ── */}
       <section
         ref={offerRef.ref}
         className="py-32 bg-white relative overflow-hidden"
       >
-        {/* Background Texture */}
+        {/* Background Texture & Ornaments */}
         <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] pointer-events-none" />
+        <div className="absolute top-20 right-10 w-64 h-64 bg-amber-100/40 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-20 left-10 w-80 h-80 bg-[var(--olive)]/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="text-center mb-20 space-y-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-              {t.about_us.offerings_heading.split(" ")[0]}{" "}
-              <span className="gradient-text">
-                {t.about_us.offerings_heading.split(" ")[1]}
-              </span>
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
+          <div className="text-center mb-16 space-y-4">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--olive)] bg-[var(--olive)]/10 px-4 py-1.5 rounded-full inline-block">
+              {t.about_us.feedback_badge || "We Value Your Feedback"}
+            </span>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight mt-4">
+              {t.about_us.rate_your || "Rate Your"} <span className="gradient-text">{t.about_us.experience || "Experience"}</span>
             </h2>
+            <p className="text-gray-500 font-medium max-w-xl mx-auto mt-4">
+              {t.about_us.feedback_desc || "Your feedback helps us improve and deliver the best possible traditional wellness experience."}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 pt-10">
-            {offerings.map((item, i) => (
-              <div
-                key={i}
-                className={`group relative bg-white rounded-[1rem] p-7 flex flex-col items-start text-left border border-[#E0E0E0] transition-all duration-700 hover:shadow-[0_30px_60px_-15px_rgba(85,107,47,0.1)] hover:border-[var(--olive)] hover:-translate-y-1.5 ${offerRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
-                style={{ transitionDelay: `${i * 100}ms` }}
-              >
-                {/* Premium Icon Header */}
-                <div className="w-full flex items-start justify-between mb-8">
-                  <div
-                    className={`w-14 h-14 rounded-2xl ${item.bg} flex items-center justify-center shadow-inner group-hover:scale-110 group-hover:rotate-6 transition-all duration-700`}
-                  >
-                    <img
-                      src={item?.icon}
-                      alt={item?.title || "icon"}
-                      className="w-8 h-8 object-contain"
-                    />
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${item.text} opacity-40 group-hover:opacity-100 transition-opacity`}>
-                      0{i + 1}
-                    </span>
-                    <div className={`w-8 h-1 mt-1 rounded-full bg-gray-100 group-hover:${item.bg.replace("bg-", "bg-")} transition-all`} />
-                  </div>
+          <div
+            className={`bg-white rounded-[1rem] shadow-[0_30px_80px_rgba(0,0,0,0.08)] border border-stone-100 p-8 md:p-14 relative overflow-hidden transition-all duration-700 ${offerRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"}`}
+          >
+            {/* Form decorative corner */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-[var(--olive)]/5 rounded-full blur-2xl" />
+
+            <form className="space-y-8 relative z-10" onSubmit={(e) => e.preventDefault()}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Name */}
+                <div className="space-y-3">
+                  <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--orange)]"></span> {t.about_us.your_name || "Your Name"}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={t.about_us.enter_name || "Enter your full name"}
+                    className="w-full px-6 py-4 rounded-2xl bg-stone-50 border border-stone-200 focus:border-[var(--olive)] focus:ring-4 focus:ring-[var(--olive)]/10 outline-none transition-all text-[13px] font-bold text-gray-800 placeholder:text-gray-400 placeholder:font-medium shadow-inner"
+                  />
                 </div>
-
-                <div className="space-y-4 flex-1 relative z-10">
-                  <div className="space-y-3">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-50 border border-gray-100 group-hover:border-[var(--olive)]/30 transition-colors">
-                      <div className={`w-1.5 h-1.5 rounded-full ${item.text.replace("text", "bg")}`} />
-                      <p className={`text-[9px] font-black uppercase tracking-[0.15em] ${item.text}`}>
-                        {item.tag}
-                      </p>
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 tracking-tight group-hover:text-[var(--olive)] transition-colors duration-500">
-                      {item.title}
-                    </h3>
-                  </div>
-
-                  <p className="text-gray-500 text-[13px] leading-relaxed font-light line-clamp-3 group-hover:text-gray-600 transition-colors">
-                    {item.desc}
-                  </p>
+                {/* Email */}
+                <div className="space-y-3">
+                  <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--olive)]"></span> {t.about_us.email_address || "Email Address"}
+                  </label>
+                  <input
+                    type="email"
+                    placeholder={t.about_us.enter_email || "Enter your email"}
+                    className="w-full px-6 py-4 rounded-2xl bg-stone-50 border border-stone-200 focus:border-[var(--olive)] focus:ring-4 focus:ring-[var(--olive)]/10 outline-none transition-all text-[13px] font-bold text-gray-800 placeholder:text-gray-400 placeholder:font-medium shadow-inner"
+                  />
                 </div>
-
-                {/* Refined Footer */}
-                <div className="mt-8 pt-6 border-t border-gray-50 w-full flex items-center justify-between group-hover:border-[var(--olive)]/10 transition-colors">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-1 bg-gray-100 rounded-full overflow-hidden">
-                      <div className={`h-full ${item.text.replace("text", "bg")} w-0 group-hover:w-full transition-all duration-1000 delay-300`} />
-                    </div>
-                    <span className="text-[8px] font-bold text-gray-400 uppercase tracking-widest">
-                      Quality Verified
-                    </span>
-                  </div>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${item.bg} ${item.text} opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 shadow-lg shadow-[var(--olive)]/10`}>
-                    <CheckCircle2 className="w-4 h-4" />
-                  </div>
-                </div>
-
-                {/* Background Accent */}
-                <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-br from-transparent to-gray-50/30 rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               </div>
-            ))}
-          </div>
 
-          <div className="mt-20 text-center">
-            <Link
-              href="/shop"
-              className="group relative inline-flex items-center px-10 py-4 rounded-full bg-[var(--olive)] text-white font-bold text-xs tracking-[0.2em] uppercase overflow-hidden transition-all hover:shadow-[0_20px_40px_rgba(85,107,47,0.3)] hover:-translate-y-1 active:scale-95"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                {t.about_us.explore_shop}{" "}
-                <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-[var(--olive-dark)] to-[var(--olive)] opacity-0 group-hover:opacity-100 transition-opacity" />
-            </Link>
+              {/* Rating Star */}
+              <div className="space-y-4 pt-4 pb-4 border-y border-stone-100">
+                <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span> {t.about_us.overall_rating || "Overall Rating"}
+                </label>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+                  <div className="flex items-center gap-1.5 bg-stone-50 p-2 rounded-2xl border border-stone-100 w-fit">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(0)}
+                        onClick={() => setRating(star)}
+                        className="p-2 rounded-xl transition-all hover:bg-white hover:shadow-sm hover:scale-110 active:scale-95 cursor-pointer"
+                      >
+                        <Star
+                          className={`w-8 h-8 transition-all duration-300 ${
+                            star <= (hoverRating || rating)
+                              ? "fill-amber-400 text-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.5)]"
+                              : "fill-stone-200 text-stone-300"
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[13px] font-bold text-gray-800">
+                      {rating === 0 ? (t.about_us.select_rating || "Select your rating") : rating === 5 ? (t.about_us.rating_5 || "Excellent experience!") : rating === 4 ? (t.about_us.rating_4 || "Very good service") : rating === 3 ? (t.about_us.rating_3 || "It was okay") : rating === 2 ? (t.about_us.rating_2 || "Could be better") : (t.about_us.rating_1 || "Disappointing")}
+                    </span>
+                    <span className="text-[10px] text-gray-400 font-medium">
+                      {rating > 0 ? `${t.about_us.rated_text || "You rated us"} ${rating} ${t.about_us.out_of_5 || "out of 5 stars"}` : (t.about_us.tap_star || "Tap a star to rate")}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Review Text */}
+              <div className="space-y-3">
+                <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span> {t.about_us.your_review || "Your Review"}
+                </label>
+                <textarea
+                  rows={4}
+                  placeholder={t.about_us.review_placeholder || "Tell us what you loved or what we can improve..."}
+                  className="w-full px-6 py-4 rounded-2xl bg-stone-50 border border-stone-200 focus:border-[var(--olive)] focus:ring-4 focus:ring-[var(--olive)]/10 outline-none transition-all text-[13px] font-bold text-gray-800 placeholder:text-gray-400 placeholder:font-medium shadow-inner resize-none"
+                ></textarea>
+              </div>
+
+              <div className="pt-6">
+                <button
+                  type="submit"
+                  className="group w-full flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-[var(--olive)] text-white font-black text-[11px] tracking-[0.2em] uppercase transition-all duration-500 hover:shadow-[0_20px_40px_rgba(85,107,47,0.3)] hover:-translate-y-1 active:scale-95 overflow-hidden relative cursor-pointer"
+                >
+                  <span className="relative z-10">{t.about_us.submit_review || "Submit Review"}</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[var(--olive-dark)] to-[var(--olive)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <CheckCircle2 className="w-4 h-4 relative z-10 opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all" />
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </section>

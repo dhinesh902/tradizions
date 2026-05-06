@@ -211,76 +211,99 @@ export default function CartPage() {
         />
         
         {/* Modal Content */}
-        <div className="relative w-full max-w-lg bg-white rounded-[1.5rem] shadow-[0_30px_100px_-20px_rgba(0,0,0,0.15)] overflow-hidden animate-scale-up">
-          <div className="p-6">
+        <div className="relative w-full max-w-md bg-white rounded-none shadow-2xl overflow-hidden animate-scale-up">
+          <div className="p-6 md:p-8">
             {/* Close Button */}
             <button 
               onClick={() => setShowGiftModal(false)}
-              className="absolute top-5 right-5 p-2 text-gray-400 hover:text-gray-900 transition-colors z-20"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
-
-            <div className="flex flex-col items-center text-center mb-5">
-              <div className="w-10 h-10 bg-[var(--olive)]/5 rounded-full flex items-center justify-center mb-2.5">
-                <ShieldCheck className="w-5 h-5 text-[var(--olive)]" />
+            
+            <div className="text-center mb-6">
+              <div className="w-10 h-10 rounded-full bg-[#f4f7f4] flex items-center justify-center mx-auto mb-3 border border-[#e8efe8]">
+                <ShieldCheck className="w-5 h-5 text-[#4a5d23]" strokeWidth={1.5} />
               </div>
-              <h2 className="text-lg font-black text-gray-900 tracking-tight leading-none">Luxury Gifting Services</h2>
-              <p className="text-[12px] text-gray-400 font-medium mt-1">Make your tradition even more memorable</p>
+              <h3 className="text-xl font-extrabold text-gray-900 tracking-tight">Luxury Gifting Services</h3>
+              <p className="text-xs text-gray-400 mt-1 font-medium">Make your tradition even more memorable</p>
             </div>
 
-            <div className="space-y-5">
-              {/* Addon Selection Horizontal List */}
-              <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar px-0.5">
-                {[
-                  { id: 'standard', name: 'Standard Wrap', price: '49', icon: '🎁' },
-                  { id: 'premium', name: 'Luxury Premium', price: '99', icon: '✨' },
-                  { id: 'eco', name: 'Eco Friendly', price: '79', icon: '🌿' }
-                ].map((addon) => (
-                  <div 
-                    key={addon.id}
-                    onClick={() => setSelectedAddon(selectedAddon === addon.id ? 'none' : addon.id)}
-                    className={`min-w-[160px] p-4 rounded-2xl border transition-all cursor-pointer flex flex-col gap-3 ${selectedAddon === addon.id ? 'bg-[var(--olive)]/[0.03] border-[var(--olive)]/30 shadow-sm' : 'bg-stone-50 border-stone-100 hover:border-stone-200'}`}
-                  >
-                    <div className="flex justify-between items-start w-full">
-                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm text-xl border border-stone-50 shrink-0">{addon.icon}</div>
-                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-all ${selectedAddon === addon.id ? 'bg-[var(--olive)] border-[var(--olive)]' : 'bg-white border-stone-200'}`}>
-                        {selectedAddon === addon.id && <Check className="w-3 h-3 text-white" />}
-                      </div>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[11px] font-bold text-gray-900">{addon.name}</span>
-                      <span className="text-[9px] font-black text-[var(--olive)] uppercase tracking-widest mt-0.5">Add for ₹{addon.price}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Gift Message Section */}
-              <div className="space-y-2.5">
-                <div className="flex items-center gap-2 px-1">
-                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Handwritten Note</span>
-                </div>
-                <div className="relative">
-                  <textarea 
-                    placeholder="Enter your heartfelt message here..."
-                    className="w-full bg-[#FCFBF9] border-2 border-stone-50 rounded-xl p-4 text-sm font-medium text-gray-900 outline-none focus:border-[var(--olive)]/20 transition-all resize-none h-24 shadow-inner placeholder:text-gray-300"
-                  />
-                  <div className="absolute bottom-4 right-5 text-[9px] font-black text-stone-200 uppercase tracking-widest">Optional</div>
-                </div>
-              </div>
-
-              {/* Action Button */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
+              {/* Standard Wrap */}
               <button 
-                onClick={() => {
-                  setShowGiftModal(false);
-                  router.push('/checkout');
-                }}
-                className="w-full bg-[var(--olive)] text-white py-3.5 rounded-xl font-black text-[11px] tracking-[0.2em] shadow-2xl hover:bg-[var(--olive-dark)] transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center justify-center gap-2"
+                type="button"
+                onClick={() => setSelectedAddon('standard')}
+                className={`relative p-3 sm:p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center ${selectedAddon === 'standard' ? 'border-[var(--olive)] bg-[#fdfdfc]' : 'border-gray-50 bg-gray-50/50 hover:border-gray-100'}`}
               >
-                Continue to Checkout
+                <div className={`absolute top-2 right-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-colors ${selectedAddon === 'standard' ? 'border-[var(--olive)]' : 'border-gray-200'}`}>
+                  {selectedAddon === 'standard' && <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[var(--olive)]" />}
+                </div>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center mb-2 shadow-sm text-lg sm:text-xl">
+                  🎁
+                </div>
+                <h4 className="text-[10px] sm:text-[11px] font-bold text-gray-900 leading-tight">Standard Wrap</h4>
+                <p className="text-[8px] sm:text-[9px] font-bold text-[var(--olive)] uppercase tracking-wider mt-1">Add for ₹49</p>
+              </button>
+
+              {/* Luxury Premium */}
+              <button 
+                type="button"
+                onClick={() => setSelectedAddon('premium')}
+                className={`relative p-3 sm:p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center ${selectedAddon === 'premium' ? 'border-[var(--olive)] bg-[#fdfdfc]' : 'border-gray-50 bg-gray-50/50 hover:border-gray-100'}`}
+              >
+                <div className={`absolute top-2 right-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-colors ${selectedAddon === 'premium' ? 'border-[var(--olive)]' : 'border-gray-200'}`}>
+                  {selectedAddon === 'premium' && <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[var(--olive)]" />}
+                </div>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center mb-2 shadow-sm text-lg sm:text-xl">
+                  ✨
+                </div>
+                <h4 className="text-[10px] sm:text-[11px] font-bold text-gray-900 leading-tight">Luxury Premium</h4>
+                <p className="text-[8px] sm:text-[9px] font-bold text-[var(--olive)] uppercase tracking-wider mt-1">Add for ₹99</p>
+              </button>
+
+              {/* Eco Friendly */}
+              <button 
+                type="button"
+                onClick={() => setSelectedAddon('eco')}
+                className={`relative p-3 sm:p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center ${selectedAddon === 'eco' ? 'border-[var(--olive)] bg-[#fdfdfc]' : 'border-gray-50 bg-gray-50/50 hover:border-gray-100'}`}
+              >
+                <div className={`absolute top-2 right-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-colors ${selectedAddon === 'eco' ? 'border-[var(--olive)]' : 'border-gray-200'}`}>
+                  {selectedAddon === 'eco' && <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[var(--olive)]" />}
+                </div>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center mb-2 shadow-sm text-lg sm:text-xl">
+                  🌿
+                </div>
+                <h4 className="text-[10px] sm:text-[11px] font-bold text-gray-900 leading-tight">Eco Friendly</h4>
+                <p className="text-[8px] sm:text-[9px] font-bold text-[var(--olive)] uppercase tracking-wider mt-1">Add for ₹79</p>
               </button>
             </div>
+
+            <div className="mb-6">
+              <label className="block text-[10px] font-extrabold text-gray-400 uppercase tracking-widest mb-2">
+                Handwritten Note
+              </label>
+              <div className="relative">
+                <textarea 
+                  rows={2} 
+                  placeholder="Enter your heartfelt message here..." 
+                  className="w-full px-4 py-3 rounded-xl bg-[#faf9f6] border border-gray-100 focus:border-[#556B2F] focus:ring-4 focus:ring-[#556B2F]/10 outline-none text-xs font-medium text-gray-800 placeholder:text-gray-400 resize-none transition-all shadow-inner"
+                ></textarea>
+                <span className="absolute bottom-3 right-4 text-[9px] font-extrabold text-gray-300 uppercase tracking-widest pointer-events-none">
+                  Optional
+                </span>
+              </div>
+            </div>
+
+            <button 
+              onClick={() => {
+                setShowGiftModal(false);
+                router.push('/checkout');
+              }}
+              className="w-full py-3.5 rounded-xl bg-[var(--olive)] text-white font-bold text-xs tracking-wide shadow-lg shadow-[#4a5d23]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center cursor-pointer"
+            >
+              Continue to Checkout
+            </button>
           </div>
         </div>
       </div>

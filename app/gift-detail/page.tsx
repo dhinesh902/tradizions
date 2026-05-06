@@ -14,6 +14,9 @@ import {
   Minus,
   ChevronRight,
   Sparkles,
+  X,
+  Zap,
+  ShieldCheck,
 } from "lucide-react";
 import { useEffect } from "react";
 import en from "@/languages/en.json";
@@ -59,6 +62,8 @@ export default function GiftDetailPage() {
   const t = translations[selectedLang] || translations["EN"];
 
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [showGiftDialog, setShowGiftDialog] = useState(false);
+  const [selectedWrap, setSelectedWrap] = useState("");
 
   return (
     <main className="min-h-screen bg-[#faf9f6] pt-20 pb-20">
@@ -163,25 +168,34 @@ export default function GiftDetailPage() {
             <div className="h-px w-full bg-gray-100 mb-8" />
 
             {/* Quantity & Add to Cart */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <div className="flex items-center justify-between bg-gray-50 p-2 rounded-2xl border border-gray-100 w-full sm:w-36 shrink-0">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-gray-600 hover:text-[var(--olive)] transition-colors"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span className="font-bold text-gray-900">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-gray-600 hover:text-[var(--olive)] transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
+            <div className="flex flex-col gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex items-center justify-between bg-gray-50 p-2 rounded-2xl border border-gray-100 w-full sm:w-36 shrink-0">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-gray-600 hover:text-[var(--olive)] transition-colors"
+                  >
+                    <Minus className="w-4 h-4" />
+                  </button>
+                  <span className="font-bold text-gray-900">{quantity}</span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-gray-600 hover:text-[var(--olive)] transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+                <button className="flex-1 py-4 rounded-2xl bg-white border-2 border-[var(--olive)] text-[var(--olive)] font-bold text-[13px] tracking-widest hover:bg-[var(--olive)]/5 transition-all flex items-center justify-center gap-2 group">
+                  <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  {t.product.add_to_cart || "ADD TO CART"}
                 </button>
               </div>
-              <button className="flex-1 py-4 rounded-2xl bg-[var(--olive)] text-white font-bold text-[13px] tracking-widest shadow-lg shadow-[var(--olive)]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 group">
-                <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                {t.product.add_to_cart}
+              <button 
+                onClick={() => setShowGiftDialog(true)}
+                className="w-full py-4 rounded-2xl bg-[var(--olive)] text-white font-bold text-[13px] tracking-widest shadow-lg shadow-[var(--olive)]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 group"
+              >
+                <Zap className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                {t.product.buy_now || "BUY NOW"}
               </button>
             </div>
 
@@ -375,6 +389,100 @@ export default function GiftDetailPage() {
             ))}
           </div>
         </div>
+        {/* Gift Card Dialogue */}
+        {showGiftDialog && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-gray-900/40 backdrop-blur-sm animate-fade-in">
+            <div className="bg-white rounded-none p-6 md:p-8 w-full max-w-md shadow-2xl relative animate-scale-in">
+              <button
+                onClick={() => setShowGiftDialog(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              
+              <div className="text-center mb-6">
+                <div className="w-10 h-10 rounded-full bg-[#f4f7f4] flex items-center justify-center mx-auto mb-3 border border-[#e8efe8]">
+                  <ShieldCheck className="w-5 h-5 text-[#4a5d23]" strokeWidth={1.5} />
+                </div>
+                <h3 className="text-xl font-extrabold text-gray-900 tracking-tight">Luxury Gifting Services</h3>
+                <p className="text-xs text-gray-400 mt-1 font-medium">Make your tradition even more memorable</p>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
+                {/* Standard Wrap */}
+                <button 
+                  type="button"
+                  onClick={() => setSelectedWrap('standard')}
+                  className={`relative p-3 sm:p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center ${selectedWrap === 'standard' ? 'border-[var(--olive)] bg-[#fdfdfc]' : 'border-gray-50 bg-gray-50/50 hover:border-gray-100'}`}
+                >
+                  <div className={`absolute top-2 right-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-colors ${selectedWrap === 'standard' ? 'border-[var(--olive)]' : 'border-gray-200'}`}>
+                    {selectedWrap === 'standard' && <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[var(--olive)]" />}
+                  </div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center mb-2 shadow-sm text-lg sm:text-xl">
+                    🎁
+                  </div>
+                  <h4 className="text-[10px] sm:text-[11px] font-bold text-gray-900 leading-tight">Standard Wrap</h4>
+                  <p className="text-[8px] sm:text-[9px] font-bold text-[var(--olive)] uppercase tracking-wider mt-1">Add for ₹49</p>
+                </button>
+
+                {/* Luxury Premium */}
+                <button 
+                  type="button"
+                  onClick={() => setSelectedWrap('premium')}
+                  className={`relative p-3 sm:p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center ${selectedWrap === 'premium' ? 'border-[var(--olive)] bg-[#fdfdfc]' : 'border-gray-50 bg-gray-50/50 hover:border-gray-100'}`}
+                >
+                  <div className={`absolute top-2 right-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-colors ${selectedWrap === 'premium' ? 'border-[var(--olive)]' : 'border-gray-200'}`}>
+                    {selectedWrap === 'premium' && <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[var(--olive)]" />}
+                  </div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center mb-2 shadow-sm text-lg sm:text-xl">
+                    ✨
+                  </div>
+                  <h4 className="text-[10px] sm:text-[11px] font-bold text-gray-900 leading-tight">Luxury Premium</h4>
+                  <p className="text-[8px] sm:text-[9px] font-bold text-[var(--olive)] uppercase tracking-wider mt-1">Add for ₹99</p>
+                </button>
+
+                {/* Eco Friendly */}
+                <button 
+                  type="button"
+                  onClick={() => setSelectedWrap('eco')}
+                  className={`relative p-3 sm:p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center ${selectedWrap === 'eco' ? 'border-[var(--olive)] bg-[#fdfdfc]' : 'border-gray-50 bg-gray-50/50 hover:border-gray-100'}`}
+                >
+                  <div className={`absolute top-2 right-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-colors ${selectedWrap === 'eco' ? 'border-[var(--olive)]' : 'border-gray-200'}`}>
+                    {selectedWrap === 'eco' && <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[var(--olive)]" />}
+                  </div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center mb-2 shadow-sm text-lg sm:text-xl">
+                    🌿
+                  </div>
+                  <h4 className="text-[10px] sm:text-[11px] font-bold text-gray-900 leading-tight">Eco Friendly</h4>
+                  <p className="text-[8px] sm:text-[9px] font-bold text-[var(--olive)] uppercase tracking-wider mt-1">Add for ₹79</p>
+                </button>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-[10px] font-extrabold text-gray-400 uppercase tracking-widest mb-2">
+                  Handwritten Note
+                </label>
+                <div className="relative">
+                  <textarea 
+                    rows={2} 
+                    placeholder="Enter your heartfelt message here..." 
+                    className="w-full px-4 py-3 rounded-xl bg-[#faf9f6] border border-gray-100 focus:border-[#556B2F] focus:ring-4 focus:ring-[#556B2F]/10 outline-none text-xs font-medium text-gray-800 placeholder:text-gray-400 resize-none transition-all shadow-inner"
+                  ></textarea>
+                  <span className="absolute bottom-3 right-4 text-[9px] font-extrabold text-gray-300 uppercase tracking-widest pointer-events-none">
+                    Optional
+                  </span>
+                </div>
+              </div>
+
+              <Link 
+                href="/checkout" 
+                className="w-full py-3.5 rounded-xl bg-[var(--olive)] text-white font-bold text-xs tracking-wide shadow-lg shadow-[#4a5d23]/20 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center cursor-pointer"
+              >
+                Continue to Checkout
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

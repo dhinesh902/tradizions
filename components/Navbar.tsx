@@ -224,7 +224,7 @@ export default function Navbar() {
 
               {/* Hidden Dropdown */}
               <div className="absolute top-full -left-20 pt-4 opacity-0 translate-y-4 pointer-events-none group-hover/mega:opacity-100 group-hover/mega:translate-y-0 group-hover/mega:pointer-events-auto transition-all duration-500">
-                <div className="w-64 bg-white/95 backdrop-blur-xl rounded-[1rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-[#e0d4b7] p-2 overflow-hidden">
+                <div className="w-64 bg-white/95 backdrop-blur-xl rounded-[0.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-[#e0d4b7] p-2 overflow-hidden">
                   <div className="flex flex-col gap-y-1">
                     {categories.map((cat) => (
                       <Link
@@ -254,7 +254,7 @@ export default function Navbar() {
               </button>
 
               <div className="absolute top-full left-0 pt-4 opacity-0 translate-y-4 pointer-events-none group-hover/gifting:opacity-100 group-hover/gifting:translate-y-0 group-hover/gifting:pointer-events-auto transition-all duration-500">
-                <div className="w-44 bg-white/95 backdrop-blur-xl rounded-[1rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-[#e0d4b7] p-2 space-y-1">
+                <div className="w-44 bg-white/95 backdrop-blur-xl rounded-[0.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-[#e0d4b7] p-2 space-y-1">
                   <Link
                     href="/gifts"
                     className="block px-3 py-2 text-[11px] font-bold text-gray-700 hover:bg-gray-50 hover:text-[var(--olive)] rounded-lg transition-all"
@@ -300,8 +300,8 @@ export default function Navbar() {
                       key={lang.code}
                       onClick={() => handleLangChange(lang.code)}
                       className={`relative px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest transition-all duration-500 uppercase ${
-                        isActive 
-                          ? "text-white" 
+                        isActive
+                          ? "text-white"
                           : "text-gray-500 hover:text-[var(--olive)]"
                       }`}
                     >
@@ -320,17 +320,21 @@ export default function Navbar() {
             <div className="hidden md:block xl:hidden relative">
               <button
                 onClick={() => setIsLangOpen(!isLangOpen)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 group ${
-                  isLangOpen 
-                    ? "bg-[var(--olive)] border-[var(--olive)] text-white shadow-lg shadow-[var(--olive)]/20" 
+                className={`flex items-center h-10 gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 group ${
+                  isLangOpen
+                    ? "bg-[var(--olive)] border-[var(--olive)] text-white shadow-lg shadow-[var(--olive)]/20"
                     : "bg-white border-[#e0d4b7] text-gray-600 hover:border-[var(--olive)] hover:bg-gray-50"
                 }`}
               >
-                <Globe className={`w-3.5 h-3.5 transition-transform duration-500 ${isLangOpen ? "rotate-[360deg]" : "text-[var(--olive)] group-hover:rotate-12"}`} />
+                <Globe
+                  className={`w-3.5 h-3.5 transition-transform duration-500 ${isLangOpen ? "rotate-[360deg]" : "text-[var(--olive)] group-hover:rotate-12"}`}
+                />
                 <span className="text-[10px] font-black tracking-[0.15em] uppercase">
                   {selectedLang}
                 </span>
-                <ChevronDown className={`w-3 h-3 transition-transform duration-500 ${isLangOpen ? "rotate-180" : "opacity-40"}`} />
+                <ChevronDown
+                  className={`w-3 h-3 transition-transform duration-500 ${isLangOpen ? "rotate-180" : "opacity-40"}`}
+                />
               </button>
 
               {isLangOpen && (
@@ -347,7 +351,9 @@ export default function Navbar() {
                         }`}
                       >
                         {lang.name}
-                        {selectedLang === lang.code && <Check className="w-3 h-3" />}
+                        {selectedLang === lang.code && (
+                          <Check className="w-3 h-3" />
+                        )}
                       </button>
                     ))}
                   </div>
@@ -355,22 +361,46 @@ export default function Navbar() {
               )}
             </div>
 
-            <div className="relative flex items-center">
-              <div
-                className={`flex items-center transition-all duration-500 ease-out overflow-hidden ${isSearchOpen ? "w-48 md:w-64 opacity-100 mr-2" : "w-0 opacity-0 mr-0"}`}
+            {/* Professional Dynamic Searchbar */}
+            <div className="relative group flex items-center">
+              <div 
+                className={`flex items-center transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] rounded-full border bg-white/80 backdrop-blur-md overflow-hidden ${
+                  isSearchOpen 
+                    ? "w-48 md:w-72 border-[var(--olive)] shadow-[0_4px_20px_rgba(85,107,47,0.15)] ring-4 ring-[var(--olive)]/10" 
+                    : "w-10 h-10 border-[#e0d4b7] shadow-sm hover:shadow-md hover:border-[var(--olive)]/50"
+                }`}
               >
+                <button
+                  onClick={() => setIsSearchOpen(true)}
+                  className={`flex-shrink-0 h-10 w-10 flex items-center justify-center transition-colors duration-300 ${
+                    isSearchOpen ? "text-[var(--olive)] pointer-events-none" : "text-gray-500 hover:text-[var(--olive)]"
+                  }`}
+                  aria-label="Search"
+                >
+                  <Search className="w-[18px] h-[18px]" />
+                </button>
+                
                 <input
                   type="text"
                   placeholder={t.searchPlaceholder}
-                  className="w-full bg-gray-100/50 border border-gray-200/50 rounded-full py-2 px-4 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--olive)]/20 transition-all"
+                  className={`w-full bg-transparent py-2 pr-2 text-[13px] font-medium text-gray-700 placeholder-gray-400 focus:outline-none transition-all duration-500 ${
+                    isSearchOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
+                  }`}
                 />
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsSearchOpen(false);
+                  }}
+                  className={`flex-shrink-0 h-8 w-8 mr-1 flex items-center justify-center rounded-full transition-all duration-300 hover:bg-gray-100 text-gray-400 hover:text-gray-600 ${
+                    isSearchOpen ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
+                  }`}
+                  aria-label="Close search"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
-              <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className={`p-2.5 rounded-full transition-all duration-300 ${isSearchOpen ? "bg-[var(--olive)] text-white" : "hover:bg-gray-100 text-[var(--olive)]"}`}
-              >
-                <Search className="w-5 h-5" />
-              </button>
             </div>
 
             <Link href="/cart" className="relative">
@@ -554,8 +584,9 @@ export default function Navbar() {
 
       {/* --- Right Side Drawer --- */}
       <div
-        className={`fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-[70] shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] transform ${isDrawerOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-[70] shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] transform ${
+          isDrawerOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <div className="flex flex-col h-full relative overflow-hidden">
           {/* Close button */}
@@ -660,14 +691,20 @@ export default function Navbar() {
                   <p className="text-center text-[11px] text-gray-400 mt-4 leading-relaxed px-4">
                     {t.termsText} <br />{" "}
                     <Link
-                      href="#"
+                      href="/policies/terms-policy"
+                      onClick={() => {
+                        setIsDrawerOpen(false);
+                      }}
                       className="underline hover:text-[var(--olive)]"
                     >
                       {t.termsLink}
                     </Link>{" "}
                     &{" "}
                     <Link
-                      href="#"
+                      href="/policies/privacy-policy"
+                      onClick={() => {
+                        setIsDrawerOpen(false);
+                      }}
                       className="underline hover:text-[var(--olive)]"
                     >
                       {t.privacyLink}
